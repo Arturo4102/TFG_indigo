@@ -1471,8 +1471,7 @@ static void add_drivers(const char *folder) {
 		while ((ent = readdir (dir)) != NULL) {
 			if (!strncmp(ent->d_name, "indigo_", 7)) {
 				char path[PATH_MAX];
-				sprintf(path, "%s/%s", folder_path, ent->d_name);
-				indigo_log("Loading driver list from %s", path);
+				snprintf(path, PATH_MAX, "%s/%s", folder_path, ent->d_name);				indigo_log("Loading driver list from %s", path);
 				FILE *list = fopen(path, "r");
 				if (list) {
 					while (getline(&line, &len, list) > 0 && dynamic_drivers_count < INDIGO_MAX_DRIVERS) {
