@@ -1,0 +1,145 @@
+/*
+ Copyright (c) 2017 GUIMakers, s. r. o. All rights reserved.
+ You can use this software under the terms of 'INDIGO Astronomy open-source license' (see LICENSE.md).
+ */
+
+.title {
+	display: inline;
+	vertical-align: middle;
+}
+
+input {
+	text-overflow: ellipsis;
+}
+
+.dirty {
+	background-color: #fff3cd!important;
+}
+
+.container-fluid {
+	padding: 0.25rem;
+}
+
+.input-right {
+	text-align: right;
+}
+
+.input-dropdown::after {
+	margin-left: 0;
+}
+
+.idle-state {
+	color: black!important;
+	background-color: #acaeaf!important;
+	border-color: #acaeaf!important;
+}
+
+.idle-state:hover {
+	color: black!important;
+	background-color: #8c8e8f!important;
+	border-color: #8c8e8f!important;
+}
+
+.ok-state {
+	color: white!important;
+	background-color: #5cb85c!important;
+	border-color: #5cb85c!important;
+}
+
+.ok-state:hover {
+	color: white!important;
+	background-color: #3c982c!important;
+	border-color: #3c982c!important;
+}
+
+.busy-state {
+	color: white!important;
+	background-color: #f0ad4e!important;
+	border-color: #f0ad4e!important;
+}
+
+.busy-state:hover {
+	color: white!important;
+	background-color: #d08d2e!important;
+	border-color: #d08d2e!important;
+}
+
+.alert {
+	padding: 0.75rem!important;
+}
+
+.alert-state {
+	color: white!important;
+	background-color: #d9534f!important;
+	border-color: #d9534f!important;
+}
+
+.alert-state:hover {
+	color: white!important;
+	background-color: #b9332f!important;
+	border-color: #b9332f!important;
+}
+
+.btn-right {
+	margin-left: 0.2rem;
+	margin-right: 0;
+	margin-left: auto;
+}
+
+.btn-outline-secondary {
+	border-color: rgb(206, 212, 218);
+}
+
+.checked::before {
+	position: absolute;
+	left: .4rem;
+	content: '✓';
+	font-weight: 600;
+}
+
+.collapse-button .icon-indicator:before {
+	content: "▼ ";
+}
+
+.collapse-button.collapsed .icon-indicator:before {
+	content: "▶ ";
+}
+
+*:focus {
+	box-shadow: none !important;
+	border: solid 1px red( any color ) !important;
+}
+
+.input-label {
+	display: block;
+	width: 58px;
+	text-align: center;
+	font-size: 19px;
+}
+
+.btn-svg {
+	width: 3.5rem;
+	height: 2.5rem;
+}
+
+.btn-svg svg {
+	vertical-align: middle;
+	width: 1.5rem;
+	height: 1.5rem;
+}
+
+#graph_drift {
+	border: none;
+	width: 100%;
+	height: 15rem;
+}
+
+#graph_corr {
+	border: none;
+	width: 100%;
+	height: 5rem;
+}
+
+.fixed {
+	font-family: monospace;
+}

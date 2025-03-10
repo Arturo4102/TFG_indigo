@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+		<link rel="stylesheet" href="bootstrap.min.css"/>
+		<link rel="stylesheet" href="indigo.css"/>
+	</head>
+	<title>INDIGO Server Manager</title>
+	<body class="bg-secondary">
+		<div id="ROOT">
+			<nav class="navbar navbar-expand-sm navbar-light">
+				<a class="navbar-brand text-white" href="#">
+					<img src="mng.png" width="40" height="40" class="d-inline-block align-middle" alt=""/>
+					<h4 class="title">Server Manager</h4>
+				</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div id="navbarContent" class="form-inline collapse navbar-collapse m-0">
+					<template v-if="findProperty('Server', 'FEATURES') != null">
+						<a class="nav-link pr-0 ml-auto" href="mng.html" data-toggle="tooltip" title="Server Manager">
+							<img src="mng.png" width="40" height="40" class="align-middle mr-0" alt=""/>
+						</a>
+						<a class="nav-link pr-0" href="ctrl.html" data-toggle="tooltip" title="Control Panel">
+							<img src="ctrl.png" width="40" height="40" class="align-middle mr-0" alt=""/>
+						</a>
+						<template v-if="findProperty('Server', 'FEATURES').item('WEB_APPS').value">
+							<a class="nav-link pr-0" href="imager.html" data-toggle="tooltip" title="Imager">
+								<img src="imager.png" width="40" height="40" class="d-inline-block align-middle mr-0" alt=""/>
+							</a>
+							<a class="nav-link pr-0" href="mount.html" data-toggle="tooltip" title="Mount">
+								<img src="mount.png" width="40" height="40" class="d-inline-block align-middle mr-0" alt=""/>
+							</a>
+							<a class="nav-link pr-0" href="guider.html" data-toggle="tooltip" title="Guider">
+								<img src="guider.png" width="40" height="40" class="d-inline-block align-middle mr-0" alt=""/>
+							</a>
+							<a class="nav-link pr-0" href="script.html" data-toggle="tooltip" title="Script">
+								<img src="script.png" width="40" height="40" class="d-inline-block align-middle mr-0" alt=""/>
+							</a>
+						</template>
+					</template>
+				</div>
+			</nav>
+			<div class="container-fluid">
+				<div v-if="devices['Server'] == null" class="alert alert-warning alert-dismissible m-1" role="alert">
+					Waiting for server...
+				</div>
+				<template v-else>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card p-1 m-1 bg-light">
+								<div class="card-block d-flex flex-wrap">
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Camera drivers'" :prefix="'indigo_ccd'" :tooltip="'Select camera drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Wheel drivers'" :prefix="'indigo_wheel'" :tooltip="'Select filter wheel drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Focuser drivers'" :prefix="'indigo_focuser'" :tooltip="'Select focuser drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Rotator drivers'" :prefix="'indigo_rotator'" :tooltip="'Select rotator drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Guider drivers'" :prefix="'indigo_guider'" :tooltip="'Select guider drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'AO drivers'" :prefix="'indigo_ao'" :tooltip="'Select AO drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Mount drivers'" :prefix="'indigo_mount'" :tooltip="'Select mount drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'GPS drivers'" :prefix="'indigo_gps'" :tooltip="'Select GPS drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'AUX drivers'" :prefix="'indigo_aux'" :tooltip="'Select auxiliary device drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Dome drivers'" :prefix="'indigo_dome'" :tooltip="'Select dome drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'System drivers'" :prefix="'indigo_system'" :tooltip="'Select system drivers'"></indigo-select-multi-item>
+									<indigo-select-multi-item :property="findProperty('Server', 'DRIVERS')" :label="'Agents'" :prefix="'indigo_agent'" :tooltip="'Select agents'"></indigo-select-multi-item>
+								</div>
+							</div>
+							<div class="card p-1 m-1 bg-light" v-if="findProperty('Server', 'WIFI_AP') != null && findProperty('Server', 'WIFI_INFRASTRUCTURE') != null">
+								<div class="card-block d-flex flex-wrap">
+									<indigo-wifi-setup :ap_property="findProperty('Server', 'WIFI_AP')" :infra_property="findProperty('Server', 'WIFI_INFRASTRUCTURE')"></indigo-wifi-setup>
+								</div>
+							</div>
+							<div class="card p-1 m-1 bg-light" v-if="findProperty('Server', 'INTERNET_SHARING') != null">
+								<div class="card-block d-flex flex-wrap">
+									<indigo-internet-sharing :property="findProperty('Server', 'INTERNET_SHARING')"></indigo-internet-sharing>
+								</div>
+							</div>
+							<div class="card p-1 m-1 bg-light" v-if="findProperty('Server', 'SHUTDOWN') != null">
+								<div class="card-block d-flex flex-wrap">
+									<indigo-shutdown :property="findProperty('Server', 'SHUTDOWN')"></indigo-shutdown>
+								</div>
+							</div>
+						</div>
+					</div>
+				</template>
+				<div id="SUCCESS" class="alert alert-success alert-dismissible fade show m-1" role="alert" style="display:none;">
+					{{ state }}
+					<span v-if="findProperty('Server', 'INFO')" class="float-right">
+						INDIGO Server {{findProperty('Server', 'INFO').item('VERSION').value}} at {{findProperty('Server', 'INFO').item('SERVICE').value}}
+					</span>
+				</div>
+				<div id="FAILURE" class="alert alert-danger alert-dismissible fade show m-1" role="alert" style="display:none;">
+					{{ state }}
+				</div>
+				<div id="MESSAGE" class="alert alert-warning alert-dismissible fade show m-1" role="alert" style="display:none;">
+					{{ state }}
+				</div>
+				<div class="alert alert-info show m-1" role="alert">
+					Copyright &copy; 2019-2020, The INDIGO Initiative. All rights reserved.
+					<a v-if="dark" href="#" class="float-right" onclick="setLightMode()">Switch to light appearance</a>
+					<a v-else href="#" class="float-right" onclick="setDarkMode()">Switch to dark appearance</a>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="jquery.min.js"></script>
+	<script src="popper.min.js"></script>
+	<script src="bootstrap.min.js"></script>
+	<script src="vue.min.js"></script>
+	<script src="indigo.js"></script>
+	<script src="components.js"></script>
+	<script language="javascript" type="text/javascript">
+		
+		indigoURL = new URL("ws://" + window.location.hostname+":"+window.location.port);
+		guiSetup();
+		window.addEventListener("load", init, false);
+
+		function checkState() {
+			if (INDIGO.devices["Server"] == null) {
+				console.log("No 'Server' device.");
+			} else {
+				var hostTime = INDIGO.devices["Server"]["HOST_TIME"];
+				if (hostTime != null && hostTime.items[0].value == "") {
+					changeProperty("Server", "HOST_TIME", { "TIME": timestamp() });
+				}
+				var install = INDIGO.devices["Server"]["INSTALL"];
+				if (install != null) {
+					var last = install.items.slice(-1)[0];
+					if (!last.value && confirm("INDIGO " +last.name+ " is available. Do you want to upgrade now?")) {
+						var values = {};
+						values[last.name] = true;
+						changeProperty("Server", "INSTALL", values);
+						alert("Wait while INDIGO is updated and INDIGO Sky rebooted");
+					}
+				}
+			}
+		}
+	
+		function onDefineProperty(property) {
+			guiSetup();
+		}
+	
+		function onUpdateProperty(property) {
+			guiSetup();
+		}
+	
+		function onDeleteProperty(property) {
+			guiSetup();
+		}
+	
+	</script>
+</html>
