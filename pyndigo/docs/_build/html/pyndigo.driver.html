@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyndigo.driver module &mdash; Pyndigo  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyndigo.utils module" href="pyndigo.utils.html" />
+    <link rel="prev" title="pyndigo.common module" href="pyndigo.common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pyndigo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyndigo.html">pyndigo package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyndigo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.client.html">pyndigo.client module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.common.html">pyndigo.common module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyndigo.common.html#classes">Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pyndigo.common.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyndigo.driver module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.utils.html">pyndigo.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pyndigo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="pyndigo.html">pyndigo package</a></li>
+      <li class="breadcrumb-item active">pyndigo.driver module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyndigo.driver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyndigo.driver">
+<span id="pyndigo-driver-module"></span><h1>pyndigo.driver module<a class="headerlink" href="#module-pyndigo.driver" title="Permalink to this heading"></a></h1>
+<p>This module contain the basic classes upon which INDIGO drivers
+(and agents) are built. A driver should extend
+<a class="reference internal" href="#pyndigo.driver.StandardDriverDevice" title="pyndigo.driver.StandardDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardDriverDevice</span></code></a> or even
+<a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code></a>.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code></a></dt><dd><p>Base class for a driver device. This class allows the allocation of
+properties and their handlers.</p>
+</dd>
+<dt><a class="reference internal" href="#pyndigo.driver.StandardDriverDevice" title="pyndigo.driver.StandardDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardDriverDevice</span></code></a></dt><dd><p>A <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code></a> that includes the
+standard <code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property and its handler.</p>
+</dd>
+<dt><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriver</span></code></a></dt><dd><p>The main class that allows the creation of Drivers for one or more
+Devices.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.driver.</span></span><span class="sig-name descname"><span class="pre">PyndigoDriverDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><span class="pre">PyndigoDriver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class can be extended in order to develop a Device that can
+be used in a Driver. It provides the basic functionality to add
+properties and handlers for them. Take into account that for most of
+the Devices it is usually better to extend
+<a class="reference internal" href="#pyndigo.driver.StandardDriverDevice" title="pyndigo.driver.StandardDriverDevice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardDriverDevice</span></code></a> which already implements
+the standard <code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property.</p>
+<p>To add properties you should use the methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_text_property" title="pyndigo.driver.PyndigoDriverDevice.add_text_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_text_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_number_property" title="pyndigo.driver.PyndigoDriverDevice.add_number_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_number_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_switch_property" title="pyndigo.driver.PyndigoDriverDevice.add_switch_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_switch_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_light_property" title="pyndigo.driver.PyndigoDriverDevice.add_light_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_light_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_blob_property" title="pyndigo.driver.PyndigoDriverDevice.add_blob_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_blob_property(...)</span></code></a></p></li>
+</ul>
+</div></blockquote>
+<p>In addition you can add/remove handlers that listen to property
+changes from the Clients using the methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_property_listener" title="pyndigo.driver.PyndigoDriverDevice.add_property_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_property_listener(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.remove_property_listener" title="pyndigo.driver.PyndigoDriverDevice.remove_property_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.remove_property_listener(...)</span></code></a></p></li>
+</ul>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><span class="pre">PyndigoDriver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructs a new PyndigoDriverDevice. This constructor should not
+be directly used as Devices are supposed to extend this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><em>PyndigoDriver</em></a>) – The Driver in which the Device is integrated</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – A name for the device.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.get_driver">
+<span class="sig-name descname"><span class="pre">get_driver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><span class="pre">PyndigoDriver</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.get_driver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.get_driver" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Gets the Driver for the device.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The Driver for the Device.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver">PyndigoDriver</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_property_listener">
+<span class="sig-name descname"><span class="pre">add_property_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">pyndigo.common.PyndigoProperty</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_property_listener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_property_listener" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a method of the class to be a listener when a Client asks
+for changes in a particular property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>property</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a><em> | </em><em>str</em>) – The Property (or its name) to listen for Client changes on it.</p></li>
+<li><p><strong>func</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a><em>, </em><em>list</em><em>[</em><em>dict</em><em>]</em><em>]</em><em>, </em><em>None</em><em>]</em>) – The method to be called when a Client ask for changes in the
+property.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.remove_property_listener">
+<span class="sig-name descname"><span class="pre">remove_property_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">pyndigo.common.PyndigoProperty</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.remove_property_listener"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.remove_property_listener" title="Permalink to this definition"></a></dt>
+<dd><p>Removes the listener associated to a Property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a><em> | </em><em>str</em>) – The Property (or its name) to remove its listener.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_text_property">
+<span class="sig-name descname"><span class="pre">add_text_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_text_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_text_property" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and adds a Text Property to the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the Property.</p></li>
+<li><p><strong>state</strong> (<em>str</em>) – Initial state of the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p></li>
+<li><p><strong>perm</strong> (<em>str</em>) – The permissions for the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>
+or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label for the Property, typically used in GUIs, by default “”.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em>, </em><em>optional</em>) – The group of the Property, tyically used to group properties
+in GUIs, by default “”.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Timeout for the Property, by default 0</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – Timestamp for the Property, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message about the Property, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created and added Text Property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_number_property">
+<span class="sig-name descname"><span class="pre">add_number_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_number_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_number_property" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and adds a Number Property to the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the Property.</p></li>
+<li><p><strong>state</strong> (<em>str</em>) – Initial state of the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p></li>
+<li><p><strong>perm</strong> (<em>str</em>) – The permissions for the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>
+or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label for the Property, typically used in GUIs, by default “”.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em>, </em><em>optional</em>) – The group of the Property, tyically used to group properties
+in GUIs, by default “”.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Timeout for the Property, by default 0</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – Timestamp for the Property, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message about the Property, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created and added Number Property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_switch_property">
+<span class="sig-name descname"><span class="pre">add_switch_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_switch_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_switch_property" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and adds a Switch Property to the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the Property.</p></li>
+<li><p><strong>state</strong> (<em>str</em>) – Initial state of the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p></li>
+<li><p><strong>perm</strong> (<em>str</em>) – The permissions for the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>
+or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p></li>
+<li><p><strong>rule</strong> (<em>str</em>) – The rule of the switch property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ONEOFMANY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ATMOSTONE</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ANYOFMANY</span></code>.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label for the Property, typically used in GUIs, by default “”.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em>, </em><em>optional</em>) – The group of the Property, tyically used to group properties
+in GUIs, by default “”.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Timeout for the Property, by default 0</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – Timestamp for the Property, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message about the Property, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created and added Switch Property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_light_property">
+<span class="sig-name descname"><span class="pre">add_light_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_light_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_light_property" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and adds a Light Property to the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the Property.</p></li>
+<li><p><strong>state</strong> (<em>str</em>) – Initial state of the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label for the Property, typically used in GUIs, by default “”.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em>, </em><em>optional</em>) – The group of the Property, tyically used to group properties
+in GUIs, by default “”.</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – Timestamp for the Property, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message about the Property, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created and added Light Property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.add_blob_property">
+<span class="sig-name descname"><span class="pre">add_blob_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.add_blob_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.add_blob_property" title="Permalink to this definition"></a></dt>
+<dd><p>Creates and adds a BLOB Property to the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the Property.</p></li>
+<li><p><strong>state</strong> (<em>str</em>) – Initial state of the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p></li>
+<li><p><strong>perm</strong> (<em>str</em>) – The permissions for the Property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>
+or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A label for the Property, typically used in GUIs, by default “”.</p></li>
+<li><p><strong>group</strong> (<em>str</em><em>, </em><em>optional</em>) – The group of the Property, tyically used to group properties
+in GUIs, by default “”.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Timeout for the Property, by default 0</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – Timestamp for the Property, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message about the Property, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The created and added BLOB Property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.remove_property">
+<span class="sig-name descname"><span class="pre">remove_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">pyndigo.common.PyndigoProperty</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.remove_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.remove_property" title="Permalink to this definition"></a></dt>
+<dd><p>Removes a property from the Device. TO DO: Send the remove
+message to clients.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a><em> | </em><em>str</em>) – The Property (or its name) to be removed from the Device.</p></li>
+<li><p><strong>timestamp</strong> (<em>str</em><em>, </em><em>optional</em>) – A timestamp for the Clients, by default None</p></li>
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – A message for the Clients, by default None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">pyndigo.common.PyndigoProperty</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.get_properties" title="Permalink to this definition"></a></dt>
+<dd><p>Gets all the properties of the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with all the properties of the Device. The key
+is the Property name.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.get_property">
+<span class="sig-name descname"><span class="pre">get_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.get_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.get_property" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the Property of the Device of a given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property to get.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property of the Device. <code class="docutils literal notranslate"><span class="pre">None</span></code> if the Device has
+no property with the given name.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_value" title="Permalink to this definition"></a></dt>
+<dd><p>Sets a value for an Item of a Property of the Device. DOES NOT
+notify the clients of the change. If you want to notify the
+clients you should then call
+<a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<em>str</em>) – The name of the Property to update an Item.</p></li>
+<li><p><strong>item_name</strong> (<em>str</em>) – The name of the item to set its value.</p></li>
+<li><p><strong>value</strong> (<em>str</em><em> | </em><em>int</em>) – The new value of the item</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated Property. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there was no Property
+with that name in the Device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_values">
+<span class="sig-name descname"><span class="pre">set_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_names_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_values" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the values of several Items of a Property of the Device.
+DOES NOT notify the clients of the change. If you want to notify
+the clients you should then call
+<a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<p>This is a shorthand for multiple consecutive
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">send_value</span></code> calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<em>str</em>) – The name of the Property to update some of its Items.</p></li>
+<li><p><strong>item_names_values</strong> (<em>list</em><em>[</em><em>tuple</em><em>[</em><em>str</em><em>, </em><em>str</em><em>  |  </em><em>int</em><em>]</em><em>]</em>) – A list of pairs in the form <code class="docutils literal notranslate"><span class="pre">(nameOfItem,</span> <span class="pre">valueOfItem)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated Property. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there was no Property
+with that name in the Device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.get_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.get_value" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the value for an Item of a Property of the Device. Its a
+shorthand for code like:
+<code class="docutils literal notranslate"><span class="pre">device.get_property(property_name).get_item(item_name).get_value()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<em>str</em>) – The name of the Property of the Device to get one of its
+items value.</p></li>
+<li><p><strong>item_name</strong> (<em>str</em>) – The name of the Item to get its value.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The value of the Item. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is no such Property
+or Item in the Device.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_alert">
+<span class="sig-name descname"><span class="pre">set_alert</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_alert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_alert" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the State of the Property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code>. DOES NOT notify the clients
+of the change. If you want to notify the clients you should then
+call <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property of the Device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property with its state set as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_ok">
+<span class="sig-name descname"><span class="pre">set_ok</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_ok" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the State of the Property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>. DOES NOT notify the clients
+of the change. If you want to notify the clients you should then
+call <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property of the Device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property with its state set as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_busy">
+<span class="sig-name descname"><span class="pre">set_busy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_busy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_busy" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the State of the Property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>. DOES NOT notify the clients
+of the change. If you want to notify the clients you should then
+call <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property of the Device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property with its state set as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.set_idle">
+<span class="sig-name descname"><span class="pre">set_idle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.set_idle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.set_idle" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the State of the Property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>. DOES NOT notify the clients
+of the change. If you want to notify the clients you should then
+call <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="pyndigo.driver.PyndigoDriverDevice.send_property_update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">send_property_update</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property of the Device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property with its state set as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the Device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the Device.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.send_property_update">
+<span class="sig-name descname"><span class="pre">send_property_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.send_property_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.send_property_update" title="Permalink to this definition"></a></dt>
+<dd><p>Sends the message to the clients that a Property has been updated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<em>str</em>) – The name of the Property that has been updated.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriverDevice.client_asks_for_change">
+<span class="sig-name descname"><span class="pre">client_asks_for_change</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriverDevice.client_asks_for_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriverDevice.client_asks_for_change" title="Permalink to this definition"></a></dt>
+<dd><p>This method is called when a client asks for a change in a
+particular Property. Typically overriden by subclasses to listen
+for Property changes if not using explicit listeners. See
+<a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.add_property_listener" title="pyndigo.driver.PyndigoDriverDevice.add_property_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_property_listener</span></code></a> and
+<a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice.remove_property_listener" title="pyndigo.driver.PyndigoDriverDevice.remove_property_listener"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.remove_property_listener</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The Property to which a client has asked for changes.</p></li>
+<li><p><strong>items</strong> (<em>dict</em><em>[</em><em>dict</em><em>]</em>) – A dictionary of the updates for each Item that was asked for
+change by the client. The key is the name of the Item. The
+value is a dictionary with a <code class="docutils literal notranslate"><span class="pre">&quot;value&quot;</span></code> key that represents
+the value that the client has asked for in the Item. If the
+property if a BLOB one, it may also contain a <code class="docutils literal notranslate"><span class="pre">&quot;size&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;format&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;url&quot;</span></code> keys.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.driver.StandardDriverDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.driver.</span></span><span class="sig-name descname"><span class="pre">StandardDriverDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><span class="pre">PyndigoDriver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#StandardDriverDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.StandardDriverDevice" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><code class="xref py py-class docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code></a></p>
+<p>This class can be extended in order to develop a Device that can
+be used in a Driver. It adds the standard <code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property
+that is handled by the <a class="reference internal" href="#pyndigo.driver.StandardDriverDevice.client_ask_connect" title="pyndigo.driver.StandardDriverDevice.client_ask_connect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">client_ask_connect</span></code></a> and
+<a class="reference internal" href="#pyndigo.driver.StandardDriverDevice.client_ask_disconnect" title="pyndigo.driver.StandardDriverDevice.client_ask_disconnect"><code class="xref py py-obj docutils literal notranslate"><span class="pre">client_ask_disconnect</span></code></a> methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.StandardDriverDevice.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><span class="pre">PyndigoDriver</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#StandardDriverDevice.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.StandardDriverDevice.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructs a new StandardDriverDevice. This constructor should not
+be directly used as Devices are supposed to extend this class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>driver</strong> (<a class="reference internal" href="#pyndigo.driver.PyndigoDriver" title="pyndigo.driver.PyndigoDriver"><em>PyndigoDriver</em></a>) – The Driver in which the Device is integrated</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – A name for the device.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.StandardDriverDevice.client_ask_connect">
+<span class="sig-name descname"><span class="pre">client_ask_connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#StandardDriverDevice.client_ask_connect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.StandardDriverDevice.client_ask_connect" title="Permalink to this definition"></a></dt>
+<dd><p>This method will be called when a client changes the
+<code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property to <code class="docutils literal notranslate"><span class="pre">CONNECTED</span></code>. Usually the
+<code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property State should be changed to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code> (and
+updated to the client), the driver should do its connection logic
+and then change the state of the <code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+<p>Usually implemented by subclasses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.StandardDriverDevice.client_ask_disconnect">
+<span class="sig-name descname"><span class="pre">client_ask_disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#StandardDriverDevice.client_ask_disconnect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.StandardDriverDevice.client_ask_disconnect" title="Permalink to this definition"></a></dt>
+<dd><p>This method will be called when a client changes the
+<code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property to <code class="docutils literal notranslate"><span class="pre">DISCONNECTED</span></code>. Usually the
+<code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> property State should be changed to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code> (and
+updated to the client), the driver should do its disconnection
+logic and then change the state of the <code class="docutils literal notranslate"><span class="pre">CONNECTION</span></code> to
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+<p>Usually implemented by subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.driver.</span></span><span class="sig-name descname"><span class="pre">PyndigoDriver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>This class is instantiated in order to create Drivers for one or
+more Devices.</p>
+<p>The main logic to control de Devices should be done extending the
+classes <code class="xref py py-obj docutils literal notranslate"><span class="pre">StandardDriverDevice</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code>.</p>
+<p>The usual sequence to use this class is:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Create a <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriver</span></code></p></li>
+<li><p>Create <code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice</span></code> (one or more)</p></li>
+<li><p>Call the <code class="xref py py-obj docutils literal notranslate"><span class="pre">read</span></code> method
+which starts the routine of reading / writing from / to the clients.</p></li>
+</ol>
+</div></blockquote>
+<p>For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dr</span> <span class="o">=</span> <span class="n">PyndigoDriver</span><span class="p">(</span><span class="s2">&quot;My driver&quot;</span><span class="p">)</span>
+<span class="n">MiOwnDevice</span><span class="p">(</span><span class="n">dr</span><span class="p">)</span>
+<span class="n">MiOtherDevice</span><span class="p">(</span><span class="n">dr</span><span class="p">)</span>
+<span class="n">dr</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a Driver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the Driver</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.get_driver_devices">
+<span class="sig-name descname"><span class="pre">get_driver_devices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><span class="pre">pyndigo.driver.PyndigoDriverDevice</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.get_driver_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.get_driver_devices" title="Permalink to this definition"></a></dt>
+<dd><p>Gets all the Devices in the Driver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with all the Devices in the Driver. The key is
+the name of the Device and the value is the device itself.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice">PyndigoDriverDevice</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the driver</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the Driver</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.get_driver_device">
+<span class="sig-name descname"><span class="pre">get_driver_device</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice"><span class="pre">PyndigoDriverDevice</span></a></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.get_driver_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.get_driver_device" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a Device of the Driver by its name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>device_name</strong> (<em>str</em>) – The name of the desired Device.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The desired Device. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is no Device with
+the provided name in the Driver.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.driver.PyndigoDriverDevice" title="pyndigo.driver.PyndigoDriverDevice">PyndigoDriverDevice</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.read" title="Permalink to this definition"></a></dt>
+<dd><p>Main logic of the driver. It reads from standard input the
+messages from the Clients (probably through a Server) and
+process the messages calling listeners in the Devices.</p>
+<p>It should be called once the initialization of the Driver is
+done. It blocks the execution thread (which is the normal
+behaviour for a Driver.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.send_property_definition">
+<span class="sig-name descname"><span class="pre">send_property_definition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.send_property_definition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.send_property_definition" title="Permalink to this definition"></a></dt>
+<dd><p>Sends to the Clients the definition of a Property. Should be
+called by the Devices once a new Property is added (only once
+and not necessary at the initilization of the Devices).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prop</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The Property that has to be sent to the Clients.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.driver.PyndigoDriver.send_property_update">
+<span class="sig-name descname"><span class="pre">send_property_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/driver.html#PyndigoDriver.send_property_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.driver.PyndigoDriver.send_property_update" title="Permalink to this definition"></a></dt>
+<dd><p>Sends to the Clients an updated Property. Should be called by the
+Devices once a Property value or State has been changed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prop</strong> (<a class="reference internal" href="pyndigo.common.html#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The Property whose updated has to be sent to the Clients.</p></li>
+<li><p><strong>msg</strong> (<em>str</em><em>, </em><em>optional</em>) – A message to be sent along with the update, by default None</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyndigo.common.html" class="btn btn-neutral float-left" title="pyndigo.common module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyndigo.utils.html" class="btn btn-neutral float-right" title="pyndigo.utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Zerjillo [S. Alonso] and J. Flores.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

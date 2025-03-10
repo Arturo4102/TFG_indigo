@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyndigo.common module &mdash; Pyndigo  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyndigo.driver module" href="pyndigo.driver.html" />
+    <link rel="prev" title="pyndigo.client module" href="pyndigo.client.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Pyndigo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="pyndigo.html">pyndigo package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pyndigo.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.client.html">pyndigo.client module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pyndigo.common module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#classes">Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.driver.html">pyndigo.driver module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pyndigo.driver.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pyndigo.utils.html">pyndigo.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Pyndigo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="pyndigo.html">pyndigo package</a></li>
+      <li class="breadcrumb-item active">pyndigo.common module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyndigo.common.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pyndigo.common">
+<span id="pyndigo-common-module"></span><h1>pyndigo.common module<a class="headerlink" href="#module-pyndigo.common" title="Permalink to this heading"></a></h1>
+<p>This module contain the basic classes upon which INDIGO clients, drivers
+and agents are built. Particularly they encapsulate the logic for
+Properties and Items.</p>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt><a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a></dt><dd><p>An item which can be contained into a
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>. This is where the
+values for the properties are really stored.</p>
+</dd>
+<dt><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a></dt><dd><p>An INDIGO Property to store one or more items. They have a
+particular type (Text, Number, Switch, Light, Blob)</p>
+</dd>
+</dl>
+</section>
+<section id="constants">
+<h2>Constants<a class="headerlink" href="#constants" title="Permalink to this heading"></a></h2>
+<dl class="simple">
+<dt>STATE_OK</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Ok</span></code> State for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>STATE_BUSY</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Busy</span></code> State for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>STATE_ALERT</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Alert</span></code> State for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>STATE_IDLE</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Idle</span></code> State for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>LIGHT_OK</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Ok</span></code> value for a light <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>LIGHT_BUSY</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Busy</span></code> value for a light <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>LIGHT_ALERT</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Alert</span></code> value for a light <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>LIGHT_IDLE</dt><dd><p><code class="docutils literal notranslate"><span class="pre">Idle</span></code> value for a light <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>TYPE_TEXT</dt><dd><p>Type <code class="docutils literal notranslate"><span class="pre">Text</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a> or a
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>TYPE_NUMBER</dt><dd><p>Type <code class="docutils literal notranslate"><span class="pre">Number</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a> or a
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>TYPE_SWITCH</dt><dd><p>Type <code class="docutils literal notranslate"><span class="pre">Switch</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a> or a
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>TYPE_LIGHT</dt><dd><p>Type <code class="docutils literal notranslate"><span class="pre">Light</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a> or a
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>TYPE_BLOB</dt><dd><p>Type <code class="docutils literal notranslate"><span class="pre">BLOB</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a> or a
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>RULE_ONE_OF_MANY</dt><dd><p>Rule <code class="docutils literal notranslate"><span class="pre">OneOfMany</span></code> for a switch
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>RULE_AT_MOST_ONE</dt><dd><p>Rule <code class="docutils literal notranslate"><span class="pre">AtMostOne</span></code> for a switch
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>RULE_ANY_OF_MANY</dt><dd><p>Rule <code class="docutils literal notranslate"><span class="pre">AnyOfMany</span></code> for a switch
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>SWITCH_ON</dt><dd><p>Switch value <code class="docutils literal notranslate"><span class="pre">On</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>SWITCH_OFF</dt><dd><p>Switch value <code class="docutils literal notranslate"><span class="pre">Off</span></code> for a <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt>PERM_RW</dt><dd><p>Permissions <code class="docutils literal notranslate"><span class="pre">rw</span></code> (read / write) for a
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>PERM_RO = “ro”</dt><dd><p>Permissions <code class="docutils literal notranslate"><span class="pre">ro</span></code> (read only) for a
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+<dt>PERM_WO = “wo”</dt><dd><p>Permissions <code class="docutils literal notranslate"><span class="pre">wo</span></code> (write only) for a
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.</p>
+</dd>
+</dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.common.</span></span><span class="sig-name descname"><span class="pre">PyndigoItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_decoded_json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An item which can be contained into a
+<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>. This is where the
+values for the properties are really stored.</p>
+<p>Usually these objects are not created with the class constructor:</p>
+<ul>
+<li><p>If you develop a Client, the Properties and Items will be
+automatically created when the Property is received from the
+Server.</p></li>
+<li><p>If you develop a Driver, you should create the Items using the
+methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty.add_text" title="pyndigo.common.PyndigoProperty.add_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty.add_text(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty.add_number" title="pyndigo.common.PyndigoProperty.add_number"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty.add_number(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty.add_switch" title="pyndigo.common.PyndigoProperty.add_switch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty.add_switch(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty.add_light" title="pyndigo.common.PyndigoProperty.add_light"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty.add_light(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty.add_blob" title="pyndigo.common.PyndigoProperty.add_blob"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty.add_blob(...)</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent_property</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_decoded_json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructs a new <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.
+If you are developing an INDIGO Client, an INDIGO Driver or an
+agent you <strong>MUST NOT</strong> use this constructor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_property">
+<span class="sig-name descname"><span class="pre">get_property</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_property" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the parent property to which the item belongs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parent property to which the item belongs.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the item. Usually UPPERCASE_UNDERSCORED.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The name of the item.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_label">
+<span class="sig-name descname"><span class="pre">get_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_label" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the label of the item (usually used in GUIs).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The label of the item.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_value">
+<span class="sig-name descname"><span class="pre">get_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_value" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the value of the item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The value of the item. For text, switch, light and blob
+items it returns a <code class="docutils literal notranslate"><span class="pre">str</span></code>. For number items it may return a
+number or <code class="docutils literal notranslate"><span class="pre">str</span></code> (depending on the format).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str or number</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.set_value">
+<span class="sig-name descname"><span class="pre">set_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.set_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.set_value" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the value of the item. If you are developing a Client,
+you <strong>MUST NOT</strong> use this method. You should use…</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>value</strong> (<em>str</em><em> or </em><em>number</em>) – The value to be set on the item. Use only when developing a
+Driver.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_type">
+<span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_type" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the type of the item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_TEXT</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_NUMBER</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_SWITCH</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_LIGHT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_BLOB</span></code></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_format">
+<span class="sig-name descname"><span class="pre">get_format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_format" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>format</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>format</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_min">
+<span class="sig-name descname"><span class="pre">get_min</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_min" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>minimum</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>minimum</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_max">
+<span class="sig-name descname"><span class="pre">get_max</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_max" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>maximum</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>maximum</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_step">
+<span class="sig-name descname"><span class="pre">get_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_step" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>step</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>step</strong> for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_target">
+<span class="sig-name descname"><span class="pre">get_target</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_target"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_target" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>target</strong> value for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>target</strong> value for the Number
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_blob_format">
+<span class="sig-name descname"><span class="pre">get_blob_format</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_blob_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_blob_format" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>format</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>format</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data. If it is of
+a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_size" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>size</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>size</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data. If it
+is of a different type, returns <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_url">
+<span class="sig-name descname"><span class="pre">get_url</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_url" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>URL</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>URL</strong> for the BLOB
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> data. If it
+is of a different type, returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoItem.get_hints">
+<span class="sig-name descname"><span class="pre">get_hints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoItem.get_hints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoItem.get_hints" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the presentation <strong>hints</strong> for the
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The representation <strong>hints</strong> for the
+<a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.common.</span></span><span class="sig-name descname"><span class="pre">PyndigoProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_decoded_json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A property of a particular type
+(<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_TEXT</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_NUMBER</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_SWITCH</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_LIGHT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_BLOB</span></code>).</p>
+<p>Usually these objects are not created with the class constructor:</p>
+<ul>
+<li><p>If you develop a Client, the Properties and Items will be
+automatically created when the Property is received from the
+Server.</p></li>
+<li><p>If you develop a Driver, you should create the Properties using
+the methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference internal" href="pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_text_property" title="pyndigo.driver.PyndigoDriverDevice.add_text_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_text_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_number_property" title="pyndigo.driver.PyndigoDriverDevice.add_number_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_number_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_switch_property" title="pyndigo.driver.PyndigoDriverDevice.add_switch_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_switch_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_light_property" title="pyndigo.driver.PyndigoDriverDevice.add_light_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_light_property(...)</span></code></a></p></li>
+<li><p><a class="reference internal" href="pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_blob_property" title="pyndigo.driver.PyndigoDriverDevice.add_blob_property"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoDriverDevice.add_blob_property(...)</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rule</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_decoded_json</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructs a new <a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoProperty</span></code></a>.
+If you are developing an INDIGO Client, an INDIGO Driver or an
+agent you <strong>MUST NOT</strong> use this constructor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.add_text">
+<span class="sig-name descname"><span class="pre">add_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.add_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.add_text" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new Text Item to the Property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_property</strong> (<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The property to which this item belongs.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property. Usually UPPERCASE_UNDERSCORED</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The initial value for the property</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A readable name for the property, usually used in GUIs, by
+default None</p></li>
+<li><p><strong>hints</strong> (<em>str</em><em>, </em><em>optional</em>) – Some hints to format the GUI for the new text item. Check
+INDIGO docs for more details, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property itself (in case of need chaining calls)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.add_number">
+<span class="sig-name descname"><span class="pre">add_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.add_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.add_number" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new Number Item to the Property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_property</strong> (<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The property to which this item belongs.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property. Usually UPPERCASE_UNDERSCORED</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The initial value for the property</p></li>
+<li><p><strong>number_format</strong> (<em>str</em>) – The number format description of the item. Check INDI White
+paper for more details</p></li>
+<li><p><strong>min_value</strong> (<em>number</em><em> or </em><em>str</em>) – Minimum value for the property</p></li>
+<li><p><strong>max_value</strong> (<em>number</em><em> or </em><em>str</em>) – Maximum value for the property</p></li>
+<li><p><strong>step</strong> (<em>number</em><em> or </em><em>str</em>) – Steps (increments) for the value, by default 1</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A readable name for the property, usually used in GUIs, by
+default None</p></li>
+<li><p><strong>hints</strong> (<em>str</em><em>, </em><em>optional</em>) – Some hints to format the GUI for the new text item. Check
+INDIGO docs for more details, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property itself (in case of need chaining calls)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.add_switch">
+<span class="sig-name descname"><span class="pre">add_switch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.add_switch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.add_switch" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new Switch Item to the Property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_property</strong> (<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The property to which this item belongs.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property. Usually UPPERCASE_UNDERSCORED</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The initial value for the property</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A readable name for the property, usually used in GUIs, by
+default None</p></li>
+<li><p><strong>hints</strong> (<em>str</em><em>, </em><em>optional</em>) – Some hints to format the GUI for the new text item. Check
+INDIGO docs for more details, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property itself (in case of need chaining calls)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.add_light">
+<span class="sig-name descname"><span class="pre">add_light</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.add_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.add_light" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new Light Item to the Property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_property</strong> (<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The property to which this item belongs.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property. Usually UPPERCASE_UNDERSCORED</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The initial value for the property</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A readable name for the property, usually used in GUIs, by
+default None</p></li>
+<li><p><strong>hints</strong> (<em>str</em><em>, </em><em>optional</em>) – Some hints to format the GUI for the new text item. Check
+INDIGO docs for more details, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property itself (in case of need chaining calls)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.add_blob">
+<span class="sig-name descname"><span class="pre">add_blob</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.add_blob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.add_blob" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a new BLOB Item to the Property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parent_property</strong> (<a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><em>PyndigoProperty</em></a>) – The property to which this item belongs.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – The name of the property. Usually UPPERCASE_UNDERSCORED</p></li>
+<li><p><strong>value</strong> (<em>str</em>) – The initial value for the property</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A readable name for the property, usually used in GUIs, by
+default None</p></li>
+<li><p><strong>hints</strong> (<em>str</em><em>, </em><em>optional</em>) – Some hints to format the GUI for the new text item. Check
+INDIGO docs for more details, by default None</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Property itself (in case of need chaining calls)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty">PyndigoProperty</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_item">
+<span class="sig-name descname"><span class="pre">get_item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><span class="pre">PyndigoItem</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_item"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_item" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PyndigoItem</span></code></a> with a given name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item_name</strong> (<em>str</em>) – The name of the item</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The item with the given name. <code class="docutils literal notranslate"><span class="pre">None</span></code> if there is no
+item with this name in the property.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem">PyndigoItem</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_items">
+<span class="sig-name descname"><span class="pre">get_items</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem"><span class="pre">pyndigo.common.PyndigoItem</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_items"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_items" title="Permalink to this definition"></a></dt>
+<dd><p>Get the Items of this Property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with the Items of the Property. keys = name of
+the property and value = the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict[str, <a class="reference internal" href="#pyndigo.common.PyndigoItem" title="pyndigo.common.PyndigoItem">PyndigoItem</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_type">
+<span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_type" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the type of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>One of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_TEXT</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_NUMBER</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_SWITCH</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_LIGHT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_BLOB</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_text">
+<span class="sig-name descname"><span class="pre">is_text</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_text" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property is of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_TEXT</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property type is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_TEXT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_number">
+<span class="sig-name descname"><span class="pre">is_number</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_number"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_number" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property is of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_NUMBER</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property type is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_NUMBER</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_switch">
+<span class="sig-name descname"><span class="pre">is_switch</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_switch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_switch" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property is of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_SWITCH</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property type is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_SWITCH</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_light">
+<span class="sig-name descname"><span class="pre">is_light</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_light"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_light" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property is of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_LIGHT</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property type is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_LIGHT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_blob">
+<span class="sig-name descname"><span class="pre">is_blob</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_blob"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_blob" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property is of <code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_BLOB</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property type is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">TYPE_BLOB</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_ok">
+<span class="sig-name descname"><span class="pre">is_ok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_ok" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property state is <code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property state is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_busy">
+<span class="sig-name descname"><span class="pre">is_busy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_busy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_busy" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property state is <code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property state is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_alert">
+<span class="sig-name descname"><span class="pre">is_alert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_alert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_alert" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property state is <code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property state is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_idle">
+<span class="sig-name descname"><span class="pre">is_idle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_idle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_idle" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the property state is <code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property state is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.set_ok">
+<span class="sig-name descname"><span class="pre">set_ok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.set_ok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.set_ok" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the state of the property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>.</p>
+<p>Do not use for Clients development, just for Drivers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.set_busy">
+<span class="sig-name descname"><span class="pre">set_busy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.set_busy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.set_busy" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the state of the property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>.</p>
+<p>Do not use for Clients development, just for Drivers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.set_alert">
+<span class="sig-name descname"><span class="pre">set_alert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.set_alert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.set_alert" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the state of the property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code>.</p>
+<p>Do not use for Clients development, just for Drivers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.set_idle">
+<span class="sig-name descname"><span class="pre">set_idle</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.set_idle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.set_idle" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the state of the property as
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p>
+<p>Do not use for Clients development, just for Drivers.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>name</strong> of the property. Usually UPPERCASE_UNDERSCORED.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>name</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_state">
+<span class="sig-name descname"><span class="pre">get_state</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_state"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_state" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>state</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>state</strong> of the property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_OK</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_BUSY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_ALERT</span></code> or
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">STATE_IDLE</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_perm">
+<span class="sig-name descname"><span class="pre">get_perm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_perm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_perm" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>permissions</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>permissions</strong> of the property, that is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>
+or <code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_read_write">
+<span class="sig-name descname"><span class="pre">is_read_write</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_read_write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_read_write" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the permission of the property is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property permission is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RW</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_read_only">
+<span class="sig-name descname"><span class="pre">is_read_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_read_only"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_read_only" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the permission of the property is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property permission is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_RO</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.is_write_only">
+<span class="sig-name descname"><span class="pre">is_write_only</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.is_write_only"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.is_write_only" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if the permission of the property is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the property permission is
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.PERM_WO</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_label">
+<span class="sig-name descname"><span class="pre">get_label</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_label"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_label" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>label</strong> of the property (usually used in GUIs).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>label</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_group">
+<span class="sig-name descname"><span class="pre">get_group</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_group"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_group" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>group</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>group</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_timeout">
+<span class="sig-name descname"><span class="pre">get_timeout</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_timeout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_timeout" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>timeout</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>timeout</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_timestamp">
+<span class="sig-name descname"><span class="pre">get_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_timestamp" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>timestamp</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>timestamp</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_last_message">
+<span class="sig-name descname"><span class="pre">get_last_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_last_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_last_message" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the last <strong>message</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The last <strong>message</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_rule">
+<span class="sig-name descname"><span class="pre">get_rule</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_rule" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>rule</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>rule</strong> of the property. That is, one of
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ONEOFMANY</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ATMOSTONE</span></code>,
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">pyndigo.common.RULE_ANYOFMANY</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_hints">
+<span class="sig-name descname"><span class="pre">get_hints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_hints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_hints" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>hints</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>hints</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoProperty.get_device">
+<span class="sig-name descname"><span class="pre">get_device</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoDevice" title="pyndigo.common.PyndigoDevice"><span class="pre">PyndigoDevice</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoProperty.get_device"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoProperty.get_device" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the <strong>device</strong> of the property.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The <strong>device</strong> of the property.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyndigo.common.</span></span><span class="sig-name descname"><span class="pre">PyndigoDevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.add_property">
+<span class="sig-name descname"><span class="pre">add_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.add_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.add_property" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.remove_property">
+<span class="sig-name descname"><span class="pre">remove_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.remove_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.remove_property" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.get_properties">
+<span class="sig-name descname"><span class="pre">get_properties</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.get_properties"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.get_properties" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.get_property">
+<span class="sig-name descname"><span class="pre">get_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">propertyName</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pyndigo.common.PyndigoProperty" title="pyndigo.common.PyndigoProperty"><span class="pre">PyndigoProperty</span></a></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.get_property"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.get_property" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.get_name" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.get_timestamp">
+<span class="sig-name descname"><span class="pre">get_timestamp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.get_timestamp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.get_timestamp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyndigo.common.PyndigoDevice.get_message">
+<span class="sig-name descname"><span class="pre">get_message</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/pyndigo/common.html#PyndigoDevice.get_message"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyndigo.common.PyndigoDevice.get_message" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyndigo.client.html" class="btn btn-neutral float-left" title="pyndigo.client module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyndigo.driver.html" class="btn btn-neutral float-right" title="pyndigo.driver module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Zerjillo [S. Alonso] and J. Flores.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

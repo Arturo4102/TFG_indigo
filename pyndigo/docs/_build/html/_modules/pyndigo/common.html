@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyndigo.common &mdash; Pyndigo  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Pyndigo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyndigo.html">pyndigo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pyndigo.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.client.html">pyndigo.client module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.common.html">pyndigo.common module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.common.html#classes">Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.common.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.driver.html">pyndigo.driver module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.driver.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.utils.html">pyndigo.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Pyndigo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyndigo.common</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyndigo.common</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contain the basic classes upon which INDIGO clients, drivers </span>
+<span class="sd">and agents are built. Particularly they encapsulate the logic for </span>
+<span class="sd">Properties and Items.</span>
+
+<span class="sd">Classes</span>
+<span class="sd">-------</span>
+<span class="sd">:obj:`~pyndigo.common.PyndigoItem`</span>
+<span class="sd">    An item which can be contained into a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`. This is where the</span>
+<span class="sd">    values for the properties are really stored.</span>
+
+<span class="sd">:obj:`~pyndigo.common.PyndigoProperty`</span>
+<span class="sd">    An INDIGO Property to store one or more items. They have a </span>
+<span class="sd">    particular type (Text, Number, Switch, Light, Blob)</span>
+
+<span class="sd">Constants</span>
+<span class="sd">---------</span>
+<span class="sd">STATE_OK</span>
+<span class="sd">    ``Ok`` State for a :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">STATE_BUSY</span>
+<span class="sd">    ``Busy`` State for a :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">STATE_ALERT</span>
+<span class="sd">    ``Alert`` State for a :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">STATE_IDLE</span>
+<span class="sd">    ``Idle`` State for a :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">LIGHT_OK</span>
+<span class="sd">    ``Ok`` value for a light :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">LIGHT_BUSY</span>
+<span class="sd">    ``Busy`` value for a light :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">LIGHT_ALERT</span>
+<span class="sd">    ``Alert`` value for a light :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">LIGHT_IDLE</span>
+<span class="sd">    ``Idle`` value for a light :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">TYPE_TEXT</span>
+<span class="sd">    Type ``Text`` for a :obj:`~pyndigo.common.PyndigoProperty` or a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">TYPE_NUMBER</span>
+<span class="sd">    Type ``Number`` for a :obj:`~pyndigo.common.PyndigoProperty` or a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">TYPE_SWITCH</span>
+<span class="sd">    Type ``Switch`` for a :obj:`~pyndigo.common.PyndigoProperty` or a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">TYPE_LIGHT</span>
+<span class="sd">    Type ``Light`` for a :obj:`~pyndigo.common.PyndigoProperty` or a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">TYPE_BLOB</span>
+<span class="sd">    Type ``BLOB`` for a :obj:`~pyndigo.common.PyndigoProperty` or a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">RULE_ONE_OF_MANY </span>
+<span class="sd">    Rule ``OneOfMany`` for a switch </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">RULE_AT_MOST_ONE</span>
+<span class="sd">    Rule ``AtMostOne`` for a switch </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">RULE_ANY_OF_MANY</span>
+<span class="sd">    Rule ``AnyOfMany`` for a switch </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">SWITCH_ON</span>
+<span class="sd">    Switch value ``On`` for a :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">SWITCH_OFF</span>
+<span class="sd">    Switch value ``Off`` for a :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">PERM_RW</span>
+<span class="sd">    Permissions ``rw`` (read / write) for a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">PERM_RO = &quot;ro&quot;</span>
+<span class="sd">    Permissions ``ro`` (read only) for a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">PERM_WO = &quot;wo&quot;</span>
+<span class="sd">    Permissions ``wo`` (write only) for a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">get_timestamp</span>
+
+<span class="n">STATE_OK</span> <span class="o">=</span> <span class="s2">&quot;Ok&quot;</span>
+<span class="n">STATE_BUSY</span> <span class="o">=</span> <span class="s2">&quot;Busy&quot;</span>
+<span class="n">STATE_ALERT</span> <span class="o">=</span> <span class="s2">&quot;Alert&quot;</span>
+<span class="n">STATE_IDLE</span> <span class="o">=</span> <span class="s2">&quot;Idle&quot;</span>
+
+<span class="n">LIGHT_OK</span> <span class="o">=</span> <span class="s2">&quot;Ok&quot;</span>
+<span class="n">LIGHT_BUSY</span> <span class="o">=</span> <span class="s2">&quot;Busy&quot;</span>
+<span class="n">LIGHT_ALERT</span> <span class="o">=</span> <span class="s2">&quot;Alert&quot;</span>
+<span class="n">LIGHT_IDLE</span> <span class="o">=</span> <span class="s2">&quot;Idle&quot;</span>
+
+<span class="n">TYPE_TEXT</span> <span class="o">=</span> <span class="s2">&quot;Text&quot;</span>
+<span class="n">TYPE_NUMBER</span> <span class="o">=</span> <span class="s2">&quot;Number&quot;</span>
+<span class="n">TYPE_SWITCH</span> <span class="o">=</span> <span class="s2">&quot;Switch&quot;</span>
+<span class="n">TYPE_LIGHT</span> <span class="o">=</span> <span class="s2">&quot;Light&quot;</span>
+<span class="n">TYPE_BLOB</span> <span class="o">=</span> <span class="s2">&quot;BLOB&quot;</span>
+
+<span class="n">RULE_ONE_OF_MANY</span> <span class="o">=</span> <span class="s2">&quot;OneOfMany&quot;</span>
+<span class="n">RULE_AT_MOST_ONE</span> <span class="o">=</span> <span class="s2">&quot;AtMostOne&quot;</span>
+<span class="n">RULE_ANY_OF_MANY</span> <span class="o">=</span> <span class="s2">&quot;AnyOfMany&quot;</span>
+
+<span class="n">SWITCH_ON</span> <span class="o">=</span> <span class="s2">&quot;On&quot;</span>
+<span class="n">SWITCH_OFF</span> <span class="o">=</span> <span class="s2">&quot;Off&quot;</span>
+
+<span class="n">PERM_RW</span> <span class="o">=</span> <span class="s2">&quot;rw&quot;</span>
+<span class="n">PERM_RO</span> <span class="o">=</span> <span class="s2">&quot;ro&quot;</span>
+<span class="n">PERM_WO</span> <span class="o">=</span> <span class="s2">&quot;wo&quot;</span>
+
+
+<div class="viewcode-block" id="PyndigoItem"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem">[docs]</a><span class="k">class</span> <span class="nc">PyndigoItem</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An item which can be contained into a </span>
+<span class="sd">    :obj:`~pyndigo.common.PyndigoProperty`. This is where the</span>
+<span class="sd">    values for the properties are really stored.</span>
+
+<span class="sd">    Usually these objects are not created with the class constructor:</span>
+
+<span class="sd">    * If you develop a Client, the Properties and Items will be</span>
+<span class="sd">      automatically created when the Property is received from the</span>
+<span class="sd">      Server.</span>
+
+<span class="sd">    * If you develop a Driver, you should create the Items using the</span>
+<span class="sd">      methods:</span>
+
+<span class="sd">        * :obj:`PyndigoProperty.add_text(...)</span>
+<span class="sd">          &lt;pyndigo.common.PyndigoProperty.add_text&gt;`</span>
+<span class="sd">        * :obj:`PyndigoProperty.add_number(...)</span>
+<span class="sd">          &lt;pyndigo.common.PyndigoProperty.add_number&gt;`</span>
+<span class="sd">        * :obj:`PyndigoProperty.add_switch(...)</span>
+<span class="sd">          &lt;pyndigo.common.PyndigoProperty.add_switch&gt;`</span>
+<span class="sd">        * :obj:`PyndigoProperty.add_light(...)</span>
+<span class="sd">          &lt;pyndigo.common.PyndigoProperty.add_light&gt;`</span>
+<span class="sd">        * :obj:`PyndigoProperty.add_blob(...)</span>
+<span class="sd">          &lt;pyndigo.common.PyndigoProperty.add_blob&gt;`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyndigoItem.__init__"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parent_property</span><span class="p">:</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">number_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">max_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">step</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">_decoded_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">        If you are developing an INDIGO Client, an INDIGO Driver or an</span>
+<span class="sd">        agent you **MUST NOT** use this constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_property</span> <span class="o">=</span> <span class="n">parent_property</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_blob_format</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">_decoded_json</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span> <span class="o">=</span> <span class="n">hints</span>
+
+            <span class="k">if</span> <span class="n">parent_property</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="n">number_format</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="n">min_value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="n">max_value</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="n">step</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hints&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">parent_property</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_min</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_step</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;step&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_decoded_json</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_property</span><span class="o">.</span><span class="n">is_BLOB</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_blob_format</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_url</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_property</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_def_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  &lt;def</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2"> &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; label=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hints</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; hints=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hints</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">message</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; format=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_format</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; min=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_min</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; max=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_max</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; step=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_step</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span><span class="si">}</span><span class="s2">&lt;/def</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">message</span>
+
+    <span class="k">def</span> <span class="nf">_get_one_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;  &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_BLOB</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; size=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; format=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_blob_format</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; url=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_url</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span><span class="si">}</span><span class="s2">&lt;/def</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">message</span>
+
+<div class="viewcode-block" id="PyndigoItem.get_property"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the parent property to which the item belongs.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The parent property to which the item belongs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_property</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_name"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the name of the item. Usually UPPERCASE_UNDERSCORED.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The name of the item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_label"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_label">[docs]</a>    <span class="k">def</span> <span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the label of the item (usually used in GUIs).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The label of the item.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_value"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the value of the item.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str or number</span>
+<span class="sd">            The value of the item. For text, switch, light and blob</span>
+<span class="sd">            items it returns a ``str``. For number items it may return a</span>
+<span class="sd">            number or ``str`` (depending on the format).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.set_value"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the value of the item. If you are developing a Client,</span>
+<span class="sd">        you **MUST NOT** use this method. You should use...</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : str or number</span>
+<span class="sd">            The value to be set on the item. Use only when developing a</span>
+<span class="sd">            Driver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="n">value</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_type"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the type of the item.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            One of :obj:`~pyndigo.common.TYPE_TEXT`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_NUMBER`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_SWITCH`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_LIGHT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_BLOB`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_property</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; [&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyndigoItem.get_format"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_format">[docs]</a>    <span class="k">def</span> <span class="nf">get_format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **format** for the Number</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **format** for the Number</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_min"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_min">[docs]</a>    <span class="k">def</span> <span class="nf">get_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **minimum** for the Number</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **minimum** for the Number</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_min</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_max"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_max">[docs]</a>    <span class="k">def</span> <span class="nf">get_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **maximum** for the Number</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **maximum** for the Number</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_step"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_step">[docs]</a>    <span class="k">def</span> <span class="nf">get_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **step** for the Number</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **step** for the Number</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_target"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_target">[docs]</a>    <span class="k">def</span> <span class="nf">get_target</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **target** value for the Number</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **target** value for the Number</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_number</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_blob_format"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_blob_format">[docs]</a>    <span class="k">def</span> <span class="nf">get_blob_format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **format** for the BLOB</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem` data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **format** for the BLOB</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem` data. If it is of</span>
+<span class="sd">            a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_blob</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_blob_format</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_size"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **size** for the BLOB</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem` data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **size** for the BLOB</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem` data. If it</span>
+<span class="sd">            is of a different type, returns ``0``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_blob</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_url"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_url">[docs]</a>    <span class="k">def</span> <span class="nf">get_url</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **URL** for the BLOB</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem` data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **URL** for the BLOB</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem` data. If it</span>
+<span class="sd">            is of a different type, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">()</span><span class="o">.</span><span class="n">is_blob</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_url</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoItem.get_hints"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoItem.get_hints">[docs]</a>    <span class="k">def</span> <span class="nf">get_hints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the presentation **hints** for the</span>
+<span class="sd">        :obj:`~pyndigo.common.PyndigoItem`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The representation **hints** for the</span>
+<span class="sd">            :obj:`~pyndigo.common.PyndigoItem`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span></div></div>
+
+
+<div class="viewcode-block" id="PyndigoProperty"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty">[docs]</a><span class="k">class</span> <span class="nc">PyndigoProperty</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A property of a particular type</span>
+<span class="sd">    (:obj:`~pyndigo.common.TYPE_TEXT`,</span>
+<span class="sd">    :obj:`~pyndigo.common.TYPE_NUMBER`,</span>
+<span class="sd">    :obj:`~pyndigo.common.TYPE_SWITCH`,</span>
+<span class="sd">    :obj:`~pyndigo.common.TYPE_LIGHT` or</span>
+<span class="sd">    :obj:`~pyndigo.common.TYPE_BLOB`).</span>
+
+<span class="sd">    Usually these objects are not created with the class constructor:</span>
+
+<span class="sd">    * If you develop a Client, the Properties and Items will be</span>
+<span class="sd">      automatically created when the Property is received from the</span>
+<span class="sd">      Server.</span>
+
+<span class="sd">    * If you develop a Driver, you should create the Properties using</span>
+<span class="sd">      the methods:</span>
+
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_text_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_text_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_number_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_number_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_switch_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_switch_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_light_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_light_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_blob_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_blob_property&gt;`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyndigoProperty.__init__"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">device</span><span class="p">,</span>
+        <span class="n">prop_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">perm</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">_decoded_json</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new :obj:`~pyndigo.common.PyndigoProperty`.</span>
+<span class="sd">        If you are developing an INDIGO Client, an INDIGO Driver or an</span>
+<span class="sd">        agent you **MUST NOT** use this constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_device</span><span class="p">:</span><span class="n">PyndigoDevice</span> <span class="o">=</span> <span class="n">device</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">prop_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyndigoItem</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">if</span> <span class="n">_decoded_json</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">label</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_group</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">group</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">timestamp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">message</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">hints</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_SWITCH</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">rule</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_LIGHT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">PERM_RO</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="n">timeout</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">perm</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_group</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;group&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_message</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;hints&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_SWITCH</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rule&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_LIGHT</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">PERM_RO</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span><span class="p">:</span><span class="nb">int</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span><span class="p">:</span><span class="nb">str</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;perm&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Procesing items</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="c1"># Also gets added to this property</span>
+                <span class="n">PyndigoItem</span><span class="p">(</span><span class="n">parent_property</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">_decoded_json</span><span class="o">=</span><span class="n">i</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_decoded_json</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">!=</span> <span class="n">TYPE_LIGHT</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timeout&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Procesing items</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="n">_decoded_json</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;items&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">))</span>
+
+            <span class="n">item</span><span class="o">.</span><span class="n">_update</span><span class="p">(</span><span class="n">_decoded_json</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_def_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;def</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">Vector &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;device=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; group=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_group</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;label=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; state=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_light</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">message</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; perm=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_perm</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;timeout=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_timeout</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_switch</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; rule=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_rule</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_hints</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;hints=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_hints</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="s2">&quot;&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_items</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">_get_def_xml</span><span class="p">()</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&lt;/def</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">Vector&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">return</span> <span class="n">message</span>
+
+    <span class="k">def</span> <span class="nf">_get_set_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;&lt;set</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">Vector &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;device=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; state=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; &quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;timestamp=&#39;</span><span class="si">{</span><span class="n">get_timestamp</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">msg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; message=&#39;</span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="s2">&quot;&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_items</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="n">i</span><span class="o">.</span><span class="n">_get_one_xml</span><span class="p">()</span>
+
+        <span class="n">message</span> <span class="o">=</span> <span class="n">message</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot;&lt;/set</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span><span class="si">}</span><span class="s2">Vector&gt;&quot;</span>
+
+        <span class="k">return</span> <span class="n">message</span>
+
+<div class="viewcode-block" id="PyndigoProperty.add_text"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.add_text">[docs]</a>    <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new Text Item to the Property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_property : PyndigoProperty</span>
+<span class="sd">            The property to which this item belongs.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the property. Usually UPPERCASE_UNDERSCORED</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The initial value for the property</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A readable name for the property, usually used in GUIs, by</span>
+<span class="sd">            default None</span>
+<span class="sd">        hints : str, optional</span>
+<span class="sd">            Some hints to format the GUI for the new text item. Check</span>
+<span class="sd">            INDIGO docs for more details, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property itself (in case of need chaining calls)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">PyndigoItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">hints</span><span class="o">=</span><span class="n">hints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_item</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.add_number"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.add_number">[docs]</a>    <span class="k">def</span> <span class="nf">add_number</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">number_format</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">min_value</span><span class="p">,</span>
+        <span class="n">max_value</span><span class="p">,</span>
+        <span class="n">step</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new Number Item to the Property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_property : PyndigoProperty</span>
+<span class="sd">            The property to which this item belongs.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the property. Usually UPPERCASE_UNDERSCORED</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The initial value for the property</span>
+<span class="sd">        number_format : str</span>
+<span class="sd">            The number format description of the item. Check INDI White</span>
+<span class="sd">            paper for more details</span>
+<span class="sd">        min_value : number or str</span>
+<span class="sd">            Minimum value for the property</span>
+<span class="sd">        max_value : number or str</span>
+<span class="sd">            Maximum value for the property</span>
+<span class="sd">        step : number or str</span>
+<span class="sd">            Steps (increments) for the value, by default 1</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A readable name for the property, usually used in GUIs, by</span>
+<span class="sd">            default None</span>
+<span class="sd">        hints : str, optional</span>
+<span class="sd">            Some hints to format the GUI for the new text item. Check</span>
+<span class="sd">            INDIGO docs for more details, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property itself (in case of need chaining calls)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">PyndigoItem</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">number_format</span><span class="o">=</span><span class="n">number_format</span><span class="p">,</span>
+            <span class="n">min_value</span><span class="o">=</span><span class="n">min_value</span><span class="p">,</span>
+            <span class="n">max_value</span><span class="o">=</span><span class="n">max_value</span><span class="p">,</span>
+            <span class="n">step</span><span class="o">=</span><span class="n">step</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">hints</span><span class="o">=</span><span class="n">hints</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_item</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.add_switch"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.add_switch">[docs]</a>    <span class="k">def</span> <span class="nf">add_switch</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new Switch Item to the Property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_property : PyndigoProperty</span>
+<span class="sd">            The property to which this item belongs.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the property. Usually UPPERCASE_UNDERSCORED</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The initial value for the property</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A readable name for the property, usually used in GUIs, by</span>
+<span class="sd">            default None</span>
+<span class="sd">        hints : str, optional</span>
+<span class="sd">            Some hints to format the GUI for the new text item. Check</span>
+<span class="sd">            INDIGO docs for more details, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property itself (in case of need chaining calls)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">PyndigoItem</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">hints</span><span class="o">=</span><span class="n">hints</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_item</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.add_light"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.add_light">[docs]</a>    <span class="k">def</span> <span class="nf">add_light</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new Light Item to the Property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_property : PyndigoProperty</span>
+<span class="sd">            The property to which this item belongs.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the property. Usually UPPERCASE_UNDERSCORED</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The initial value for the property</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A readable name for the property, usually used in GUIs, by</span>
+<span class="sd">            default None</span>
+<span class="sd">        hints : str, optional</span>
+<span class="sd">            Some hints to format the GUI for the new text item. Check</span>
+<span class="sd">            INDIGO docs for more details, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property itself (in case of need chaining calls)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">PyndigoItem</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">hints</span><span class="o">=</span><span class="n">hints</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_item</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.add_blob"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.add_blob">[docs]</a>    <span class="k">def</span> <span class="nf">add_blob</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hints</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoProperty&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a new BLOB Item to the Property</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parent_property : PyndigoProperty</span>
+<span class="sd">            The property to which this item belongs.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the property. Usually UPPERCASE_UNDERSCORED</span>
+<span class="sd">        value : str</span>
+<span class="sd">            The initial value for the property</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A readable name for the property, usually used in GUIs, by</span>
+<span class="sd">            default None</span>
+<span class="sd">        hints : str, optional</span>
+<span class="sd">            Some hints to format the GUI for the new text item. Check</span>
+<span class="sd">            INDIGO docs for more details, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property itself (in case of need chaining calls)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">pi</span> <span class="o">=</span> <span class="n">PyndigoItem</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">hints</span><span class="o">=</span><span class="n">hints</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_item</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">item</span>
+
+<div class="viewcode-block" id="PyndigoProperty.get_item"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_item">[docs]</a>    <span class="k">def</span> <span class="nf">get_item</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item_name</span><span class="p">:</span><span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoItem</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the :obj:`~pyndigo.common.PyndigoItem` with a given name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        item_name : str</span>
+<span class="sd">            The name of the item</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoItem</span>
+<span class="sd">            The item with the given name. ``None`` if there is no</span>
+<span class="sd">            item with this name in the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_items"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_items">[docs]</a>    <span class="k">def</span> <span class="nf">get_items</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyndigoItem</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the Items of this Property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, PyndigoItem]</span>
+<span class="sd">            A dictionary with the Items of the Property. keys = name of </span>
+<span class="sd">            the property and value = the property. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_type"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the type of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            One of :obj:`~pyndigo.common.TYPE_TEXT`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_NUMBER`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_SWITCH`,</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_LIGHT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_BLOB`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_text"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_text">[docs]</a>    <span class="k">def</span> <span class="nf">is_text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property is of :obj:`~pyndigo.common.TYPE_TEXT`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property type is </span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_TEXT`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_TEXT</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_number"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_number">[docs]</a>    <span class="k">def</span> <span class="nf">is_number</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property is of :obj:`~pyndigo.common.TYPE_NUMBER`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property type is </span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_NUMBER`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_NUMBER</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_switch"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_switch">[docs]</a>    <span class="k">def</span> <span class="nf">is_switch</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property is of :obj:`~pyndigo.common.TYPE_SWITCH`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property type is </span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_SWITCH`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_SWITCH</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_light"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_light">[docs]</a>    <span class="k">def</span> <span class="nf">is_light</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property is of :obj:`~pyndigo.common.TYPE_LIGHT`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property type is </span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_LIGHT`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_LIGHT</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_blob"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_blob">[docs]</a>    <span class="k">def</span> <span class="nf">is_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property is of :obj:`~pyndigo.common.TYPE_BLOB`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property type is </span>
+<span class="sd">            :obj:`~pyndigo.common.TYPE_BLOB`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">TYPE_BLOB</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_ok"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_ok">[docs]</a>    <span class="k">def</span> <span class="nf">is_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property state is :obj:`~pyndigo.common.STATE_OK`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property state is </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">STATE_OK</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_busy"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_busy">[docs]</a>    <span class="k">def</span> <span class="nf">is_busy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property state is :obj:`~pyndigo.common.STATE_BUSY`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property state is </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">STATE_BUSY</span></div>
+
+
+<div class="viewcode-block" id="PyndigoProperty.is_alert"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_alert">[docs]</a>    <span class="k">def</span> <span class="nf">is_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property state is :obj:`~pyndigo.common.STATE_ALERT`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property state is </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">STATE_ALERT</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_idle"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_idle">[docs]</a>    <span class="k">def</span> <span class="nf">is_idle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the property state is :obj:`~pyndigo.common.STATE_IDLE`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property state is </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">==</span> <span class="n">STATE_IDLE</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.set_ok"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.set_ok">[docs]</a>    <span class="k">def</span> <span class="nf">set_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sets the state of the property as </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`.</span>
+
+<span class="sd">            Do not use for Clients development, just for Drivers. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">STATE_OK</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.set_busy"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.set_busy">[docs]</a>    <span class="k">def</span> <span class="nf">set_busy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sets the state of the property as </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`.</span>
+
+<span class="sd">            Do not use for Clients development, just for Drivers. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">STATE_BUSY</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.set_alert"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.set_alert">[docs]</a>    <span class="k">def</span> <span class="nf">set_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sets the state of the property as </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT`.</span>
+
+<span class="sd">            Do not use for Clients development, just for Drivers. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">STATE_ALERT</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.set_idle"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.set_idle">[docs]</a>    <span class="k">def</span> <span class="nf">set_idle</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Sets the state of the property as </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+
+<span class="sd">            Do not use for Clients development, just for Drivers. </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="n">STATE_IDLE</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_name"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **name** of the property. Usually UPPERCASE_UNDERSCORED.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **name** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_state"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the **state** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **state** of the property. That is, one of </span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_perm"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_perm">[docs]</a>    <span class="k">def</span> <span class="nf">get_perm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the **permissions** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **permissions** of the property, that is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`, :obj:`pyndigo.common.PERM_RO`</span>
+<span class="sd">            or :obj:`pyndigo.common.PERM_WO`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_read_write"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_read_write">[docs]</a>    <span class="k">def</span> <span class="nf">is_read_write</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the permission of the property is </span>
+<span class="sd">        :obj:`pyndigo.common.PERM_RW`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property permission is </span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span> <span class="o">==</span> <span class="n">PERM_RW</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_read_only"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_read_only">[docs]</a>    <span class="k">def</span> <span class="nf">is_read_only</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the permission of the property is </span>
+<span class="sd">        :obj:`pyndigo.common.PERM_RO`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property permission is </span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RO`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span> <span class="o">==</span> <span class="n">PERM_RO</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.is_write_only"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.is_write_only">[docs]</a>    <span class="k">def</span> <span class="nf">is_write_only</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the permission of the property is </span>
+<span class="sd">        :obj:`pyndigo.common.PERM_WO`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the property permission is </span>
+<span class="sd">            :obj:`pyndigo.common.PERM_WO`.</span>
+
+<span class="sd">            ``False`` otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perm</span> <span class="o">==</span> <span class="n">PERM_WO</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_label"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_label">[docs]</a>    <span class="k">def</span> <span class="nf">get_label</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **label** of the property (usually used in GUIs).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **label** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_group"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_group">[docs]</a>    <span class="k">def</span> <span class="nf">get_group</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **group** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **group** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_timeout"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">get_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **timeout** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **timeout** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timeout</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_timestamp"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **timestamp** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **timestamp** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_last_message"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_last_message">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the last **message** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The last **message** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_rule"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_rule">[docs]</a>    <span class="k">def</span> <span class="nf">get_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **rule** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **rule** of the property. That is, one of </span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ONEOFMANY`,</span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ATMOSTONE`,</span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ANYOFMANY`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_hints"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_hints">[docs]</a>    <span class="k">def</span> <span class="nf">get_hints</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **hints** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **hints** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hints</span></div>
+
+<div class="viewcode-block" id="PyndigoProperty.get_device"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoProperty.get_device">[docs]</a>    <span class="k">def</span> <span class="nf">get_device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoDevice&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gets the **device** of the property.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The **device** of the property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_device</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot; [&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_label</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;] (&quot;</span>
+            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+            <span class="o">+</span> <span class="s2">&quot;) [&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;] [&quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_perm</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s2">&quot;] &quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_group</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">+</span> <span class="s2">&quot;[G: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_group</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;] &quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_switch</span><span class="p">():</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span>
+
+        <span class="k">return</span> <span class="n">temp</span></div>
+
+
+<div class="viewcode-block" id="PyndigoDevice"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice">[docs]</a><span class="k">class</span> <span class="nc">PyndigoDevice</span><span class="p">:</span>
+<div class="viewcode-block" id="PyndigoDevice.__init__"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span></div>
+
+    <span class="k">def</span> <span class="nf">_update_message</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+
+<div class="viewcode-block" id="PyndigoDevice.add_property"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.add_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.remove_property"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.remove_property">[docs]</a>    <span class="k">def</span> <span class="nf">remove_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Removing property &quot;</span> <span class="o">+</span> <span class="n">property_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.get_properties"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.get_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.get_property"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.get_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">propertyName</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">propertyName</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.get_name"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.get_timestamp"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.get_timestamp">[docs]</a>    <span class="k">def</span> <span class="nf">get_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timestamp</span></div>
+
+<div class="viewcode-block" id="PyndigoDevice.get_message"><a class="viewcode-back" href="../../pyndigo.common.html#pyndigo.common.PyndigoDevice.get_message">[docs]</a>    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_message</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Zerjillo [S. Alonso] and J. Flores.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

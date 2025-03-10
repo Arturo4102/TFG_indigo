@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyndigo.driver &mdash; Pyndigo  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/autoclasstoc.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Pyndigo
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../pyndigo.html">pyndigo package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../pyndigo.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.client.html">pyndigo.client module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.common.html">pyndigo.common module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.common.html#classes">Classes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.common.html#constants">Constants</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.driver.html">pyndigo.driver module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../pyndigo.driver.html#classes">Classes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../pyndigo.utils.html">pyndigo.utils module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Pyndigo</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyndigo.driver</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyndigo.driver</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contain the basic classes upon which INDIGO drivers </span>
+<span class="sd">(and agents) are built. A driver should extend </span>
+<span class="sd">:obj:`~pyndigo.driver.StandardDriverDevice` or even</span>
+<span class="sd">:obj:`~pyndigo.driver.PyndigoDriverDevice`.</span>
+
+<span class="sd">Classes</span>
+<span class="sd">-------</span>
+<span class="sd">:obj:`~pyndigo.driver.PyndigoDriverDevice`</span>
+<span class="sd">    Base class for a driver device. This class allows the allocation of</span>
+<span class="sd">    properties and their handlers.</span>
+<span class="sd">:obj:`~pyndigo.driver.StandardDriverDevice`</span>
+<span class="sd">    A :obj:`~pyndigo.driver.PyndigoDriverDevice` that includes the </span>
+<span class="sd">    standard ``CONNECTION`` property and its handler.</span>
+<span class="sd">:obj:`~pyndigo.driver.PyndigoDriver`</span>
+<span class="sd">    The main class that allows the creation of Drivers for one or more</span>
+<span class="sd">    Devices.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">XMLPullParser</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">.common</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="PyndigoDriverDevice"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice">[docs]</a><span class="k">class</span> <span class="nc">PyndigoDriverDevice</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class can be extended in order to develop a Device that can</span>
+<span class="sd">    be used in a Driver. It provides the basic functionality to add</span>
+<span class="sd">    properties and handlers for them. Take into account that for most of</span>
+<span class="sd">    the Devices it is usually better to extend</span>
+<span class="sd">    :obj:`~pyndigo.driver.StandardDriverDevice` which already implements</span>
+<span class="sd">    the standard ``CONNECTION`` property.</span>
+
+<span class="sd">    To add properties you should use the methods:</span>
+
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_text_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_text_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_number_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_number_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_switch_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_switch_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_light_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_light_property&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_blob_property(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_blob_property&gt;`</span>
+
+<span class="sd">    In addition you can add/remove handlers that listen to property</span>
+<span class="sd">    changes from the Clients using the methods:</span>
+
+<span class="sd">        * :obj:`PyndigoDriverDevice.add_property_listener(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.add_property_listener&gt;`</span>
+<span class="sd">        * :obj:`PyndigoDriverDevice.remove_property_listener(...)</span>
+<span class="sd">          &lt;pyndigo.driver.PyndigoDriverDevice.remove_property_listener&gt;`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.__init__"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">:</span> <span class="s2">&quot;PyndigoDriver&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new PyndigoDriverDevice. This constructor should not</span>
+<span class="sd">        be directly used as Devices are supposed to extend this class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        driver : PyndigoDriver</span>
+<span class="sd">            The Driver in which the Device is integrated</span>
+<span class="sd">        name : str</span>
+<span class="sd">            A name for the device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span> <span class="o">=</span> <span class="n">driver</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">_add_driver_device</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.get_driver"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.get_driver">[docs]</a>    <span class="k">def</span> <span class="nf">get_driver</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;PyndigoDriver&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Gets the Driver for the device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoDriver</span>
+<span class="sd">            The Driver for the Device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_property_listener"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_property_listener">[docs]</a>    <span class="k">def</span> <span class="nf">add_property_listener</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">PyndigoProperty</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]],</span> <span class="kc">None</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds a method of the class to be a listener when a Client asks</span>
+<span class="sd">        for changes in a particular property.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        property : PyndigoProperty | str</span>
+<span class="sd">            The Property (or its name) to listen for Client changes on it.</span>
+<span class="sd">        func : Callable[[PyndigoProperty, list[dict]], None]</span>
+<span class="sd">            The method to be called when a Client ask for changes in the</span>
+<span class="sd">            property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">PyndigoProperty</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.remove_property_listener"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.remove_property_listener">[docs]</a>    <span class="k">def</span> <span class="nf">remove_property_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes the listener associated to a Property.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : PyndigoProperty | str</span>
+<span class="sd">            The Property (or its name) to remove its listener.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">PyndigoProperty</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_text_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_text_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_text_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">perm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and adds a Text Property to the Device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the Property.</span>
+<span class="sd">        state : str</span>
+<span class="sd">            Initial state of the Property. That is, one of</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        perm : str</span>
+<span class="sd">            The permissions for the Property. That is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`, :obj:`pyndigo.common.PERM_RO`</span>
+<span class="sd">            or :obj:`pyndigo.common.PERM_WO`.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A label for the Property, typically used in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            The group of the Property, tyically used to group properties</span>
+<span class="sd">            in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        timeout : int, optional</span>
+<span class="sd">            Timeout for the Property, by default 0</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            Timestamp for the Property, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message about the Property, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The created and added Text Property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">PyndigoProperty</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">TYPE_TEXT</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_number_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_number_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_number_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">perm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and adds a Number Property to the Device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the Property.</span>
+<span class="sd">        state : str</span>
+<span class="sd">            Initial state of the Property. That is, one of</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        perm : str</span>
+<span class="sd">            The permissions for the Property. That is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`, :obj:`pyndigo.common.PERM_RO`</span>
+<span class="sd">            or :obj:`pyndigo.common.PERM_WO`.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A label for the Property, typically used in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            The group of the Property, tyically used to group properties</span>
+<span class="sd">            in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        timeout : int, optional</span>
+<span class="sd">            Timeout for the Property, by default 0</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            Timestamp for the Property, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message about the Property, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The created and added Number Property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">PyndigoProperty</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">TYPE_NUMBER</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_switch_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_switch_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_switch_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">perm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">rule</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and adds a Switch Property to the Device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the Property.</span>
+<span class="sd">        state : str</span>
+<span class="sd">            Initial state of the Property. That is, one of</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        perm : str</span>
+<span class="sd">            The permissions for the Property. That is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`, :obj:`pyndigo.common.PERM_RO`</span>
+<span class="sd">            or :obj:`pyndigo.common.PERM_WO`.</span>
+<span class="sd">        rule : str</span>
+<span class="sd">            The rule of the switch property. That is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ONEOFMANY`,</span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ATMOSTONE`,</span>
+<span class="sd">            :obj:`pyndigo.common.RULE_ANYOFMANY`.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A label for the Property, typically used in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            The group of the Property, tyically used to group properties</span>
+<span class="sd">            in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        timeout : int, optional</span>
+<span class="sd">            Timeout for the Property, by default 0</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            Timestamp for the Property, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message about the Property, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The created and added Switch Property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">PyndigoProperty</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">TYPE_SWITCH</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+            <span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_light_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_light_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_light_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and adds a Light Property to the Device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the Property.</span>
+<span class="sd">        state : str</span>
+<span class="sd">            Initial state of the Property. That is, one of</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A label for the Property, typically used in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            The group of the Property, tyically used to group properties</span>
+<span class="sd">            in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            Timestamp for the Property, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message about the Property, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The created and added Light Property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">PyndigoProperty</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">TYPE_LIGHT</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.add_blob_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.add_blob_property">[docs]</a>    <span class="k">def</span> <span class="nf">add_blob_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">state</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">perm</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">group</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates and adds a BLOB Property to the Device.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name of the Property.</span>
+<span class="sd">        state : str</span>
+<span class="sd">            Initial state of the Property. That is, one of</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`,</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT` or</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        perm : str</span>
+<span class="sd">            The permissions for the Property. That is, one of</span>
+<span class="sd">            :obj:`pyndigo.common.PERM_RW`, :obj:`pyndigo.common.PERM_RO`</span>
+<span class="sd">            or :obj:`pyndigo.common.PERM_WO`.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            A label for the Property, typically used in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        group : str, optional</span>
+<span class="sd">            The group of the Property, tyically used to group properties</span>
+<span class="sd">            in GUIs, by default &quot;&quot;.</span>
+<span class="sd">        timeout : int, optional</span>
+<span class="sd">            Timeout for the Property, by default 0</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            Timestamp for the Property, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message about the Property, by default None</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The created and added BLOB Property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">PyndigoProperty</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">TYPE_BLOB</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="n">group</span><span class="p">,</span>
+            <span class="n">perm</span><span class="o">=</span><span class="n">perm</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">[</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">prop</span>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.remove_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.remove_property">[docs]</a>    <span class="k">def</span> <span class="nf">remove_property</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a property from the Device. TO DO: Send the remove</span>
+<span class="sd">        message to clients.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : PyndigoProperty | str</span>
+<span class="sd">            The Property (or its name) to be removed from the Device.</span>
+<span class="sd">        timestamp : str, optional</span>
+<span class="sd">            A timestamp for the Clients, by default None</span>
+<span class="sd">        message : str, optional</span>
+<span class="sd">            A message for the Clients, by default None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">PyndigoProperty</span><span class="p">):</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.get_properties"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.get_properties">[docs]</a>    <span class="k">def</span> <span class="nf">get_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyndigoProperty</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets all the properties of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, PyndigoProperty]</span>
+<span class="sd">            A dictionary with all the properties of the Device. The key</span>
+<span class="sd">            is the Property name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.get_property"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.get_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the Property of the Device of a given name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property to get.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property of the Device. ``None`` if the Device has</span>
+<span class="sd">            no property with the given name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_value"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets a value for an Item of a Property of the Device. DOES NOT</span>
+<span class="sd">        notify the clients of the change. If you want to notify the</span>
+<span class="sd">        clients you should then call</span>
+<span class="sd">        :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property to update an Item.</span>
+<span class="sd">        item_name : str</span>
+<span class="sd">            The name of the item to set its value.</span>
+<span class="sd">        value : str | int</span>
+<span class="sd">            The new value of the item</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The updated Property. ``None`` if there was no Property</span>
+<span class="sd">            with that name in the Device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_values"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_values">[docs]</a>    <span class="k">def</span> <span class="nf">set_values</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">item_names_values</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the values of several Items of a Property of the Device.</span>
+<span class="sd">        DOES NOT notify the clients of the change. If you want to notify</span>
+<span class="sd">        the clients you should then call</span>
+<span class="sd">        :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        This is a shorthand for multiple consecutive</span>
+<span class="sd">        :obj:`~PyndigoDriverDevice.send_value` calls.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property to update some of its Items.</span>
+<span class="sd">        item_names_values : list[tuple[str, str  |  int]]</span>
+<span class="sd">            A list of pairs in the form ``(nameOfItem, valueOfItem)``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The updated Property. ``None`` if there was no Property</span>
+<span class="sd">            with that name in the Device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">item_name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">item_names_values</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">set_value</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.get_value"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">item_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the value for an Item of a Property of the Device. Its a</span>
+<span class="sd">        shorthand for code like:</span>
+<span class="sd">        ``device.get_property(property_name).get_item(item_name).get_value()``</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property of the Device to get one of its</span>
+<span class="sd">            items value.</span>
+<span class="sd">        item_name : str</span>
+<span class="sd">            The name of the Item to get its value.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str | int</span>
+<span class="sd">            The value of the Item. ``None`` if there is no such Property</span>
+<span class="sd">            or Item in the Device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_item</span><span class="p">(</span><span class="n">item_name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">item</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_alert"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_alert">[docs]</a>    <span class="k">def</span> <span class="nf">set_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the State of the Property as</span>
+<span class="sd">        :obj:`~pyndigo.common.STATE_ALERT`. DOES NOT notify the clients</span>
+<span class="sd">        of the change. If you want to notify the clients you should then</span>
+<span class="sd">        call :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property with its state set as</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_ALERT`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="n">prop</span><span class="o">.</span><span class="n">set_alert</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_ok"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_ok">[docs]</a>    <span class="k">def</span> <span class="nf">set_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the State of the Property as</span>
+<span class="sd">        :obj:`~pyndigo.common.STATE_OK`. DOES NOT notify the clients</span>
+<span class="sd">        of the change. If you want to notify the clients you should then</span>
+<span class="sd">        call :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property with its state set as</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_OK`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="n">prop</span><span class="o">.</span><span class="n">set_ok</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_busy"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_busy">[docs]</a>    <span class="k">def</span> <span class="nf">set_busy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the State of the Property as</span>
+<span class="sd">        :obj:`~pyndigo.common.STATE_BUSY`. DOES NOT notify the clients</span>
+<span class="sd">        of the change. If you want to notify the clients you should then</span>
+<span class="sd">        call :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property with its state set as</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_BUSY`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="n">prop</span><span class="o">.</span><span class="n">set_busy</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.set_idle"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.set_idle">[docs]</a>    <span class="k">def</span> <span class="nf">set_idle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoProperty</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the State of the Property as</span>
+<span class="sd">        :obj:`~pyndigo.common.STATE_IDLE`. DOES NOT notify the clients</span>
+<span class="sd">        of the change. If you want to notify the clients you should then</span>
+<span class="sd">        call :obj:`~PyndigoDriverDevice.send_property_update`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoProperty</span>
+<span class="sd">            The Property with its state set as</span>
+<span class="sd">            :obj:`~pyndigo.common.STATE_IDLE`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="n">prop</span><span class="o">.</span><span class="n">set_idle</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">prop</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">prop</span>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.get_name"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the name of the Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The name of the Device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+    <span class="k">def</span> <span class="nf">_client_asks_for_change</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>  <span class="c1"># Check if in listeners</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_listener_properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+            <span class="n">func</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">client_asks_for_change</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.send_property_update"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.send_property_update">[docs]</a>    <span class="k">def</span> <span class="nf">send_property_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends the message to the clients that a Property has been updated.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : str</span>
+<span class="sd">            The name of the Property that has been updated.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_property</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_driver</span><span class="p">()</span><span class="o">.</span><span class="n">send_property_update</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriverDevice.client_asks_for_change"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriverDevice.client_asks_for_change">[docs]</a>    <span class="k">def</span> <span class="nf">client_asks_for_change</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is called when a client asks for a change in a</span>
+<span class="sd">        particular Property. Typically overriden by subclasses to listen</span>
+<span class="sd">        for Property changes if not using explicit listeners. See</span>
+<span class="sd">        :obj:`PyndigoDriverDevice.add_property_listener` and</span>
+<span class="sd">        :obj:`PyndigoDriverDevice.remove_property_listener`</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : PyndigoProperty</span>
+<span class="sd">            The Property to which a client has asked for changes.</span>
+<span class="sd">        items : dict[dict]</span>
+<span class="sd">            A dictionary of the updates for each Item that was asked for</span>
+<span class="sd">            change by the client. The key is the name of the Item. The</span>
+<span class="sd">            value is a dictionary with a ``&quot;value&quot;`` key that represents </span>
+<span class="sd">            the value that the client has asked for in the Item. If the</span>
+<span class="sd">            property if a BLOB one, it may also contain a ``&quot;size&quot;``, </span>
+<span class="sd">            ``&quot;format&quot;`` and ``&quot;url&quot;`` keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="StandardDriverDevice"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.StandardDriverDevice">[docs]</a><span class="k">class</span> <span class="nc">StandardDriverDevice</span><span class="p">(</span><span class="n">PyndigoDriverDevice</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class can be extended in order to develop a Device that can</span>
+<span class="sd">    be used in a Driver. It adds the standard ``CONNECTION`` property</span>
+<span class="sd">    that is handled by the :obj:`~client_ask_connect` and </span>
+<span class="sd">    :obj:`~client_ask_disconnect` methods.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="StandardDriverDevice.__init__"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.StandardDriverDevice.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">driver</span><span class="p">:</span> <span class="s2">&quot;PyndigoDriver&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructs a new StandardDriverDevice. This constructor should not</span>
+<span class="sd">        be directly used as Devices are supposed to extend this class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        driver : PyndigoDriver</span>
+<span class="sd">            The Driver in which the Device is integrated</span>
+<span class="sd">        name : str</span>
+<span class="sd">            A name for the device.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_switch_property</span><span class="p">(</span>
+            <span class="s2">&quot;CONNECTION&quot;</span><span class="p">,</span>
+            <span class="n">STATE_OK</span><span class="p">,</span>
+            <span class="n">PERM_RW</span><span class="p">,</span>
+            <span class="n">RULE_ONE_OF_MANY</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Connection&quot;</span><span class="p">,</span>
+            <span class="n">group</span><span class="o">=</span><span class="s2">&quot;Main&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">prop</span><span class="o">.</span><span class="n">add_switch</span><span class="p">(</span><span class="s2">&quot;CONNECTED&quot;</span><span class="p">,</span> <span class="n">SWITCH_OFF</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Connected&quot;</span><span class="p">)</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">add_switch</span><span class="p">(</span><span class="s2">&quot;DISCONNECTED&quot;</span><span class="p">,</span> <span class="n">SWITCH_ON</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Disconnected&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_property_listener</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connection_changed</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_connection_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">items</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;CONNECTED&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">SWITCH_ON</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client_ask_connect</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client_ask_disconnect</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StandardDriverDevice.client_ask_connect"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.StandardDriverDevice.client_ask_connect">[docs]</a>    <span class="k">def</span> <span class="nf">client_ask_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will be called when a client changes the </span>
+<span class="sd">        ``CONNECTION`` property to ``CONNECTED``. Usually the </span>
+<span class="sd">        ``CONNECTION`` property State should be changed to </span>
+<span class="sd">        :obj:`~Pyndigo.common.STATE_BUSY` (and</span>
+<span class="sd">        updated to the client), the driver should do its connection logic</span>
+<span class="sd">        and then change the state of the ``CONNECTION`` to </span>
+<span class="sd">        :obj:`~Pyndigo.common.STATE_OK`.</span>
+
+<span class="sd">        Usually implemented by subclasses.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="StandardDriverDevice.client_ask_disconnect"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.StandardDriverDevice.client_ask_disconnect">[docs]</a>    <span class="k">def</span> <span class="nf">client_ask_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method will be called when a client changes the </span>
+<span class="sd">        ``CONNECTION`` property to ``DISCONNECTED``. Usually the </span>
+<span class="sd">        ``CONNECTION`` property State should be changed to </span>
+<span class="sd">        :obj:`~Pyndigo.common.STATE_BUSY` (and</span>
+<span class="sd">        updated to the client), the driver should do its disconnection </span>
+<span class="sd">        logic and then change the state of the ``CONNECTION`` to </span>
+<span class="sd">        :obj:`~Pyndigo.common.STATE_OK`.</span>
+
+<span class="sd">        Usually implemented by subclasses.</span>
+<span class="sd">        &quot;&quot;&quot;</span></div></div>
+
+
+<div class="viewcode-block" id="PyndigoDriver"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver">[docs]</a><span class="k">class</span> <span class="nc">PyndigoDriver</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class is instantiated in order to create Drivers for one or</span>
+<span class="sd">    more Devices.</span>
+<span class="sd">    </span>
+<span class="sd">    The main logic to control de Devices should be done extending the </span>
+<span class="sd">    classes :obj:`~Pyndigo.driver.StandardDriverDevice` or</span>
+<span class="sd">    :obj:`~Pyndigo.driver.PyndigoDriverDevice`. </span>
+
+<span class="sd">    The usual sequence to use this class is:</span>
+
+<span class="sd">        #. Create a :obj:`~Pyndigo.driver.PyndigoDriver`</span>
+<span class="sd">        #. Create :obj:`~Pyndigo.driver.PyndigoDriverDevice` (one or more)</span>
+<span class="sd">        #. Call the :obj:`~Pyndigo.driver.PyndigoDriver.read` method </span>
+<span class="sd">           which starts the routine of reading / writing from / to the clients.</span>
+
+<span class="sd">    For example: ::</span>
+
+<span class="sd">        dr = PyndigoDriver(&quot;My driver&quot;)</span>
+<span class="sd">        MiOwnDevice(dr)</span>
+<span class="sd">        MiOtherDevice(dr)</span>
+<span class="sd">        dr.read()</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="PyndigoDriver.__init__"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a Driver.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the Driver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver_devices</span> <span class="o">=</span> <span class="p">{}</span></div>
+
+<div class="viewcode-block" id="PyndigoDriver.get_driver_devices"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.get_driver_devices">[docs]</a>    <span class="k">def</span> <span class="nf">get_driver_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">PyndigoDriverDevice</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets all the Devices in the Driver</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict[str, PyndigoDriverDevice]</span>
+<span class="sd">            A dictionary with all the Devices in the Driver. The key is </span>
+<span class="sd">            the name of the Device and the value is the device itself.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver_devices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PyndigoDriver.get_name"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the name of the driver</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The name of the Driver</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="PyndigoDriver.get_driver_device"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.get_driver_device">[docs]</a>    <span class="k">def</span> <span class="nf">get_driver_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PyndigoDriverDevice</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets a Device of the Driver by its name.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        device_name : str</span>
+<span class="sd">            The name of the desired Device.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PyndigoDriverDevice</span>
+<span class="sd">            The desired Device. ``None`` if there is no Device with</span>
+<span class="sd">            the provided name in the Driver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_driver_devices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_add_driver_device</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">PyndigoDriverDevice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_driver_devices</span><span class="p">[</span><span class="n">device</span><span class="o">.</span><span class="n">get_name</span><span class="p">()]</span> <span class="o">=</span> <span class="n">device</span>
+
+<div class="viewcode-block" id="PyndigoDriver.read"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main logic of the driver. It reads from standard input the </span>
+<span class="sd">        messages from the Clients (probably through a Server) and</span>
+<span class="sd">        process the messages calling listeners in the Devices.</span>
+
+<span class="sd">        It should be called once the initialization of the Driver is </span>
+<span class="sd">        done. It blocks the execution thread (which is the normal </span>
+<span class="sd">        behaviour for a Driver.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">XMLPullParser</span><span class="p">(</span><span class="n">events</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">])</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="s2">&quot;&lt;xml&gt;&quot;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">read_events</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">tag</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;getProperties&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;switch&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;2.0&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_send_message_to_client</span><span class="p">(</span>
+                            <span class="s2">&quot;&lt;switchProtocol version=&#39;2.0&#39;/&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                        <span class="p">)</span>
+
+                    <span class="n">device_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">device_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_driver_device</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">pn</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">send_property_definition</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>  <span class="c1"># Send all devices</span>
+                        <span class="k">for</span> <span class="n">dn</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_driver_devices</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                            <span class="k">for</span> <span class="n">pn</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">send_property_definition</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;new&quot;</span><span class="p">):</span>
+                    <span class="n">device_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;device&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">device_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_driver_device</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">prop_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+
+                            <span class="n">prop</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get_property</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+
+                            <span class="k">if</span> <span class="n">prop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
+
+                                <span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
+                                <span class="k">for</span> <span class="n">subelem</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;one&quot;</span> <span class="o">+</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()):</span>
+                                    <span class="n">it</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">subelem</span><span class="o">.</span><span class="n">text</span><span class="p">}</span>
+
+                                    <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">is_BLOB</span><span class="p">():</span>
+                                        <span class="n">it</span><span class="p">[</span><span class="s2">&quot;size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subelem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">)</span>
+                                        <span class="n">it</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subelem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">)</span>
+
+                                        <span class="k">if</span> <span class="n">subelem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                            <span class="n">it</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subelem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;url&quot;</span><span class="p">)</span>
+
+                                    <span class="n">items</span><span class="p">[</span><span class="n">subelem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">it</span>
+
+                                <span class="n">d</span><span class="o">.</span><span class="n">_client_asks_for_change</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriver.send_property_definition"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.send_property_definition">[docs]</a>    <span class="k">def</span> <span class="nf">send_property_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends to the Clients the definition of a Property. Should be</span>
+<span class="sd">        called by the Devices once a new Property is added (only once </span>
+<span class="sd">        and not necessary at the initilization of the Devices).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : PyndigoProperty</span>
+<span class="sd">            The Property that has to be sent to the Clients.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">_get_def_xml</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_message_to_client</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PyndigoDriver.send_property_update"><a class="viewcode-back" href="../../pyndigo.driver.html#pyndigo.driver.PyndigoDriver.send_property_update">[docs]</a>    <span class="k">def</span> <span class="nf">send_property_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">PyndigoProperty</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends to the Clients an updated Property. Should be called by the </span>
+<span class="sd">        Devices once a Property value or State has been changed.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        prop : PyndigoProperty</span>
+<span class="sd">            The Property whose updated has to be sent to the Clients.</span>
+
+<span class="sd">        msg : str, optional</span>
+<span class="sd">            A message to be sent along with the update, by default None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xml</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">_get_set_xml</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_message_to_client</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_send_message_to_client</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">message</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Zerjillo [S. Alonso] and J. Flores.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
