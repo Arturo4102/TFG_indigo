@@ -259,6 +259,11 @@ class PyndigoClient(asyncio.Protocol):
             devName = aux[0]         # Fallará, comprobarlo bien
             propName = aux[1]
 
+            dev = self.get_client_device(devName)
+            if dev is None:
+                print(f"Error: El dispositivo '{devName}' no existe.")
+                return
+        
             # Se obtienen la propiedad que tenga de clave propName del dispositivo devName
             prop = self.get_client_device(devName).get_property(propName)
 
@@ -318,19 +323,20 @@ def main():
     # Se buscan todos los dispositivos de la conexión MiCliente
     devs = client.get_devices()
     
-    # Se imprime y por cada uno se imprime el nombre, propiedades, items...
-    # print(devs)
-    # for dn, d in devs.items():
-    #     print(d.get_name())
+    # Abre un archivo para escribir los dispositivos y sus propiedades
+    with open("/home/Arturo4102/TFG/pyndigo/devices_info.txt", "w") as file:
+        # Escribe y por cada uno se imprime el nombre, propiedades, items...
+        for dn, d in devs.items():
+            file.write(d.get_name() + "\n")
 
-    #     props = d.get_properties()
+            props = d.get_properties()
 
-    #     for pn, p in props.items():
-    #         print("    " + str(p))
+            for pn, p in props.items():
+                file.write("    " + str(p) + "\n")
 
-    #         items = p.get_items()
+                items = p.get_items()
 
-    #         for inn, i in items.items():
-    #             print("        " + str(i))
+                for inn, i in items.items():
+                    file.write("        " + str(i) + "\n")
 
 main()
