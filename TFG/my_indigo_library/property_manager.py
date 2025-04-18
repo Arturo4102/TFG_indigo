@@ -1,5 +1,7 @@
 import xml.etree.ElementTree as ElementTree
-from my_indigo_library import INDIGO_Element, INDIGO_Device, INDIGO_Server
+from my_indigo_library import INDIGO_Server, INDIGO_Device, INDIGO_Element
+
+
 import time
 
 class INDIGO_Property:

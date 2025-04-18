@@ -8,8 +8,6 @@ import matplotlib.pyplot as pyplot
 import numpy as numpy
 import requests
 from my_indigo_library import INDIGO_Property, INDIGO_Device
-
-
 class INDIGO_Server:
     """Clase que representa la conexión con el servidor INDIGO
 

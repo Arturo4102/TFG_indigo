@@ -1,4 +1,5 @@
 import xml.etree.ElementTree as ElementTree
+
 class INDIGO_Element:
     """Esta es una clase que representa un elemento de la propiedad del dispositivo registrado en el servidor INDIGO
     name: Nombre del elemento

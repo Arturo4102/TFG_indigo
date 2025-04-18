@@ -1,5 +1,5 @@
-from my_indigo_library import INDIGO_Property, INDIGO_Server
-
+from my_indigo_library import INDIGO_Server, INDIGO_Property
+# from .property_manager import 
 class INDIGO_Device:
     
     name = None
