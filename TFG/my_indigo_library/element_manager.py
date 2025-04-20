@@ -25,7 +25,7 @@ class INDIGO_Element:
         self.value = None
     
     def parseElements(self, xml_property: ElementTree):
-        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a ParseElement de la clase INDIGO_Element
+        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a parseElements de la clase INDIGO_Element
 
         Args:
             properties_dict (xml.etree.ElementTree.Element): Diccionario de propiedades a crear o actualizar
@@ -33,8 +33,8 @@ class INDIGO_Element:
         Returns:
             xml.etree.ElementTree.Element: Elemento XML que representa la propiedad
         """
-        self.attributes = {**self.attributes, **xml_property.get()}
-        self.value = xml_property.getText()
+        self.attributes = {**self.attributes, **xml_property.attrib}
+        self.value = xml_property.text
     
     def getName(self) -> str:
         """Getter del nombre del elemento
@@ -84,4 +84,3 @@ class INDIGO_Element:
             list: Lista de atributos de los elementos
         """
         return self.attributes
-    

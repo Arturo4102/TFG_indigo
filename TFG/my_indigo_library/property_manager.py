@@ -1,7 +1,5 @@
 import xml.etree.ElementTree as ElementTree
-from my_indigo_library import INDIGO_Server, INDIGO_Device, INDIGO_Element
-
-
+from my_indigo_library.Cliente_INDIGO import INDIGO_Server, INDIGO_Device, INDIGO_Element
 import time
 
 class INDIGO_Property:
@@ -22,7 +20,7 @@ class INDIGO_Property:
     elements = None
     lastUpdate = 0
     
-    def __init__(self, xml_property: ElementTree, device: INDIGO_Device):
+    def __init__(self, xml_property: ElementTree, device):
         """Constructor de la clase propiedad
 
         Args:
@@ -54,7 +52,7 @@ class INDIGO_Property:
     #     self.server.server.addPropertyListener(device_name, property_name, callback)
 
     def parseProperties(self, xml_properties: ElementTree):
-        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a ParseElement de la clase INDIGO_Element
+        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a parseElements de la clase INDIGO_Element
 
         Args:
             properties_dict (xml.etree.ElementTree.Element): Diccionario de propiedades a crear o actualizar
@@ -63,7 +61,7 @@ class INDIGO_Property:
             xml.etree.ElementTree.Element: Elemento XML que representa la propiedad
         """
         self.lastUpdate = time.time()
-        self.attributes = {**self.attributes,**xml_properties} #Unimos los elementos xml
+        self.attributes = {**self.attributes,**xml_properties.attrib} #Unimos los elementos xml
         
         for elem in xml_properties.findall("./"):
             name_elem = elem.get('name')
@@ -146,7 +144,7 @@ class INDIGO_Property:
         """
         return self.attributes 
     
-    def getDevice(self) -> INDIGO_Device:
+    def getDevice(self):
         """Getter del device donde se incluye esta propiedad
 
         Returns:
@@ -175,7 +173,7 @@ class INDIGO_Property:
                         switchesOn+=1
                     message += f"   <one{self.type} name='{ele_name}' target='{ele_value}'>{ele_value}</one{self.type}>\n"
             
-                rule = self.attrib['rule']
+                rule = self.get('rule')
                 if rule == "OneOfMany":
                     if switchesOn != 1:
                         raise("\nError: Sólo se puede seleccionar un único elemento Switch\n")
@@ -184,7 +182,7 @@ class INDIGO_Property:
                         raise("\nError: Sólo se puede seleccionar uno o ningún elemento Switch")
         
             case "Text":
-                if self.GetAttributes('perm') == "ro":
+                if self.getAttributes('perm') == "ro":
                     raise("Error: Este elemento sólo se puede leer, no se puede escribir")
                 else:
                     for ele_name, ele_value in values.items():
@@ -201,3 +199,4 @@ class INDIGO_Property:
         message += f"</new{self.type}Vector>\n"
         
         server.send(message)
+    

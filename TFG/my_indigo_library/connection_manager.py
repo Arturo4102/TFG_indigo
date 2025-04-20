@@ -1,13 +1,13 @@
 import os
 import socket
 import threading
-import time
 import xml.etree.ElementTree as ElementTree
 import astropy.io.fits as fits
 import matplotlib.pyplot as pyplot
 import numpy as numpy
 import requests
-from my_indigo_library import INDIGO_Property, INDIGO_Device
+from my_indigo_library.Cliente_INDIGO import INDIGO_Property, INDIGO_Device
+
 class INDIGO_Server:
     """Clase que representa la conexión con el servidor INDIGO
 
@@ -17,7 +17,7 @@ class INDIGO_Server:
     sock: Variable que contiene el socket de conexión con el servidor
     endReading: Chequea si el socket ha terminado de leer todos los datos del servidor
     thread: Esto es una variable que contiene una hebra que ejecuta en bucle readMessages independientemente del main
-    devices: Un diccionario de los dispositivos del servidor (key: nombre, value: INDIGODevice)
+    devices: Un diccionario de los dispositivos del servidor (key: nombre, value: INDIGO_Device)
     wait: Coloca un tiempo de espera para ejecutar las funciones
     blobMode: Se indica si el modo del Blob es 'Never' o 'URL'
     devicePropertyListeners: Lista de los listeners para las propiedades
@@ -31,7 +31,7 @@ class INDIGO_Server:
     endReading = False
     thread = None
     devices = None
-    wait = 0.5
+    wait = 1
     blobMode = None
     
     devicePropertyListeners = None
@@ -64,18 +64,22 @@ class INDIGO_Server:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.host, self.port))
             self.sock.settimeout(.01)
-        except:
-            raise("Error: No se ha podido crear el socket para la conexión")
+            if self.sock != None:
+                self.thread = threading.Thread(target=self.readMessages, daemon = True)
+                self.thread.start()
+            else:
+                raise("Error: No Connection")
+            
+            self.sendGetProperties()
         
-        thread = threading.Thread(target=self.readMessages(), daemon = True)
-        thread.start()
-        self.sendGetProperties()
-    
-    def addServerListener(self, listener_function: function):
+        except Exception as e:
+            raise(f"Error connecting to server: {str(e)}")
+        
+    def addServerListener(self, listener_function):
         """Función que permite añadir Listeners al propio servidor 
 
         Args:
-            listener_function (function): Variable con una función que se ejecutará cuando el listener se active
+            listener_function (): Variable con una función que se ejecutará cuando el listener se active
         """
         name = self.name
         if not(name in self.serverListeners):
@@ -84,11 +88,11 @@ class INDIGO_Server:
         self.serverListeners[name].append(listener_function)
     
     
-    def addDevicePropertyListener(self, deviceName: str, propertyName:str, listener_function: function):
+    def addDevicePropertyListener(self, deviceName: str, propertyName:str, listener_function):
         """Función que permite añadir Listeners a alguna propiedad de un dispositivo
 
         Args:
-            listener_function (function): Variable con una función que se ejecutará cuando el listener se active
+            listener_function (): Variable con una función que se ejecutará cuando el listener se active
         """
         name = deviceName + '@' + propertyName
          
@@ -98,7 +102,7 @@ class INDIGO_Server:
         self.devicePropertyListeners[name].append(listener_function)
     
     
-    # def addMessageListener(self, deviceName: str, listener_function: function):
+    # def addMessageListener(self, deviceName: str, listener_function: ):
     #     """Función que permite añadir Listeners a los mensajes que llegan del servidor INDIGO
 
     #     Args:
@@ -141,45 +145,46 @@ class INDIGO_Server:
         Para ello, se utiliza un parser XML(esto se usa para parsear al mismo estilo que vienen los mensajes que llegan desde el servidor)
         para leer los mensajes y se ejecutan los listeners correspondientes
         """
-        parser = ElementTree.XMLPullParser(['end'])
+        parser= ElementTree.XMLPullParser(['end'])
+
         parser.feed("<xml>\n")
-        
-        while(not self.endReading) and (not self.isConnected()):
-            msg=""
-            # Recibimos los mensajes del servidor y los decodificamos  
-            try: 
-                msg = self.sock.recv(500000).decode("UTF-8")
+
+        while not self.endReading and self.isConnected():
+            msg= ""
+
+            try:
+                msg= self.sock.recv(500000).decode("UTF-8")
             except Exception as e:
                 pass
-            # Si hay contenido en el mensaje
+
             if(msg != ""):
-                # Añadimos el mensaje al parser
                 parser.feed(msg)
-                # Leemos los eventos del parser, por cada evento y elemento, recogemos los datos 
                 for event, elem in parser.read_events():
-                    if (elem.tag == "delProperty"):
-                        self.getDeviceByName(elem.get('device')).deleteProperty(elem)
-                    elif (elem.tag == "message"):
-                        self.parseMessage(elem)
-                    else: #ParseDeviceProperty
-                        dev = self.getDeviceByName(elem.get('device'))
-                        dev.parseProperty(elem.tag)
-                        
+                    if elem.tag == "defLightVector":
+                        print("This a light")
+                    if (elem.tag == "defTextVector") or (elem.tag == "defNumberVector") or (elem.tag == "defSwitchVector") or (elem.tag == "defLightVector") or (elem.tag == "defBLOBVector") or (elem.tag == "setTextVector") or (elem.tag == "setNumberVector") or (elem.tag == "setSwitchVector") or (elem.tag == "setLightVector") or (elem.tag == "setBLOBVector"):
+                        dev = self.getDeviceByName(elem.get('device'))     
+                        dev.parseProperty(elem)
                         prop = dev.getPropertyByName(elem.get('name'))
-                        name = dev.getName() + '@' + prop.GetName()
+                        name= dev.getName() + "@" + prop.getName()
+
+                        if name in self.devicePropertyListeners:
+                            for listener in self.devicePropertyListeners[name]:
+                                listener(prop)
+                                
+                    elif(elem.tag == "delProperty"):
+                        self.getDeviceByName(elem.get('device')).deleteProperty(elem)
+                    
+                    elif(elem.tag == "message"):
+                        self.parseMessage(elem)
                         
-                        # Ejecutamos los listeners del dispositivo@propiedad si coincide con el que nos han dado 
-                        if(name in self.devicePropertyListeners):
-                            for propList in self.devicePropertyListeners[name]:
-                                propList(prop)
-              
-        #Ejecutamos los listeners de servidor ya que se realiza una operación en el servidor          
-        if(self.isConnected()):
-            if (self.name in self.serverListeners):
-                for serverList in self.serverListeners[self.name]:
-                    serverList()
-            
-            
+        
+        if self.isConnected():
+            # Call a function with the execute of server's listener  
+            if(self.name in self.serverListeners):
+                for listener in self.serverListeners[self.name]:
+                    listener()                
+                
     def parseMessage(self, xml_message: ElementTree):
         """Función que parsea un mensaje entero (con dispositivos y propiedades) y añade los dispositivos y propiedades al diccionario de dispositivos
 
@@ -201,9 +206,10 @@ class INDIGO_Server:
         Returns:
             INDIGO_Device: Objeto dispositivo
         """
-        if deviceName in self.devices:
-            return self.devices[deviceName]
-        return None
+        if not deviceName in self.devices:
+            self.devices[deviceName] = INDIGO_Device(deviceName,self)
+            
+        return self.devices[deviceName]
 
     def getBLOBMode(self) -> str:
         """Función para coneguir el valor de BLOBMode
@@ -258,26 +264,20 @@ class INDIGO_Server:
             message (str): Mensaje a enviar al servidor
         """
         message = message.encode("ASCII")
-        if(self.IsSocketClosed() == False):
+        if self.sock:
             self.sock.sendall(message)
         
         
     def isConnected(self) -> bool:
-        """Función que sirve para ver si está el socket con el servidor activo o no.
-        Esto se comprueba mediante un recv de 16 bytes en el que no se eliminen sino que se lean los bytes
-
-        Returns:
-            bool: True si está cerrado, False si está activo el socket
-        """
+        if self.sock is None:
+            return False
         try:
             data = self.sock.recv(16, socket.MSG_PEEK)
-            if len(data) == 0:
-                return True
-            return False            
-        except ConnectionResetError:
-            return True
-        except BlockingIOError or Exception:
-            return False
+            return len(data) != 0
+        except (socket.timeout, BlockingIOError):
+            return True  # No hay datos, pero el socket está abierto
+        except (ConnectionResetError, OSError):
+            return False  # El socket está cerrado o la conexión se perdió
         
         
     def getPropOfDevice(self, deviceName:str, property:str) -> INDIGO_Property:
@@ -297,15 +297,15 @@ class INDIGO_Server:
         
     def disconnect(self):
         """
-        Cierra la conexión con el servidor INDIGO.
+        Cierra la conexión con el servidor INDIGO de manera limpia.
         """
-        if not(self.isConnected()):
+        if not(self.sock != None):
             self.endReading = True
-            time.sleep(0.3)
-            self.sock.close()
-            self.sock = None
-            print("Disconnected from INDIGO server")
-            #Hay que limpiar todo antes de cerrarlo
+            if self.sock:
+                self.sock.close()
+                self.sock = None
+            if self.thread:
+                self.thread.join(timeout=2.0)
 
     def downloadImage(self, path:str):
         """ Función que descarga una imagen a partir de la url que se le pasa como parámetro.
@@ -337,5 +337,4 @@ class INDIGO_Server:
             
             pyplot.imshow(imgData, vmin= numpy.min(imgData), vmax=numpy.mean(imgData)*2, origin="lower")            
             pyplot.show()
-            
             

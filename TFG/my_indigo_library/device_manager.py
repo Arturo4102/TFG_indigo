@@ -1,5 +1,6 @@
-from my_indigo_library import INDIGO_Server, INDIGO_Property
-# from .property_manager import 
+from my_indigo_library.Cliente_INDIGO import INDIGO_Property
+import xml.etree.ElementTree as ElementTree
+
 class INDIGO_Device:
     
     name = None
@@ -18,7 +19,7 @@ class INDIGO_Device:
         self.server = server
         self.properties={}
 
-    def getServer(self) -> INDIGO_Server:
+    def getServer(self):
         """Getter de server del dispositivo
 
         Returns:
@@ -53,18 +54,18 @@ class INDIGO_Device:
         """
         return self.name
     
-    def parseProperty(self, prop: INDIGO_Property):
-        """Función que añade o modifica el valor de una propiedad (y sus respectivos elementos llamando a la función ParseElement)
+    def parseProperty(self, prop: ElementTree):
+        """Función que añade o modifica el valor de una propiedad (y sus respectivos elementos llamando a la función parseElements)
 
         Args:
-            prop (INDIGO_Property): _description_
+            prop (ElementTree): Propiedad a añadir o modificar
         """
-        nameProp = prop.getName()
+        nameProp = prop.get('name')
         
         if nameProp not in self.properties:
-            self.properties[nameProp] = INDIGO_Property(nameProp, self)
-        
-        self.properties[nameProp].parseElement(nameProp)
+            self.properties[nameProp] = INDIGO_Property(prop, self)
+
+        self.properties[nameProp].parseProperties(prop)
         
     def deleteProperty(self, prop: INDIGO_Property):
         """Función que elimina una propiedad o todas las propiedades (según si la propiedad pasada tiene el atributo nombre o no)
@@ -72,7 +73,6 @@ class INDIGO_Device:
         Args:
             prop (INDIGO_Property): Propiedad o propiedades a eliminar del dispositivo
         """
-        
         if "name" in prop.getAttributes():
             nameProp = prop.getAttribute("name")
             if nameProp in self.properties[nameProp]:
@@ -80,3 +80,4 @@ class INDIGO_Device:
         
         else:
             self.properties.clear()
+            

@@ -9,3 +9,10 @@
     - device_manager.py -> INDIGO_Device
 
 ## Realizamos una prueba de conexión con Prueba.py
+
+## Cosas a cambiar
+    CCD GUIDER SIMULATOR:
+        -   CONNECTION
+        -   INFO
+
+    

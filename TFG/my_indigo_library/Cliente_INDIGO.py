@@ -33,6 +33,12 @@ class INDIGO_Element:
         self.attributes = {}
         self.value = None
     
+    def __str__(self):
+        return f"\n\t\tINDIGO_Element(name={self.name}, value={self.value}, attributes={self.attributes})"
+    
+    def __repr__(self):
+        return self.__str__()
+    
     def parseElements(self, xml_property: ElementTree):
         """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a parseElements de la clase INDIGO_Element
 
@@ -132,7 +138,18 @@ class INDIGO_Property:
             if name in xml_property.tag:
                 self.type = name
                 break
-    
+    def __str__(self):
+        elements_str = "\n    ".join([str(elem) for elem in self.elements.values()])
+        return (f"\nINDIGO_Property("
+                f"\n  name={self.name}"
+                f"\n  type={self.type}"
+                f"\n  attributes={self.attributes}"
+                f"\n  elements=[\n    {elements_str}\n  ]"
+                f"\n  lastUpdate={self.lastUpdate}"
+                f")")
+
+    def __repr__(self):
+        return self.__str__()
     # def add_property_listener(self, device_name: str, property_name: str, callback):
     #     """
     #     Agrega un listener a una propiedad de un dispositivo
@@ -170,14 +187,6 @@ class INDIGO_Property:
             str: Nombre de la propiedad
         """
         return self.name
-    
-    def getValue(self) -> str:
-        """Getter del value de la propiedad
-
-        Returns:
-            str: Valor de la propiedad
-        """
-        return self.value
     
     def getElement(self, name: str) -> INDIGO_Element:
         """Getter de un elemento dentro de la propiedad actual por su nombre
@@ -312,7 +321,18 @@ class INDIGO_Device:
         self.name=name
         self.server = server
         self.properties={}
+        
+    def __str__(self):
+        properties_str = "\n    ".join([str(prop) for prop in self.properties.values()])
+        return (f"\nINDIGO_Device("
+            f"\n  name={self.name}"
+            f"\n  server={self.server.getName() if hasattr(self.server, 'getName') else str(self.server)}"
+            f"\n  properties=[\n    {properties_str}\n  ]"
+            f")")
 
+    def __repr__(self):
+        return self.__str__()
+  
     def getServer(self):
         """Getter de server del dispositivo
 
@@ -320,6 +340,23 @@ class INDIGO_Device:
             IndigoSerevr: Instancia del Servidor de INDIGO 
         """
         return self.server
+    
+    
+    def getServer(self):
+        """Getter de server del dispositivo
+
+        Returns:
+            IndigoSerevr: Instancia del Servidor de INDIGO 
+        """
+        return self.server
+    
+    def getServerStr(self) -> str:
+        """Getter de server del dispositivo
+
+        Returns:
+            IndigoSerevr: Instancia del Servidor de INDIGO 
+        """
+        return str(self.server)
     
     def getProperties(self) -> dict:
         """Getter de property del dispositivo
@@ -423,6 +460,19 @@ class INDIGO_Server:
         self.devicePropertyListeners = {}
         # self.messageListeners = {}
         self.serverListeners = {}
+    
+    def __str__(self):
+        devices_str = "\n    ".join([str(device) for device in self.devices.values()])
+        return (f"\nINDIGO_Server("
+            f"\n  name={self.name}"
+            f"\n  host={self.host}"
+            f"\n  port={self.port}"
+            f"\n  blobMode={self.blobMode}"
+            f"\n  devices=[\n    {devices_str}\n  ]"
+            f")")
+
+    def __repr__(self):
+        return self.__str__()
                 
     def connect(self):
         """Crea una conexión con el servidor usando un socket. Lanzamos una hebra que lea en bucle los mensajes del servidor
@@ -705,3 +755,4 @@ class INDIGO_Server:
             
             pyplot.imshow(imgData, vmin= numpy.min(imgData), vmax=numpy.mean(imgData)*2, origin="lower")            
             pyplot.show()
+            
