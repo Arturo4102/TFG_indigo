@@ -93,7 +93,7 @@ class INDIGO_Element:
         return self.attributes[name]
     
     def getAttributes(self) -> list:
-        """Getter de todos los atributos del elemento
+        """Getwter de todos los atributos del elemento
 
         Returns:
             list: Lista de atributos de los elementos
