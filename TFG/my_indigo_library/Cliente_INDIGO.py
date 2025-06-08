@@ -2,757 +2,793 @@ import os
 import socket
 import threading
 import time
-import xml.etree.ElementTree as ElementTree
+from xml.etree.ElementTree import Element, XMLPullParser
 import astropy.io.fits as fits
 import matplotlib.pyplot as pyplot
 import numpy as numpy
 import requests
- 
-     
+
+
+
 class INDIGO_Element:
-    """Esta es una clase que representa un elemento de la propiedad del dispositivo registrado en el servidor INDIGO
-    name: Nombre del elemento
-    prop: Nombre de la propiedad donde está incluido el elemento
-    attributes: Lista de todos los atributos que tiene actualmente el elemento
-    value: Valor (numérico) que tiene el elemento
-    """
-    name: None
-    prop: None
-    attributes: None
-    value: None
+    """Clase que representa un elemento de una propiedad de dispositivo INDIGO.
     
-    def __init__(self, xml_property, prop):
-        """Constructor de la clase Elemento
+    Un elemento es la unidad mínima de información dentro de una propiedad INDIGO.
+    Por ejemplo, una propiedad de coordenadas puede tener elementos para 
+    ascensión recta y declinación.
+    
+    Attributes:
+        name (str): Nombre del elemento
+        prop (INDIGO_Property): Referencia a la propiedad que contiene este elemento
+        attributes (dict): Diccionario con todos los atributos del elemento -> [nombre, valor]
+        value (str): Valor actual del elemento
+    """
+    
+    def __init__(self, xml_property: Element, prop: "INDIGO_Property"): #Se usa entre comillas para hacer una anotaciones forward y que no te dé el error de que no está definida
+        """Constructor de la clase INDIGO_Element.
 
         Args:
-            xml_property (xml.etree.ElementTree.Element): Elemento XML que representa el elemento
+            xml_property (xml.etree.Element.Element): XML que representa el elemento
             prop (INDIGO_Property): Propiedad INDIGO donde se incluye el elemento
         """
         self.prop = prop
-        self.name = xml_property.get("name")
+        self.name = xml_property.get("name")    #ó se puede conseguir también con xml_property.attrib['name']
         self.attributes = {}
         self.value = None
     
-    def __str__(self):
+    def __str__(self) -> str:
+        """Listado de los datos del elemento.
+        
+        Returns:
+            str: Descripción de los valores del elemento.
+        """
         return f"\n\t\tINDIGO_Element(name={self.name}, value={self.value}, attributes={self.attributes})"
     
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Representación o descripción del elemento.
+        
+        Returns:
+            str: Listado con los valore del elemento.
+        """
+
         return self.__str__()
     
-    def parseElements(self, xml_property: ElementTree):
-        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a parseElements de la clase INDIGO_Element
+    def parse_elements(self, xml_property: Element):
+        """Actualiza los atributos y valor del elemento desde XML pasado como parámetro.
 
         Args:
-            properties_dict (xml.etree.ElementTree.Element): Diccionario de propiedades a crear o actualizar
-
-        Returns:
-            xml.etree.ElementTree.Element: Elemento XML que representa la propiedad
+            xml_property (xml.etree.Element.Element): Elemento XML con los nuevos datos
         """
         self.attributes = {**self.attributes, **xml_property.attrib}
         self.value = xml_property.text
     
-    def getName(self) -> str:
-        """Getter del nombre del elemento
+    def get_name(self) -> str | None:
+        """Obtiene el nombre del elemento.
 
         Returns:
-            str: Nombre del elemento
+            str |None: Nombre del elemento
         """
         return self.name
-    def getValue(self) -> str:
-        """Getter del valor (numérico) del elemento
+    def get_value(self) -> str | None:
+        """Obtiene el valor del elemento.
 
         Returns:
-            str: Valor del elemento
+            str | None: Valor actual del elemento
         """
         return self.value
         
-    def getProp(self) -> str:
-        """Getter del nombre de la propiedad a la que pertenece el elemento
+    def get_prop(self) -> "INDIGO_Property":
+        """Obtiene la propiedad a la que pertenece el elemento.
 
         Returns:
-            str: Nombre de la propiedad a la que pertenece el elemento
+            INDIGO_Property: Propiedad que contiene este elemento
         """
         return self.prop
     
-    def getFromAttributes(self, name: str) -> str:
-        """Getter del valor de un atributo del elemento
-        El elemento tiene algunos atributos como:
-            - label: Etiqueta del elemento
-            - format: Formato del elemento
-            - min: Valor mínimo del elemento
-            - max: Valor máximo del elemento
-            - step: Valor de paso de un estado a otro del elemento
-            - path: Ruta de la imagen que está guardada en el servidor (sólo funciona con las propiedades de tipo BLOB) 
-            - target: Atributo objetivo del elemento
+    def get_from_attributtes(self, name: str) -> str:
+        """Obtiene el valor de un atributo específico del elemento.
+        
+        Los atributos comunes incluyen:
+        
+        - label: Etiqueta descriptiva del elemento
+        - format: Formato de presentación del elemento
+        - min: Valor mínimo permitido
+        - max: Valor máximo permitido
+        - step: Incremento entre valores válidos
+        - path: Ruta de imagen (solo para propiedades BLOB)
+        - target: Valor objetivo del elemento
+
         Args:
-            name (str): Nombre del elemento de buscar
+            name (str): Nombre del atributo a obtener
 
         Returns:
-            str: Valor del atributo
+            str: Valor del atributo solicitado
         """
         return self.attributes[name]
     
-    def getAttributes(self) -> list:
-        """Getwter de todos los atributos del elemento
+    def get_attributes(self) -> dict:
+        """Obtiene todos los atributos del elemento.
 
         Returns:
-            list: Lista de atributos de los elementos
+            dict: Diccionario con todos los atributos del elemento
         """
         return self.attributes
         
      
             
 class INDIGO_Property:
-    """
-    Clase para gestionar propiedades de los dispositivos registrados en el servidor INDIGO
+    """Clase que representa una propiedad de un dispositivo INDIGO.
     
-    name: Nombre de la propiedad
-    device: Dispositivo al que pertenece la propiedad
-    type: Tipo de propiedad (Text, Number, Switch, Light, BLOB)
-    attributes: Lista de atributos particulares de la propiedad
-    elements: Diccionario de elementos (con valores numéricos) de la propiedad actual
-    lastUpdate: Última actualización de la propiedad
-    """
-    name = None 
-    device = None
-    type = None
-    attributes = None
-    elements = None
-    lastUpdate = 0
+    Una propiedad agrupa elementos relacionados y define su comportamiento,
+    tipo y restricciones. Los tipos de propiedades incluyen Text, Number,
+    Switch, Light y BLOB.
     
-    def __init__(self, xml_property: ElementTree, device):
-        """Constructor de la clase propiedad
+    Attributes:
+        name (str): Nombre de la propiedad
+        device (INDIGO_Device): Dispositivo al que pertenece la propiedad
+        type (str): Tipo de propiedad (Text, Number, Switch, Light, BLOB)
+        attributes (dict): Atributos específicos de la propiedad
+        elements (dict): Diccionario de elementos (elementos de la clase INDIGO_Element) que componen la propiedad
+        lastUpdate (float): Timestamp de la última actualización
+    """
+    
+    def __init__(self, xml_property: Element, device: "INDIGO_Device"):
+        """Constructor de la clase INDIGO_Property.
 
         Args:
             xml_property (xml.etree.ElementTree.Element): Elemento XML que representa la propiedad 
             device (INDIGO_Device): Dispositivo INDIGO donde se incluye la propiedad
         """
         self.device = device
-        self.name = xml_property.get("name")    #ó xml_property.attrib['name'] 
+        self.name = xml_property.get("name")
         self.attributes = {}
         self.elements = {}
+        self.last_update = 0
+        self.type = None
         
+        # Determinar el tipo de propiedad basado en el tag del XML
         list_names = {"Text", "Number", "Switch", "Light", "BLOB"}
         
         for name in list_names:
             if name in xml_property.tag:
                 self.type = name
                 break
-    def __str__(self):
+            
+            
+    def __str__(self) -> str:
+        """Listado de los datos de la propiedad.
+        
+        Returns:
+            str: Descripción de los elementos de la propiedad
+        """
+        
         elements_str = "\n    ".join([str(elem) for elem in self.elements.values()])
         return (f"\nINDIGO_Property("
                 f"\n  name={self.name}"
                 f"\n  type={self.type}"
                 f"\n  attributes={self.attributes}"
                 f"\n  elements=[\n    {elements_str}\n  ]"
-                f"\n  lastUpdate={self.lastUpdate}"
+                f"\n  lastUpdate={self.last_update}"
                 f")")
 
-    def __repr__(self):
+    def __repr__(self) -> str:        
+        """Representación o descripción de la propiedad.
+        
+        Returns:
+            str: Listado con los elementos de la propiedad
+        """
+        
         return self.__str__()
-    # def add_property_listener(self, device_name: str, property_name: str, callback):
-    #     """
-    #     Agrega un listener a una propiedad de un dispositivo
-    #     Args:
-    #         device_name: Nombre del dispositivo
-    #         property_name: Nombre de la propiedad
-    #         callback: Función a ejecutar cuando cambie la propiedad
-    #     """
-    #     if not self.server.is_connected():
-    #         raise ConnectionError("El servidor no está conectado.")
-    #     self.server.server.addPropertyListener(device_name, property_name, callback)
-
-    def parseProperties(self, xml_properties: ElementTree):
-        """Creación o actualización de propiedades en el dispositivo INDIGO, esto se hace con una llamada recursiva a parseElements de la clase INDIGO_Element
+    
+    def parse_properties(self, xml_properties: Element):
+        """Actualiza la propiedad y sus elementos con el XML pasado.
 
         Args:
-            properties_dict (xml.etree.ElementTree.Element): Diccionario de propiedades a crear o actualizar
-
-        Returns:
-            xml.etree.ElementTree.Element: Elemento XML que representa la propiedad
+            xml_properties (xml.etree.ElementTree.Element): Elemento XML con los datos de la propiedad
         """
-        self.lastUpdate = time.time()
-        self.attributes = {**self.attributes,**xml_properties.attrib} #Unimos los elementos xml
+        
+        self.last_update = time.time()
+        self.attributes = {**self.attributes,**xml_properties.attrib} #Unimos los atributos de la propiedad junto con los elementos xml
         
         for elem in xml_properties.findall("./"):
             name_elem = elem.get('name')
-            if (not name_elem in self.elements):
+            if name_elem not in self.elements:
                 self.elements[name_elem] = INDIGO_Element(elem, self)
-            self.elements[name_elem].parseElements(elem)
+            self.elements[name_elem].parse_elements(elem)
 
-    def getName(self) -> str:
-        """Getter del nombre de la propiedad
+    def get_name(self) -> str | None:
+        """Obtiene el nombre de la propiedad.
 
         Returns:
-            str: Nombre de la propiedad
+            str | None: Nombre de la propiedad
         """
         return self.name
     
-    def getElement(self, name: str) -> INDIGO_Element:
-        """Getter de un elemento dentro de la propiedad actual por su nombre
+    def get_element(self, name: str) -> INDIGO_Element:
+        """Obtiene un elemento específico por su nombre.
 
         Args:
             name (str): Nombre del elemento a buscar
 
         Returns:
-            INDIGO_Element: Instancia del elemento
+            INDIGO_Element: Instancia del elemento solicitado
         """
         return self.elements[name]
     
-    def getElements(self) -> dict:
-        """Getter de todos los elementos de la propiedad actual
+    def get_elements(self) -> dict:
+        """Obtiene todos los elementos de la propiedad.
 
         Returns:
-            dict: Diccionario de todos los elementos de esta propiedad
+            dict: Diccionario con todos los elementos de la propiedad
         """
         return self.elements
     
-    def getType(self) -> str:
-        """Getter del tipo de la propiedad ("Text", "Number", "Switch", "Light", "BLOB")
+    def get_type(self) -> str | None:
+        """Obtiene el tipo de la propiedad.
 
         Returns:
-            str: tipo de la propiedad
+            str | None: Tipo de la propiedad (Text, Number, Switch, Light, BLOB)
         """
         return self.type
     
-    def getFromAttributes(self, name: str) -> str:
-        """ Getter del valor de un atributo de la propiedad
-        La propiedad tiene algunos atributos como:
-            - group: Grupo al que pertenece la propiedad
-            - label: Etiqueta de la propiedad
-            - perm: Permiso (rw, ro) de la propiedad
-            - state: Estado de la propiedad
-            - rule: Regla de la propiedad 
-            - timeout: Timeout de la propiedad
-            - timestamp: Timestamp de la propiedad      
-            - message: Mensaje de la propieddad
-            - light: atributo light para saber si es una propiedad light      
-            ... (COMPLETAR)
+    def get_from_attributes(self, name: str) -> str:
+        """Obtiene el valor de un atributo específico de la propiedad.
         
+        Los atributos comunes incluyen:
+        
+        - group: Grupo al que pertenece la propiedad
+        - label: Etiqueta descriptiva de la propiedad
+        - perm: Permisos (rw=lectura/escritura, ro=solo lectura)
+        - state: Estado actual de la propiedad
+        - rule: Regla de validación (OneOfMany, AtMostOne, etc.)
+        - timeout: Tiempo límite para operaciones
+        - timestamp: Marca temporal de la última actualización
+        - message: Mensaje descriptivo o de error
+
         Args:
             name (str): Nombre del atributo a obtener
+            
         Returns:
-            str: Valor del atributo
+            str: Valor del atributo o mensaje de error si no existe
         """
         if (name.lower() in self.attributes):
             return self.attributes[name]
         
         return "No existe este atributo en esta propiedad."
     
-    def getAttributes(self) -> dict:
-        """Getter de todos los atributos particulares de la propiedad actual
+    def get_attributes(self) -> dict:
+        """Obtiene todos los atributos de la propiedad.
 
         Returns:
-            dict: Diccionario de atributos de la propiedad actual
+            dict: Diccionario con todos los atributos de la propiedad
         """
         return self.attributes 
     
-    def getDevice(self):
-        """Getter del device donde se incluye esta propiedad
+    def get_device(self) -> "INDIGO_Device":
+        """Obtiene el dispositivo que contiene esta propiedad.
 
         Returns:
-            INDIGO_Device: Instancia del dispositivo INDIGO donde está registrada esta propiedad
+            INDIGO_Device: Dispositivo INDIGO que contiene esta propiedad
         """
         return self.device
     
-    def sendValuesToServer(self, values: dict):
-        """Función que envía nuevos valores (o los actualiza) de los elementos que componen la propiedad al servidor 
+    def send_values_to_server(self, values: dict):
+        """Envía nuevos valores de los elementos al servidor INDIGO.
 
         Args:
-            values (dict): Diccionario de los nombres (key) y valores (value) de los elementos que forman la propiedad
+            values (dict): Diccionario con nombres de elementos como claves 
+                          y sus nuevos valores como valores -> [name, INDIGO_Element]
         """
-        server : INDIGO_Server = self.device.getServer()
-        message = f"<new{self.type}Vector device={self.device.get('name')} name='{self.name}'>\n"
+        server : INDIGO_Server = self.device.get_server()
+        message = f"<new{self.type}Vector device={self.device.get_name()} name='{self.name}'>\n"
         
         match self.type:
             case "BLOB":
                 for name, value in values.items():
-                    server.downloadImage(value)
+                    server.download_image(value)
         
             case "Switch":
-                switchesOn = 0
+                switches_on = 0
                 for ele_name, ele_value in values.items():
                     if ele_value == "On":
-                        switchesOn+=1
+                        switches_on+=1
                     message += f"   <one{self.type} name='{ele_name}' target='{ele_value}'>{ele_value}</one{self.type}>\n"
             
-                rule = self.get('rule')
-                if rule == "OneOfMany":
-                    if switchesOn != 1:
-                        raise("\nError: Sólo se puede seleccionar un único elemento Switch\n")
-                elif rule == "AtMostOne":
-                    if switchesOn > 1:
-                        raise("\nError: Sólo se puede seleccionar uno o ningún elemento Switch")
+                rule = self.get_from_attributes('rule')
+                if rule == "OneOfMany" and switches_on != 1:
+                        raise RuntimeError("\nError: Sólo se puede seleccionar un único elemento Switch\n")
+                elif rule == "AtMostOne" and  switches_on > 1:
+                    raise RuntimeError("\nError: Sólo se puede seleccionar uno o ningún elemento Switch")
         
             case "Text":
-                if self.getAttributes('perm') == "ro":
-                    raise("Error: Este elemento sólo se puede leer, no se puede escribir")
+                if self.get_from_attributes('perm') == "ro":
+                    raise PermissionError("Error: Este elemento sólo se puede leer, no se puede escribir")
                 else:
                     for ele_name, ele_value in values.items():
                         message += f"   <one{self.type} name='{ele_name}' target='{ele_value}'>{ele_value}</one{self.type}>\n"
             
             case "Number":
                 for ele_name, ele_value in values.items():
-                    element = self.GetElement(ele_name)
+                    element = self.get_element(ele_name)
                     
-                    if(float(ele_value) < float(element.getAttribute("Min")) or float(ele_value) > float(element.getAttribute("Max"))):
-                        raise("Error: El valor está fuera del rango permitido")    
+                    if(float(ele_value) < float(element.get_from_attributtes("min")) or float(ele_value) > float(element.get_from_attributtes("max"))):
+                        raise ValueError("Error: El valor está fuera del rango permitido")    
                     message += f"   <one{self.type} name='{ele_name}' target='{ele_value}'>{ele_value}</one{self.type}>\n"
 
         message += f"</new{self.type}Vector>\n"
         
-        server.send(message)
+        server.send_values(message)
     
     
 class INDIGO_Device:
+    """Clase que representa un dispositivo registrado en el servidor INDIGO.
     
-    name = None
-    server = None
-    properties = None
-        
-    def __init__(self, name: str, server: str):
-        """Constructor de la clase dispositivo en el servidor INDIGO
+    Un dispositivo INDIGO puede ser cualquier instrumento astronómico como
+    monturas, cámaras, ruedas de filtros, enfocadores, etc. Cada dispositivo
+    contiene múltiples propiedades que definen su estado y configuración.
+    
+    Attributes:
+        name (str): Nombre único del dispositivo
+        server (INDIGO_Server): Referencia al servidor INDIGO donde está registrado
+        properties (dict): Diccionario de propiedades del dispositivo
+    """
+    
+    def __init__(self, name: str, server: "INDIGO_Server"):
+        """Constructor de la clase INDIGO_Device.
 
         Args:
             name (str): Nombre del dispositivo
-            server (str): Instancia del servidor
-            properties (dict): Diccionario de propiedades en el dispositivo actual. Tiene el nombre de la propiedad como clave y the INDIGO_Property como valor
+            server (INDIGO_Server): Instancia del servidor INDIGO
         """
         self.name=name
         self.server = server
         self.properties={}
         
-    def __str__(self):
+    def __str__(self) -> str:
+        """Listado de los datos del dispositivo.
+        
+        Returns:
+            str: Descripción de los elementos del dispositivo.
+        """
+        
         properties_str = "\n    ".join([str(prop) for prop in self.properties.values()])
         return (f"\nINDIGO_Device("
             f"\n  name={self.name}"
-            f"\n  server={self.server.getName() if hasattr(self.server, 'getName') else str(self.server)}"
+            f"\n  server={self.get_server().get_name() if hasattr(self.server, 'get_name') else str(self.server)}"
             f"\n  properties=[\n    {properties_str}\n  ]"
             f")")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Representación o descripción del dispositivo.
+        
+        Returns:
+            str: Listado con los elementos del dispositivo.
+        """
         return self.__str__()
   
-    def getServer(self):
-        """Getter de server del dispositivo
+    def get_server(self) -> "INDIGO_Server":
+        """Obtiene el servidor INDIGO asociado al dispositivo.
 
         Returns:
-            IndigoSerevr: Instancia del Servidor de INDIGO 
+            INDIGO_Server: Instancia del servidor INDIGO
         """
         return self.server
     
-    
-    def getServer(self):
-        """Getter de server del dispositivo
+    def get_properties(self) -> dict:
+        """Obtiene todas las propiedades del dispositivo.
 
         Returns:
-            IndigoSerevr: Instancia del Servidor de INDIGO 
-        """
-        return self.server
-    
-    def getServerStr(self) -> str:
-        """Getter de server del dispositivo
-
-        Returns:
-            IndigoSerevr: Instancia del Servidor de INDIGO 
-        """
-        return str(self.server)
-    
-    def getProperties(self) -> dict:
-        """Getter de property del dispositivo
-
-        Returns:
-            dict: Diccionario de propiedades registradas en el dispositivo
+            dict: Diccionario de propiedades -> [nombre, INDIGO_Property]
         """
         return self.properties
     
-    def getPropertyByName(self, propertyName: str) -> INDIGO_Property:
-        """Getter de property del dispositivo por su nombre
+    def get_property_by_name(self, property_name: str) -> INDIGO_Property:
+        """Obtiene una propiedad específica por su nombre.
 
         Args:
-            propertyName (str): Nombre dle dispositivo
+            property_name (str): Nombre de la propiedad
 
         Returns:
-            INDIGO_Property: Propiedad de DeviceManager
+            INDIGO_Property: Propiedad solicitada
         """
-        return self.properties[propertyName]
+        return self.properties[property_name]
     
-    def getName(self) -> str:
-        """Getter del nombre del dispositivo 
+    def get_name(self) -> str:
+        """Obtiene el nombre del dispositivo.
 
         Returns:
             str: Nombre del dispositivo
         """
         return self.name
     
-    def parseProperty(self, prop: ElementTree):
-        """Función que añade o modifica el valor de una propiedad (y sus respectivos elementos llamando a la función parseElements)
+    def parse_property(self, prop: Element):
+        """Añade o actualiza una propiedad del dispositivo.
 
         Args:
-            prop (ElementTree): Propiedad a añadir o modificar
+            prop (ElementTree): Elemento XML que representa la propiedad
         """
-        nameProp = prop.get('name')
+        name_prop = prop.get('name')
         
-        if nameProp not in self.properties:
-            self.properties[nameProp] = INDIGO_Property(prop, self)
+        if name_prop not in self.properties:
+            self.properties[name_prop] = INDIGO_Property(prop, self)
 
-        self.properties[nameProp].parseProperties(prop)
+        self.properties[name_prop].parse_properties(prop)
         
-    def deleteProperty(self, prop: INDIGO_Property):
-        """Función que elimina una propiedad o todas las propiedades (según si la propiedad pasada tiene el atributo nombre o no)
+    def delete_property(self, prop: INDIGO_Property):
+        """Elimina una propiedad específica o todas las propiedades.
 
         Args:
-            prop (INDIGO_Property): Propiedad o propiedades a eliminar del dispositivo
+            prop (ElementTree): Elemento XML con información de la propiedad a eliminar
         """
-        if "name" in prop.getAttributes():
-            nameProp = prop.getAttribute("name")
-            if nameProp in self.properties[nameProp]:
-                del self.properties[nameProp]
+        if "name" in prop.get_attributes():
+            name_prop = prop.get_from_attributes("name")
+            if name_prop in self.properties[name_prop]:
+                del self.properties[name_prop]
         
         else:
+            # Si no se especifica la propiedad, se eliminan todas las propiedades del dispositivo
             self.properties.clear()
             
 
 class INDIGO_Server:
-    """Clase que representa la conexión con el servidor INDIGO
-
-    name: Nombre del servidor
-    host: Dirección IP del servidor  
-    port: Puerto del listerner para escuchar al servidor INDIGO (por defecto es 7624)
-    sock: Variable que contiene el socket de conexión con el servidor
-    endReading: Chequea si el socket ha terminado de leer todos los datos del servidor
-    thread: Esto es una variable que contiene una hebra que ejecuta en bucle readMessages independientemente del main
-    devices: Un diccionario de los dispositivos del servidor (key: nombre, value: INDIGO_Device)
-    wait: Coloca un tiempo de espera para ejecutar las funciones
-    blobMode: Se indica si el modo del Blob es 'Never' o 'URL'
-    devicePropertyListeners: Lista de los listeners para las propiedades
-    messageListeners: Lista de los listeners para los mensajes
-    serverListeners: Lista de listeners para el servidor
-    """
-    name = None
-    host = None
-    port = -1
-    sock = None
-    endReading = False
-    thread = None
-    devices = None
-    wait = 1
-    blobMode = None
+    """"Clase que gestiona la conexión y comunicación con un servidor INDIGO.
     
-    devicePropertyListeners = None
-    # messageListeners = None
-    serverListeners = None
-        
+    Esta clase maneja la conexión (que es sobre TCP/IP) con el servidor INDIGO, 
+    el intercambio de mensajes en formato XML, la gestión de dispositivos y 
+    la implantación de listeners para eventos que afecten al servidor.
+    
+    Attributes:
+        name (str): Nombre identificativo del servidor.
+        host (str): Dirección IP o hostname del servidor.
+        port (int): Puerto de conexión (por defecto 7624).
+        sock (socket.socket): Socket de conexión TCP.
+        endReading (bool): Flag para controlar el bucle de lectura.
+        thread (threading.Thread): Hilo para lectura asíncrona de mensajes.
+        devices (dict): Diccionario de dispositivos conectados.
+        wait (int): Tiempo de espera para operaciones.
+        blobMode (str): Modo de manejo de datos BLOB (NEVER/URL).
+        devicePropertyListeners (dict): Listeners para propiedades de dispositivos.
+        serverListeners (dict): Listeners para eventos del servidor.
+    """        
     def __init__(self, name: str, host: str, port: int):
         """
         Initicializa la conexión con el servidor INDIGO.
+        
         Args:
-            name (str): Nombre de la instancia del servidor INDIGO
-            host (str): Dirección del servidor INDIGO
-            port (int): Puerto del servidor INDIGO
+            name (str): Nombre identificativo de la instancia del servidor.
+            host (str): Dirección IP o hostname del servidor INDIGO.
+            port (int, optional): Puerto del servidor INDIGO. Por defecto 7624.
         """
         self.name = name
         self.host = host
         self.port = port
         self.sock = None
-        self.blobMode = "NEVER"
-        self.devices={}
-        self.devicePropertyListeners = {}
-        # self.messageListeners = {}
-        self.serverListeners = {}
+        self.end_reading = False
+        self.thread = None
+        self.devices = {}
+        self.wait = 1
+        self.blob_mode = "NEVER"
+        self.device_property_listeners = {}
+        self.server_listeners = {}
     
-    def __str__(self):
-        devices_str = "\n    ".join([str(device) for device in self.devices.values()])
-        return (f"\nINDIGO_Server("
-            f"\n  name={self.name}"
-            f"\n  host={self.host}"
-            f"\n  port={self.port}"
-            f"\n  blobMode={self.blobMode}"
-            f"\n  devices=[\n    {devices_str}\n  ]"
-            f")")
+    def __str__(self) -> str:
+        """Listado de los datos del servidor.
+        
+        Returns:
+            str: Descripción de los elementos del servidor.
+        """
+        
+        devices_str = "\\n    ".join([str(device) for device in self.devices.values()])
+        return (f"\\nINDIGO_Server("
+                f"\\n  name={self.name}"
+                f"\\n  host={self.host}"
+                f"\\n  port={self.port}"
+                f"\\n  blobMode={self.blob_mode}"
+                f"\\n  devices=[\\n    {devices_str}\\n  ]"
+                f")")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Representación o descripción del servidor.
+        
+        Returns:
+            str: Listado con los elementos del servidor.
+        """
         return self.__str__()
                 
     def connect(self):
-        """Crea una conexión con el servidor usando un socket. Lanzamos una hebra que lea en bucle los mensajes del servidor
-        y finalmente manda un getProperties para conseguir todos los dispositivos y propiedades que hay
+        """Establece la conexión con el servidor INDIGO.
+        
+        Crea un socket TCP, inicia el hilo de lectura de mensajes y
+        solicita la lista inicial de propiedades del servidor
+        (primer mensaje de descubrimiento que se hace siempre getProperties).
         """
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.host, self.port))
-            self.sock.settimeout(.01)
-            if self.sock != None:
-                self.thread = threading.Thread(target=self.readMessages, daemon = True)
+            self.sock.settimeout(0.01)
+            
+            if self.sock is not None:
+                self.thread = threading.Thread(target=self.read_messages, daemon = True)
                 self.thread.start()
             else:
-                raise("Error: No Connection")
+                raise ConnectionError("Error: No se pudo establecer la conexión")
             
-            self.sendGetProperties()
+            self.send_get_properties()
         
         except Exception as e:
-            raise(f"Error connecting to server: {str(e)}")
+            raise ConnectionError(f"Error conectando al servidor: {str(e)}")
         
-    def addServerListener(self, listener_function):
-        """Función que permite añadir Listeners al propio servidor 
+    def add_server_listener(self, listener_function):
+        """Añade un listener para eventos del servidor.
 
         Args:
-            listener_function (): Variable con una función que se ejecutará cuando el listener se active
+            listener_function (callable): Función a ejecutar cuando ocurra un evento del servidor
         """
         name = self.name
-        if not(name in self.serverListeners):
-            self.serverListeners[name]=[]
+        if name not in self.server_listeners:
+            self.server_listeners[name]=[]
             
-        self.serverListeners[name].append(listener_function)
+        self.server_listeners[name].append(listener_function)
     
     
-    def addDevicePropertyListener(self, deviceName: str, propertyName:str, listener_function):
-        """Función que permite añadir Listeners a alguna propiedad de un dispositivo
+    def add_device_property_listener(self, device_name: str, property_name:str, listener_function):
+        """Añade un listener para cambios en una propiedad específica.
 
         Args:
-            listener_function (): Variable con una función que se ejecutará cuando el listener se active
+            device_name (str): Nombre del dispositivo
+            property_name (str): Nombre de la propiedad
+            listener_function (callable): Función a ejecutar cuando cambie la propiedad
         """
-        name = deviceName + '@' + propertyName
+        name = device_name + '@' + property_name
          
-        if not(name in self.devicePropertyListeners):
-            self.devicePropertyListeners[name]=[]
+        if name not in self.device_property_listeners:
+            self.device_property_listeners[name]=[]
             
-        self.devicePropertyListeners[name].append(listener_function)
-    
-    
-    # def addMessageListener(self, deviceName: str, listener_function: ):
-    #     """Función que permite añadir Listeners a los mensajes que llegan del servidor INDIGO
+        self.device_property_listeners[name].append(listener_function)
 
-    #     Args:
-    #         listener_function (function): Variable con una función que se ejecutará cuando el listener se active
-    #     """
-    #     name = deviceName
-         
-    #     if not(name in self.messageListeners):
-    #         self.messageListeners[name]=[]
-            
-    #     self.messageListeners[name].append(listener_function)
+    def switch_blob_mode(self):
+        """Función que alterna el valor del modo BLOB del servidor de 'Never' a 'URL' (de la imagen a descargar)."""
+        self.blob_mode = "URL" if self.blob_mode == "NEVER" else "NEVER"    
     
-
-    def SwitchBLOB(self):
-        """
-        Función que cambia el valor de BLOB del servidor en general de 'Never' a 'URL' de la imagen a descargar
-        """
-        self.blobMode != self.blobMode
-    
-    def sendBLOBMessage(self, device: str, property: str):
-        """Manda un mensaje al servidor para cambiar el BLOBMode de una propiedad en específico dentro de un dispositivo en específico
+    def send_blob_message(self, device: str, property: str):
+        """Manda un mensaje al servidor para cambiar el BLOBMode de una propiedad en específico dentro de un dispositivo registrado.
 
         Args:
             device (str): Nombre del dispositivo donde se encuentra la propiedad 
             property (str): Nombre de la propiedad a cambiar el valor
         """
-        if self.blobMode == "URL":
-            prop: INDIGO_Property = self.getPropOfDevice(device, property)
-            
-            if prop != None and prop.getType() == "BLOB":
-                self.sendValues(f"<enableBLOB device='{device}' name='{property}'>{self.blobMode}</enableBLOB>")
+        if self.blob_mode == "URL":
+            prop_dev = self.get_prop_of_device(device, property)
+            if(prop_dev is not None):
+                prop: INDIGO_Property = prop_dev
+                if prop.get_type() == "BLOB":
+                    self.send_values(f"<enableBLOB device='{device}' name='{property}'>{self.blob_mode}</enableBLOB>")
             else:
-                raise("Error: Esta propiedad no es de tipo BLOB")
+                raise ConnectionError("Error: Esta propiedad no es de tipo BLOB")
         else:
-            raise("Error: Se está intentando enviar un mensaje BLOB con BLOB del servidor general en NEVER")
+            raise ConnectionError("Error: Se está intentando enviar un mensaje BLOB con BLOB del servidor general en NEVER")
         
     
-    def readMessages(self):
-        """Función que permite leer en un bucle continuamente los mensajes recibidos desde el servidor.
-        Para ello, se utiliza un parser XML(esto se usa para parsear al mismo estilo que vienen los mensajes que llegan desde el servidor)
-        para leer los mensajes y se ejecutan los listeners correspondientes
+    def read_messages(self):
+        """Lee mensajes del servidor de forma continua en un hilo independiente del hilo principal.
+        
+        Utiliza un parser XML para procesar los mensajes entrantes y
+        ejecuta los listeners correspondientes cuando se detectan cambios.
         """
-        parser= ElementTree.XMLPullParser(['end'])
-
+        parser = XMLPullParser(['end'])
+        # Inicializar el parser con una raíz
         parser.feed("<xml>\n")
 
-        while not self.endReading and self.isConnected():
+        while not self.end_reading and self.is_connected():
             msg= ""
 
             try:
-                msg= self.sock.recv(500000).decode("UTF-8")
-            except Exception as e:
+                # Verificar que el socket existe antes de usar recv
+                if self.sock is not None:
+                    msg= self.sock.recv(500000).decode("UTF-8")
+            except Exception:
                 pass
 
-            if(msg != ""):
+            if msg != "":
                 parser.feed(msg)
-                for event, elem in parser.read_events():
-                    if elem.tag == "defLightVector":
-                        print("This a light")
-                    if (elem.tag == "defTextVector") or (elem.tag == "defNumberVector") or (elem.tag == "defSwitchVector") or (elem.tag == "defLightVector") or (elem.tag == "defBLOBVector") or (elem.tag == "setTextVector") or (elem.tag == "setNumberVector") or (elem.tag == "setSwitchVector") or (elem.tag == "setLightVector") or (elem.tag == "setBLOBVector"):
-                        dev = self.getDeviceByName(elem.get('device'))     
-                        dev.parseProperty(elem)
-                        prop = dev.getPropertyByName(elem.get('name'))
-                        name= dev.getName() + "@" + prop.getName()
+                for event_data in parser.read_events():
+                    # event_data puede ser una tupla de diferentes tamaños
+                    if len(event_data) == 1:
+                        elem = event_data
+                        # Verificar que elem no es None y tiene el método get
+                        if elem.tag in ["defTextVector", "defNumberVector", "defSwitchVector", 
+                                "defLightVector", "defBLOBVector", 
+                                "setTextVector", "setNumberVector", "setSwitchVector", 
+                                "setLightVector", "setBLOBVector"]:
+                                # Verificar que elem.get('device') no es None
+                                device_name = elem.get('device')
+                                if device_name is not None:
+                                    dev = self.get_device_by_name(device_name)
+                                    dev.parse_property(elem)
+                                    # Verificar que elem.get('name') no es None
+                                    prop_name = elem.get('name')
+                                    if prop_name is not None:
+                                        prop = dev.get_property_by_name(prop_name)
+                                        if prop.get_name() is not None: 
+                                        name = device_name + "@" + prop_name
 
-                        if name in self.devicePropertyListeners:
-                            for listener in self.devicePropertyListeners[name]:
-                                listener(prop)
+                                        if name is not None and name in self.device_property_listeners:
+                                            for listener in self.device_property_listeners[name]:
+                                                listener(prop)
                                 
-                    elif(elem.tag == "delProperty"):
-                        self.getDeviceByName(elem.get('device')).deleteProperty(elem)
-                    
-                    elif(elem.tag == "message"):
-                        self.parseMessage(elem)
+                        elif elem.tag == "delProperty":
+                            device_name = elem.get('device')
+                            if device_name is None:
+                                continue
+                            self.get_device_by_name(device_name).delete_property(elem)
+                        
+                        elif elem.tag == "message":
+                            self.parse_message(elem)
                         
         
-        if self.isConnected():
-            # Call a function with the execute of server's listener  
-            if(self.name in self.serverListeners):
-                for listener in self.serverListeners[self.name]:
+        if self.is_connected() and self.name in self.server_listeners: 
+                for listener in self.server_listeners[self.name]:
                     listener()                
                 
-    def parseMessage(self, xml_message: ElementTree):
-        """Función que parsea un mensaje entero (con dispositivos y propiedades) y añade los dispositivos y propiedades al diccionario de dispositivos
+    def parse_message(self, xml_message: Element):
+        """Procesa un mensaje XML recibido del servidor.
 
         Args:
             xml_message (ElementTree): Mensaje XML del servidor
         """
-        deviceName = xml_message.get('device')
-        if not deviceName in self.devices:
-            self.devices[deviceName] = INDIGO_Device(deviceName,self)
+        device_name = xml_message.get('device')
+        if device_name is not None:
+            device = self.get_device_by_name(device_name)
+            if device_name not in self.devices:
+                self.devices[device_name] = INDIGO_Device(device_name, device.get_server())
+                self.devices[device_name].parse_property(xml_message)
         
-        self.devices[deviceName].parseProperty(xml_message)
-        
-    def getDeviceByName(self, deviceName: str) -> INDIGO_Device:
-        """Función que permite conseguir un objeto dispositivo a partir de su nombre
+    def get_device_by_name(self, device_name: str) -> INDIGO_Device:
+        """Obtiene un dispositivo buscando por su nombre,
+            en caso de que no exista, lo crea.
 
         Args:
-            deviceName (str): Nombre del dispositivo a buscar
+            device_name (str): Nombre del dispositivo
 
         Returns:
-            INDIGO_Device: Objeto dispositivo
+            INDIGO_Device: Instancia del dispositivo
         """
-        if not deviceName in self.devices:
-            self.devices[deviceName] = INDIGO_Device(deviceName,self)
+        
+        if device_name not in self.devices:
+            self.devices[device_name] = INDIGO_Device(device_name,self)
             
-        return self.devices[deviceName]
+        return self.devices[device_name]
 
-    def getBLOBMode(self) -> str:
-        """Función para coneguir el valor de BLOBMode
+    def get_blob_mode(self) -> str:
+        """Obtiene el modo BLOB actual.
 
         Returns:
-            str : Valor del BLOBMode (URL o Never)
+            str: Modo BLOB actual (URL o NEVER)
         """
-        return self.blobMode
+        return self.blob_mode
     
-    def getDevices(self) -> dict:
-        """Función que devuelve el diccionario de dispositivos registrados en el servidor
+    def get_devices(self) -> dict:
+        """Obtiene todos los dispositivos registrados en el servidor.
 
         Returns:
-            dict: Diccionario de dispositivos (key: nombre del dispositivo, value: INDIGO_Device)
+            dict: Diccionario de dispositivos -> [nombre, INDIGO_Device]
         """
         return self.devices
     
-    def getName(self) -> str:
-        """Getter del nombre del servidor INDIGO
+    def get_name(self) -> str:
+        """Obtiene el nombre del servidor.
 
         Returns:
             str: Nombre del servidor
         """
         return self.name
     
-    def getHost(self) -> str:
-        """Getter de la dirección IP del servidor INDIGO
+    def get_host(self) -> str:
+        """Obtiene la dirección IP o hostname del servidor.
 
         Returns:
-            str: Dirección IP del servidor
+            str: Dirección IP o hostname del servidor
         """
-        return self.host
+        return str(self.host)
 
-    def getPort(self) -> str:
-        """Getter del puerto del servidor INDIGO
+    def get_port(self) -> int:
+        """Obtiene el puerto del servidor.
 
         Returns:
-            str: Puerto del servidor
+            int: Puerto del servidor
         """
         return self.port 
     
-    def sendGetProperties(self):
-        """Función que manda un mensaje al servidor para conseguir todos los dispositivos y propiedades que hay (mensaje de descubrimiento de propiedades)
+    def send_get_properties(self):
+        """Solicita al servidor la lista de todas propiedades (y sus dispositivos) que hay en el servidor 
+        (Primer mensaje que se manda al conectarse al servidor).
         """
-        self.sendValues("<getProperties version='2.0' />")
+        self.send_values("<getProperties version='2.0' />")
         
         
-    def sendValues(self, message:str):
-        """Función que envía valores (a través de mensajes) al servidor INDIGO 
+    def send_values(self, message: str):
+        """Envía un mensaje al servidor INDIGO.
 
         Args:
-            message (str): Mensaje a enviar al servidor
+            message (str): Mensaje XML a enviar al servidor
         """
         message = message.encode("ASCII")
         if self.sock:
             self.sock.sendall(message)
         
         
-    def isConnected(self) -> bool:
+    def is_connected(self) -> bool:
+        """Verifica si la conexión con el servidor está activa.
+
+        Returns:
+            bool: True si está conectado, False en caso contrario
+        """
         if self.sock is None:
             return False
         try:
+            # Intenta recibir datos sin bloquear
             data = self.sock.recv(16, socket.MSG_PEEK)
             return len(data) != 0
         except (socket.timeout, BlockingIOError):
             return True  # No hay datos, pero el socket está abierto
-        except (ConnectionResetError, OSError):
+        except OSError:
             return False  # El socket está cerrado o la conexión se perdió
         
         
-    def getPropOfDevice(self, deviceName:str, property:str) -> INDIGO_Property:
-        """ Función que permite conseguir una propiedad de un dispositivo a partir del nombre del dispositivo y el nombre de la propiedad
+    def get_prop_of_device(self, device_name: str, property_name: str) -> INDIGO_Property | None:
+        """Obtiene una propiedad específica de un dispositivo.
 
         Args:
-            deviceName (str): Nombre del dispositivo
-            property (str): Nombre de la propiedad
+            device_name (str): Nombre del dispositivo
+            property_name (str): Nombre de la propiedad
 
         Returns:
-            INDIGO_Property: Propiedad del dispositivo
+            INDIGO_Property | None: Propiedad solicitada o None si no existe
         """
-        if(deviceName in self.devices):
-            dev :INDIGO_Device = self.devices[deviceName]
-            return dev.getPropertyByName(property)
+        if(device_name in self.devices):
+            dev : INDIGO_Device = self.devices[device_name]
+            return dev.get_property_by_name(property_name)
         return None
         
     def disconnect(self):
-        """
-        Cierra la conexión con el servidor INDIGO de manera limpia.
-        """
-        if not(self.sock != None):
-            self.endReading = True
+        """Cierra la conexión con el servidor INDIGO de manera limpia."""
+        if self.sock is not None:
+            self.end_reading = True
             if self.sock:
                 self.sock.close()
                 self.sock = None
             if self.thread:
                 self.thread.join(timeout=2.0)
 
-    def downloadImage(self, path:str):
-        """ Función que descarga una imagen a partir de la url que se le pasa como parámetro.
-        La url se construye a partir de la dirección IP y el puerto del servidor INDIGO, y la url que se le pasa como parámetro.
-        La imagen se guarda en la carpeta images del directorio actual, y se le pone el mismo nombre que la imagen original.
-        La imagen se muestra en una ventana de matplotlib.
+    def download_image(self, path: str):
+        """Descarga una imagen FITS desde el servidor y la muestra.
+        
+        Construye la URL completa, descarga la imagen en la carpeta 'images'
+        y la muestra usando matplotlib.
+
         Args:
-            path (str): URL de la imagen a descargar
+            path (str): Ruta relativa de la imagen en el servidor
         """
         if path:
-            url = "http://" + self.getHost() + ":" + self.getPort() + path
+            url = "http://" + self.get_host() + ":" + str(self.get_port()) + path
             print("La url construida es: ", url)
-            nameImage = path.split("/")[-1]            
-            downloadPath = os.getcwd() + "/images"
+            name_image = path.split("/")[-1]            
+            download_path = os.getcwd() + "/images"
             
-            if not (os.path.exists(downloadPath)):
-                os.mkdir(downloadPath)
+            if not (os.path.exists(download_path)):
+                os.mkdir(download_path)
             
             #Descargamos la imagen en la carpeta images
-            downloadPath += "/" + nameImage
+            download_path += "/" + name_image
             #Descargamos la información que haya en la url
             request = requests.get(url) 
-            with open(downloadPath, "wb") as file:
+            with open(download_path, "wb") as file:
                 file.write(request.content)
             
             #Pintamos la imagen descargada
-            img = fits.open(downloadPath)
-            imgData = img[0].data
+            img = fits.open(download_path)
+            img_data = img[0].data
             
-            pyplot.imshow(imgData, vmin= numpy.min(imgData), vmax=numpy.mean(imgData)*2, origin="lower")            
+            pyplot.imshow(img_data, vmin= numpy.min(img_data), vmax=numpy.mean(img_data)*2, origin="lower")            
             pyplot.show()
             
