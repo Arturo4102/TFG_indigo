@@ -793,7 +793,7 @@ class INDIGOServer:
             #Pintamos la imagen descargada
             img = fits.open(download_path)
             img_data = img[0].data
-            
-            pyplot.imshow(img_data, vmin= numpy.min(img_data), vmax=numpy.mean(img_data)*2, origin="lower")            
+            # Cambiamos los valores de img_data a tipos nativos de Python, para que no genere errores 
+            pyplot.imshow(img_data, vmin=float(numpy.min(img_data)), vmax=float(numpy.mean(img_data)*2), origin="lower")            
             pyplot.show()
             
