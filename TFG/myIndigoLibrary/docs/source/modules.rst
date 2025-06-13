@@ -1,7 +1,7 @@
-Módulos de my_indigo_library
+Módulos de myIndigoLibrary
 ============================
 
 .. toctree::
    :maxdepth: 2
 
-   my_indigo_library
+   myIndigoLibrary

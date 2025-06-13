@@ -1,4 +1,35 @@
-astropy>=5.0
-numpy>=1.20.0
-matplotlib>=3.5.0
-requests>=2.25.0
+# Librerías para astronomía y procesamiento de imágenes FITS
+astropy>=6.0.0
+numpy>=1.26.0
+matplotlib>=3.6.0
+
+# Librerías para comunicación HTTP y descarga de archivos
+requests>=2.31.0
+
+# Librerías estándar de Python (no necesitan instalación)
+# tkinter - Incluido en Python estándar
+# threading - Incluido en Python estándar  
+# socket - Incluido en Python estándar
+# xml.etree.ElementTree - Incluido en Python estándar
+# datetime - Incluido en Python estándar
+# os - Incluido en Python estándar
+# sys - Incluido en Python estándar
+# time - Incluido en Python estándar
+
+# Dependencias adicionales que pueden ser útiles
+# Para mejor compatibilidad con archivos FITS
+astropy-iers-data>=0.2024.1.1.0.33.39
+
+# Para documentación con Sphinx (opcional)
+sphinx>=7.2.0
+sphinx-rtd-theme>=2.0.0
+
+# Para testing (opcional)
+pytest>=7.4.0
+
+#Cómo usarlo este archivo requieremnts.txt?
+# Activar el entorno virtual primero
+# source env/bin/activate
+
+# Instalar todas las dependencias
+# pip install -r requirements.txt
