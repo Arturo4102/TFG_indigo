@@ -1,43 +1,74 @@
-# TFG_INDIGO
+# 🌌 TFG_INDIGO
 
-Este repositorio contiene el Trabajo de Fin de Grado (TFG) de Ingeniería Informática desarrollado por Arturo Arellano Romo, centrado en la integración de un cliente desarrollado en Python para el sistema **INDIGO**, para la gestión y control de dispositivos de dispositivos astronómicos.
+Este repositorio contiene el **Trabajo de Fin de Grado (TFG)** en Ingeniería Informática desarrollado por **Arturo Arellano Romo**, centrado en la creación de un cliente en **Python** para el sistema **[INDIGO](https://github.com/indigo-astronomy/indigo)**, utilizado para la **gestión y control de dispositivos astronómicos**.
 
-## Estructura del proyecto
+## 📁 Estructura del Proyecto
 
-La carpeta principal de trabajo es la de myIndigoLibrary, la cual contiene:
+- **`myIndigoLibrary/`**  
+  Carpeta principal del desarrollo. Contiene:
   - Código fuente de la biblioteca y la interfaz gráfica.
-  - Instrucciones detalladas para instalar y ejecutar la aplicación.
+  - Instrucciones de instalación y ejecución.
   - Requisitos y dependencias.
   - Documentación técnica y de usuario.
 
-La carpeta indigo-master, es usada para crear un servidor de pruebas que podemos levantar para usar nuestro proyecto. Esta carpeta indigo-master es un clon del repositorio oficial de Indigo: https://github.com/indigo-astronomy/indigo, pero con mejoras para que funcione.
+- **`indigo-master/`**  
+  Versión modificada del repositorio oficial de INDIGO.  
+  Se utiliza para lanzar un **servidor local de pruebas**, necesario para validar la comunicación con el cliente Python.  
+  Repositorio original: [indigo-astronomy/indigo](https://github.com/indigo-astronomy/indigo)
 
-## Descargar el repositorio
+## ⚙️ Requisitos
 
+- Python 3.8 o superior
+- pip
+- `make` (para compilar el servidor INDIGO)
+- Sistema operativo Linux (recomendado para pruebas con servidor)
+
+## 📥 Clonar el repositorio
+
+```bash
 git clone https://github.com/Arturo4102/TFG_indigo.git
 cd TFG_indigo
+````
 
-## Instalar dependencias de Python
+## 🛠️ Instalación
+
+```bash
 cd myIndigoLibrary
-(Opcional)
-  python3 -m venv env
-  source env/bin/activate
+# (Opcional) Crear entorno virtual
+python3 -m venv env
+source env/bin/activate
 
-## Instalar dependencias del proyecto
+# Instalar dependencias del proyecto
 pip install -r requirements.txt
 
-## Instalar Tkinter si se usa Linux
+# (Solo en Linux) Instalar soporte para Tkinter
 sudo apt install python3-tk
+```
+## 🚀 Ejecutar la aplicación gráfica
 
-## Ejecutar la aplicación gráfica
+```bash
 cd myIndigoLibrary/myIndigoLibrary
 python3 Cliente_INDIGO_Gui.py
+```
 
-## (Opcional) Ejecutar el servidor INDIGO para probar el Cliente_INDIGO_Gui.py
+## 🛰️ (Opcional) Lanzar servidor INDIGO de prueba
+(Este servidor simula dispositivos CCD para probar la funcionalidad del cliente.)
+```bash
 cd ../../indigo-master
 make all
 ./build/bin/indigo_server -v indigo_ccd_simulator
+```
+## 📜 Notas adicionales
+Los logs y las imágenes descargadas se guardan en el directorio desde el que se ejecuta la aplicación.
 
-## Notas adicionales
-Si se quiere generar la documentación, ve a docs y ejecuta make html.
-Los logs y las imágenes descargadas se guardarán en la carpeta donde ejecutes la aplicación.
+Para generar la documentación técnica, ve a la carpeta docs/ y ejecuta:
+```bash
+cd  myIndigoLibrary/myIndigoLibrary/docs/
+make html
+```
+
+## 👨‍💻 Autor
+Arturo Arellano Romo
+
+Universidad de Granada – Grado en Ingeniería Informática - Junio - 2025
+
