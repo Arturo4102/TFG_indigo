@@ -34,14 +34,14 @@ cd TFG_indigo
 
 ```bash
 cd myIndigoLibrary
-# (Opcional) Crear entorno virtual
+# (Opcional) Crea un entorno virtual
 python3 -m venv env
 source env/bin/activate
 
-# Instalar dependencias del proyecto
+# Instala dependencias del proyecto
 pip install -r requirements.txt
 
-# (Solo en Linux) Instalar soporte para Tkinter
+# (Solo en Linux) Instala el soporte para Tkinter
 sudo apt install python3-tk
 ```
 ## 🚀 Ejecutar la aplicación gráfica
@@ -59,9 +59,9 @@ make all
 ./build/bin/indigo_server -v indigo_ccd_simulator
 ```
 ## 📜 Notas adicionales
-Los logs y las imágenes descargadas se guardan en el directorio desde el que se ejecuta la aplicación.
+Los logs y las imágenes descargadas se guardan en el directorio desde el que se ejecuta la aplicación (myIndigoLibrary/myIndigoLibrary).
 
-Para generar la documentación técnica, ve a la carpeta docs/ y ejecuta:
+Para generar la documentación técnica, entrar a la carpeta docs/ y ejecuta:
 ```bash
 cd  myIndigoLibrary/myIndigoLibrary/docs/
 make html
