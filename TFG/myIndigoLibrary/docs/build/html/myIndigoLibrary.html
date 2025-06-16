@@ -105,7 +105,7 @@
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOElement">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">myIndigoLibrary.Cliente_INDIGO.</span></span><span class="sig-name descname"><span class="pre">INDIGOElement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOElement"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOElement" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase que representa un elemento de una propiedad de dispositivo INDIGO.</p>
+<p>Representa un elemento de una propiedad de dispositivo INDIGO.</p>
 <p>Un elemento es la unidad mínima de información dentro de una propiedad INDIGO.
 Por ejemplo, una propiedad de coordenadas puede tener elementos para
 ascensión recta y declinación.</p>
@@ -178,7 +178,7 @@ ascensión recta y declinación.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOElement.parse_elements">
 <span class="sig-name descname"><span class="pre">parse_elements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_property</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOElement.parse_elements"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOElement.parse_elements" title="Link to this definition"></a></dt>
-<dd><p>Actualiza los atributos y valor del elemento desde XML pasado como parámetro.</p>
+<dd><p>Actualiza los atributos y valor del elemento desde el XML.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xml_property</strong> (<em>xml.etree.Element.Element</em>) – Elemento XML con los nuevos datos</p>
@@ -190,11 +190,12 @@ ascensión recta y declinación.</p>
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOElement.get_name">
 <span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOElement.get_name"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOElement.get_name" title="Link to this definition"></a></dt>
 <dd><p>Obtiene el nombre del elemento.</p>
-<p>Returns:
-str or None: Nombre del elemento</p>
 <dl class="field-list simple">
-<dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str | None</p>
+<dt class="field-odd">Devuelve<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Nombre del elemento</p>
+</dd>
+<dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
+<dd class="field-even"><p>str or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -205,10 +206,10 @@ str or None: Nombre del elemento</p>
 <dd><p>Obtiene el valor del elemento.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str or None: Valor actual del elemento</p>
+<dd class="field-odd"><p>Valor actual del elemento</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns</p>
+<dd class="field-even"><p>str or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -231,16 +232,15 @@ str or None: Nombre del elemento</p>
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOElement.get_from_attributes">
 <span class="sig-name descname"><span class="pre">get_from_attributes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOElement.get_from_attributes"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOElement.get_from_attributes" title="Link to this definition"></a></dt>
 <dd><p>Obtiene el valor de un atributo específico del elemento.</p>
-<p>Los atributos comunes incluyen:</p>
-<ul class="simple">
-<li><p>label: Etiqueta descriptiva del elemento</p></li>
-<li><p>format: Formato de presentación del elemento</p></li>
-<li><p>min: Valor mínimo permitido</p></li>
-<li><p>max: Valor máximo permitido</p></li>
-<li><p>step: Incremento entre valores válidos</p></li>
-<li><p>path: Ruta de imagen (solo para propiedades BLOB)</p></li>
-<li><p>target: Valor objetivo del elemento</p></li>
-</ul>
+<p>Entre los atributos que nos encontramos tenemos:
+- name: Nombre del elemento (ejemplo: name=”WIDTH”)
+- label: Etiqueta descriptiva (ejemplo: label=”Horizontal resolution”)
+- format: Formato de presentación (ejemplo: format=”%g”)
+- min: Valor mínimo permitido (ejemplo: min=”0”)
+- max: Valor máximo permitido (ejemplo: max=”1600”)
+- step: Incremento entre valores válidos (ejemplo: step=”1”)
+- target: Valor objetivo del elemento (ejemplo: target=”0”)
+- path: Ruta de imagen o archivo BLOB (ejemplo: path=”/blob/0x5a999035ff38.fits”)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Nombre del atributo a obtener</p>
@@ -250,6 +250,9 @@ str or None: Nombre del elemento</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – Si el atributo no existe.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,7 +277,7 @@ str or None: Nombre del elemento</p>
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">myIndigoLibrary.Cliente_INDIGO.</span></span><span class="sig-name descname"><span class="pre">INDIGOProperty</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_property</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOProperty"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase que representa una propiedad de un dispositivo INDIGO.</p>
+<p>Representa una propiedad de un dispositivo INDIGO.</p>
 <p>Una propiedad agrupa elementos relacionados y define su comportamiento,
 tipo y restricciones. Los tipos de propiedades incluyen Text, Number,
 Switch, Light y BLOB.</p>
@@ -342,12 +345,34 @@ Switch, Light y BLOB.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.lastUpdate">
-<span class="sig-name descname"><span class="pre">lastUpdate</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.lastUpdate" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.last_pdate">
+<span class="sig-name descname"><span class="pre">last_pdate</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.last_pdate" title="Link to this definition"></a></dt>
 <dd><p>Timestamp de la última actualización</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.is_complete">
+<span class="sig-name descname"><span class="pre">is_complete</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.is_complete" title="Link to this definition"></a></dt>
+<dd><p>Indica si la propiedad ha sido completamente inicializada.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty._last_hash">
+<span class="sig-name descname"><span class="pre">_last_hash</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty._last_hash" title="Link to this definition"></a></dt>
+<dd><p>Hash de los valores de los elementos para detectar cambios.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
@@ -369,7 +394,7 @@ Switch, Light y BLOB.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.parse_properties">
 <span class="sig-name descname"><span class="pre">parse_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xml_properties</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOProperty.parse_properties"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.parse_properties" title="Link to this definition"></a></dt>
-<dd><p>Actualiza la propiedad y sus elementos con el XML pasado.</p>
+<dd><p>Actualiza la propiedad y sus elementos con el XML.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>xml_properties</strong> (<em>xml.etree.ElementTree.Element</em>) – Elemento XML con los datos de la propiedad</p>
@@ -405,13 +430,16 @@ Switch, Light y BLOB.</p>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOElement" title="myIndigoLibrary.Cliente_INDIGO.INDIGOElement">INDIGOElement</a></p>
 </dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – Si el elemento no existe.</p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.get_elements">
 <span class="sig-name descname"><span class="pre">get_elements</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOProperty.get_elements"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.get_elements" title="Link to this definition"></a></dt>
-<dd><p>Obtiene todos los elementos de la propiedad.</p>
+<dd><p>Obtiene todos los elementso de la propiedad.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Diccionario con todos los elementos de la propiedad</p>
@@ -428,10 +456,10 @@ Switch, Light y BLOB.</p>
 <dd><p>Obtiene el tipo de la propiedad.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str orNone: Tipo de la propiedad (Text, Number, Switch, Light, BLOB)</p>
+<dd class="field-odd"><p>Tipo de la propiedad (Text, Number, Switch, Light, BLOB)</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-even"><p>Returns</p>
+<dd class="field-even"><p>str orNone</p>
 </dd>
 </dl>
 </dd></dl>
@@ -460,6 +488,9 @@ Switch, Light y BLOB.</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Muestra<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – Si el atributo no existe.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -499,7 +530,7 @@ Switch, Light y BLOB.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>values</strong> (<em>dict</em>) – Diccionario con nombres de elementos como claves
-y sus nuevos valores como valores -&gt; [name, INDIGOElement]</p>
+y sus nuevos valores como valores</p>
 </dd>
 </dl>
 </dd></dl>
@@ -510,7 +541,7 @@ y sus nuevos valores como valores -&gt; [name, INDIGOElement]</p>
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGODevice">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">myIndigoLibrary.Cliente_INDIGO.</span></span><span class="sig-name descname"><span class="pre">INDIGODevice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGODevice"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGODevice" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Clase que representa un dispositivo registrado en el servidor INDIGO.</p>
+<p>Representa un dispositivo registrado en el servidor INDIGO.</p>
 <p>Un dispositivo INDIGO puede ser cualquier instrumento astronómico como
 monturas, cámaras, ruedas de filtros, enfocadores, etc. Cada dispositivo
 contiene múltiples propiedades que definen su estado y configuración.</p>
@@ -555,6 +586,17 @@ contiene múltiples propiedades que definen su estado y configuración.</p>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGODevice.is_initialized">
+<span class="sig-name descname"><span class="pre">is_initialized</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGODevice.is_initialized" title="Link to this definition"></a></dt>
+<dd><p>Indica si el dispositivo ha sido completamente inicializado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGODevice.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">server</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGODevice.__init__"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGODevice.__init__" title="Link to this definition"></a></dt>
@@ -589,7 +631,7 @@ contiene múltiples propiedades que definen su estado y configuración.</p>
 <dd><p>Obtiene todas las propiedades del dispositivo.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Diccionario de propiedades -&gt; [nombre, INDIGOProperty]</p>
+<dd class="field-odd"><p>Diccionario de propiedades</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -606,10 +648,10 @@ contiene múltiples propiedades que definen su estado y configuración.</p>
 <dd class="field-odd"><p><strong>property_name</strong> (<em>str</em>) – Nombre de la propiedad</p>
 </dd>
 <dt class="field-even">Devuelve<span class="colon">:</span></dt>
-<dd class="field-even"><p>Propiedad solicitada</p>
+<dd class="field-even"><p>Propiedad solicitada o None si no existe</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty" title="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">INDIGOProperty</a></p>
+<dd class="field-odd"><p><a class="reference internal" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty" title="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">INDIGOProperty</a> or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -642,7 +684,7 @@ contiene múltiples propiedades que definen su estado y configuración.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGODevice.delete_property">
 <span class="sig-name descname"><span class="pre">delete_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGODevice.delete_property"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGODevice.delete_property" title="Link to this definition"></a></dt>
-<dd><p>Elimina una propiedad específica o todas las propiedades.</p>
+<dd><p>Elimina unaa propiedad específica o todas las propiedades.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>prop</strong> (<em>ElementTree</em>) – Elemento XML con información de la propiedad a eliminar</p>
@@ -656,7 +698,7 @@ contiene múltiples propiedades que definen su estado y configuración.</p>
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">myIndigoLibrary.Cliente_INDIGO.</span></span><span class="sig-name descname"><span class="pre">INDIGOServer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">host</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>«Clase que gestiona la conexión y comunicación con un servidor INDIGO.</p>
+<p>«Gestiona la conexión y comunicación con un servidor INDIGO.</p>
 <p>Esta clase maneja la conexión (que es sobre TCP/IP) con el servidor INDIGO,
 el intercambio de mensajes en formato XML, la gestión de dispositivos y
 la implantación de listeners para eventos que afecten al servidor.</p>
@@ -769,9 +811,9 @@ la implantación de listeners para eventos que afecten al servidor.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.devicePropertyListeners">
-<span class="sig-name descname"><span class="pre">devicePropertyListeners</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.devicePropertyListeners" title="Link to this definition"></a></dt>
-<dd><p>Listeners para propiedades de dispositivos.</p>
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.serverListeners">
+<span class="sig-name descname"><span class="pre">serverListeners</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.serverListeners" title="Link to this definition"></a></dt>
+<dd><p>Listeners para eventos del servidor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -780,9 +822,20 @@ la implantación de listeners para eventos que afecten al servidor.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.serverListeners">
-<span class="sig-name descname"><span class="pre">serverListeners</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.serverListeners" title="Link to this definition"></a></dt>
-<dd><p>Listeners para eventos del servidor.</p>
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.logger" title="Link to this definition"></a></dt>
+<dd><p>Logger para registrar mensajes y errores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>MessageLogger</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.property_listeners">
+<span class="sig-name descname"><span class="pre">property_listeners</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.property_listeners" title="Link to this definition"></a></dt>
+<dd><p>Listeners para propiedades.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
@@ -806,6 +859,13 @@ la implantación de listeners para eventos que afecten al servidor.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.refresh">
+<span class="sig-name descname"><span class="pre">refresh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.refresh"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.refresh" title="Link to this definition"></a></dt>
+<dd><p>Refresca el estado del servidor, un dispositivo o una propiedad.
+Espera activamente hasta que cambie el timestamp/hash o se agote el timeout.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.connect">
 <span class="sig-name descname"><span class="pre">connect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.connect"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.connect" title="Link to this definition"></a></dt>
 <dd><p>Establece la conexión con el servidor INDIGO.</p>
@@ -821,21 +881,6 @@ solicita la lista inicial de propiedades del servidor
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>listener_function</strong> (<em>callable</em>) – Función a ejecutar cuando ocurra un evento del servidor</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener">
-<span class="sig-name descname"><span class="pre">add_device_property_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">property_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">listener_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.add_device_property_listener"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener" title="Link to this definition"></a></dt>
-<dd><p>Añade un listener para cambios en una propiedad específica.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>device_name</strong> (<em>str</em>) – Nombre del dispositivo</p></li>
-<li><p><strong>property_name</strong> (<em>str</em>) – Nombre de la propiedad</p></li>
-<li><p><strong>listener_function</strong> (<em>callable</em>) – Función a ejecutar cuando cambie la propiedad</p></li>
-</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -919,7 +964,7 @@ ejecuta los listeners correspondientes cuando se detectan cambios.</p>
 <dd><p>Obtiene todos los dispositivos registrados en el servidor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Devuelve<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Diccionario de dispositivos -&gt; [nombre, INDIGODevice]</p>
+<dd class="field-odd"><p>Diccionario de dispositivos</p>
 </dd>
 <dt class="field-even">Tipo del valor devuelto<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict</p>
@@ -1016,7 +1061,7 @@ ejecuta los listeners correspondientes cuando se detectan cambios.</p>
 <dd class="field-even"><p>Propiedad solicitada o None si no existe</p>
 </dd>
 <dt class="field-odd">Tipo del valor devuelto<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty" title="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">INDIGOProperty</a> | None</p>
+<dd class="field-odd"><p><a class="reference internal" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty" title="myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">INDIGOProperty</a> or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1026,6 +1071,17 @@ ejecuta los listeners correspondientes cuando se detectan cambios.</p>
 <span class="sig-name descname"><span class="pre">disconnect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.disconnect"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.disconnect" title="Link to this definition"></a></dt>
 <dd><p>Cierra la conexión con el servidor INDIGO de manera limpia.</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener">
+<span class="sig-name descname"><span class="pre">add_device_property_listener</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.add_device_property_listener"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener" title="Link to this definition"></a></dt>
+<dd><p>Registra un listener para una propiedad de un dispositivo.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.notify_property_listeners">
+<span class="sig-name descname"><span class="pre">notify_property_listeners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO.html#INDIGOServer.notify_property_listeners"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.notify_property_listeners" title="Link to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO.INDIGOServer.download_image">
@@ -1157,7 +1213,7 @@ astronómicos conectados al servidor.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.properties_tree">
 <span class="sig-name descname"><span class="pre">properties_tree</span></span><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.properties_tree" title="Link to this definition"></a></dt>
-<dd><p>Árbol de propiedades</p>
+<dd><p>Árbol de propeidades</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>ttk.Treeview</p>
@@ -1202,11 +1258,6 @@ astronómicos conectados al servidor.</p>
 <span class="sig-name descname"><span class="pre">CONNECTED_STYLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Connected.TLabel'</span></em><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.CONNECTED_STYLE" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.COMBO_SELECTED_EVENT">
-<span class="sig-name descname"><span class="pre">COMBO_SELECTED_EVENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'&lt;&lt;ComboboxSelected&gt;&gt;'</span></em><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.COMBO_SELECTED_EVENT" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.__init__"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.__init__" title="Link to this definition"></a></dt>
@@ -1228,8 +1279,8 @@ de la interfaz, incluyendo colores, fuentes y tamaños.</p>
 <span class="sig-name descname"><span class="pre">create_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_widgets"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_widgets" title="Link to this definition"></a></dt>
 <dd><p>Crea todos los widgets principales de la interfaz.</p>
 <p>Construye la estructura completa de la interfaz gráfica,
-incluyendo el frame principal, título, área de conexión
-y el notebook con todas las pestañas.</p>
+incluyendo el frame principal, título, área de la conexión
+y el notebook en todas las pestañas a realizar.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1237,8 +1288,8 @@ y el notebook con todas las pestañas.</p>
 <span class="sig-name descname"><span class="pre">create_connection_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_connection_frame"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_connection_frame" title="Link to this definition"></a></dt>
 <dd><p>Crea el frame de conexión al servidor INDIGO.</p>
 <p>Construye la interfaz para configurar y establecer la conexión
-con el servidor INDIGO, incluyendo campos para host, puerto
-y nombre del cliente.</p>
+con el servidor INDIGO, incluyendo campos como el host, puerto
+y el nombre del cliente.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>parent</strong> (<em>ttk.Widget</em>) – Widget padre donde se creará el frame</p>
@@ -1252,7 +1303,7 @@ y nombre del cliente.</p>
 <dd><p>Crea la pestaña de visualización de dispositivos.</p>
 <p>Construye la interfaz para mostrar la lista de dispositivos
 conectados al servidor INDIGO, incluyendo información sobre
-su estado, propiedades y última actualización.</p>
+estos, como su estado, propiedades y última actualización.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1260,8 +1311,8 @@ su estado, propiedades y última actualización.</p>
 <span class="sig-name descname"><span class="pre">create_properties_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_properties_tab"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_properties_tab" title="Link to this definition"></a></dt>
 <dd><p>Crea la pestaña de visualización de propiedades.</p>
 <p>Construye la interfaz para mostrar las propiedades de los
-dispositivos seleccionados, incluyendo detalles de cada
-propiedad y sus elementos.</p>
+dispositivos seleccionados, incluyendo los detalles de cada
+propiedad y sus respectivos elementos.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1276,10 +1327,10 @@ de propiedad seleccionada.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_images_tab">
 <span class="sig-name descname"><span class="pre">create_images_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_images_tab"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_images_tab" title="Link to this definition"></a></dt>
-<dd><p>Crea la pestaña de gestión de imágenes BLOB.</p>
-<p>Construye la interfaz para gestionar archivos BLOB (imágenes),
-incluyendo controles para habilitar propiedades BLOB,
-descargar imágenes y visualizar archivos descargados.</p>
+<dd><p>Crea la pestaña de gestión de imágenes.</p>
+<p>Construye la interfaz para gestionar archivos imágenes (archivos BLOB),
+incluyendo controles para habilitar sus propiedades,
+descargar imágenes y visualizar los archivos descargados.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1287,8 +1338,8 @@ descargar imágenes y visualizar archivos descargados.</p>
 <span class="sig-name descname"><span class="pre">create_logs_tab</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_logs_tab"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_logs_tab" title="Link to this definition"></a></dt>
 <dd><p>Crea la pestaña de logs y mensajes del sistema.</p>
 <p>Construye la interfaz para visualizar los logs de la aplicación,
-incluyendo mensajes de información, advertencias y errores,
-con opciones para limpiar y guardar los logs.</p>
+incluyendo mensajes de información, las advertencias y los errores,
+incluye como opciones limpiar y guardar los logs visualizados.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1352,15 +1403,15 @@ el TreeView con información sobre cada dispositivo.</p>
 <span class="sig-name descname"><span class="pre">refresh_combos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.refresh_combos"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_combos" title="Link to this definition"></a></dt>
 <dd><p>Actualiza los comboboxes de selección de dispositivos.</p>
 <p>Obtiene la lista de dispositivos disponibles y actualiza
-todos los comboboxes que permiten seleccionar dispositivos.</p>
+todos los comboboxes que permiten seleccionar estos dispositivos.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_blob_combos">
 <span class="sig-name descname"><span class="pre">refresh_blob_combos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.refresh_blob_combos"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_blob_combos" title="Link to this definition"></a></dt>
-<dd><p>Actualiza los comboboxes específicos para propiedades BLOB.</p>
+<dd><p>Actualiza los comboboxes específicos para propiedades de tipo BLOB.</p>
 <p>Actualiza los comboboxes utilizados en la pestaña de imágenes
-para seleccionar dispositivos con propiedades BLOB.</p>
+para seleccionar dispositivos con propiedades de tipo BLOB.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1408,6 +1459,12 @@ para seleccionar dispositivos con propiedades BLOB.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.on_property_update">
+<span class="sig-name descname"><span class="pre">on_property_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prop</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.on_property_update"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.on_property_update" title="Link to this definition"></a></dt>
+<dd><p>Listener para cambios en propiedades INDIGO.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.show_property_details">
 <span class="sig-name descname"><span class="pre">show_property_details</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">device_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.show_property_details"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.show_property_details" title="Link to this definition"></a></dt>
 <dd><p>Muestra los detalles completos de una propiedad seleccionada.</p>
@@ -1448,7 +1505,7 @@ para seleccionar dispositivos con propiedades BLOB.</p>
 <span class="sig-name descname"><span class="pre">create_property_controls</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.create_property_controls"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_property_controls" title="Link to this definition"></a></dt>
 <dd><p>Crea controles dinámicos para la propiedad seleccionada.</p>
 <p>Genera automáticamente los controles apropiados según el tipo
-de propiedad (Switch, Number, Text, Light, BLOB).</p>
+de la propiedad (Switch, Number, Text, Light, BLOB).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1552,9 +1609,21 @@ de propiedad (Switch, Number, Text, Light, BLOB).</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.update_blob_properties">
+<span class="sig-name descname"><span class="pre">update_blob_properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.update_blob_properties"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.update_blob_properties" title="Link to this definition"></a></dt>
+<dd><p>Actualiza la lista de propiedades BLOB disponibles.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.enable_blob_property">
 <span class="sig-name descname"><span class="pre">enable_blob_property</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.enable_blob_property"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.enable_blob_property" title="Link to this definition"></a></dt>
-<dd><p>Habilita una propiedad BLOB específica para recibir datos.</p>
+<dd><p>Habilita una propiedad BLOB específica.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.auto_register_blob_listeners">
+<span class="sig-name descname"><span class="pre">auto_register_blob_listeners</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/myIndigoLibrary/Cliente_INDIGO_Gui.html#INDIGOControlPanel.auto_register_blob_listeners"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.auto_register_blob_listeners" title="Link to this definition"></a></dt>
+<dd><p>Registra listeners para todas las propiedades BLOB de todos los dispositivos conectados.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1563,7 +1632,7 @@ de propiedad (Switch, Number, Text, Light, BLOB).</p>
 <dd><p>Descarga un archivo BLOB desde el servidor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parámetros<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Ruta del archivo BLOB en el servidor</p>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – </p>
 </dd>
 </dl>
 </dd></dl>

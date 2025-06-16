@@ -78,9 +78,9 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">Cliente_INDIGO</span> <span class="kn">import</span> <span class="n">INDIGOServer</span><span class="p">,</span> <span class="n">INDIGODevice</span><span class="p">,</span> <span class="n">INDIGOProperty</span><span class="p">,</span> <span class="n">INDIGOElement</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: No se pudo importar Cliente_INDIGO.py&quot;</span><span class="p">)</span>
+    <span class="c1"># print(&quot;Error: No se pudo importar Cliente_INDIGO.py&quot;)</span>
     <span class="c1"># sys.exit(1)</span>
-    <span class="c1"># ~~~~~~~~~~~ Para la documentación sacar env_indigo de la carpeta  </span>
+    <span class="c1"># ~~~~~~~~~~~ Para la documentación sacar env_indigo de la carpeta ~~~~~~~~~~~ </span>
     <span class="c1"># Esta parte se hace para la documentación con Sphinx, para que no dé errores, de normal comentar</span>
     <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -104,6 +104,7 @@
 
     
 
+
 <div class="viewcode-block" id="INDIGOControlPanel">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel">[documentos]</a>
 <span class="k">class</span> <span class="nc">INDIGOControlPanel</span><span class="p">:</span>
@@ -121,19 +122,16 @@
 <span class="sd">        refresh_interval (tk.IntVar): Intervalo de actualización en segundos</span>
 <span class="sd">        notebook (ttk.Notebook): Widget de pestañas principal</span>
 <span class="sd">        devices_tree (ttk.Treeview): Árbol de dispositivos</span>
-<span class="sd">        properties_tree (ttk.Treeview): Árbol de propiedades</span>
+<span class="sd">        properties_tree (ttk.Treeview): Árbol de propeidades</span>
 <span class="sd">        control_widgets (dict): Diccionario de widgets de control dinámicos</span>
 <span class="sd">        logs_text (scrolledtext.ScrolledText): Área de texto para logs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
-    <span class="c1"># Constantes para estilos</span>
+    <span class="c1"># Constantes para los estilos</span>
     <span class="n">HEADER_STYLE</span> <span class="o">=</span> <span class="s1">&#39;Header.TLabel&#39;</span>
     <span class="n">STATUS_STYLE</span> <span class="o">=</span> <span class="s1">&#39;Status.TLabel&#39;</span>
     <span class="n">CONNECTED_STYLE</span> <span class="o">=</span> <span class="s1">&#39;Connected.TLabel&#39;</span>
-    
-    <span class="c1"># Constantes para eventos</span>
-    <span class="n">COMBO_SELECTED_EVENT</span> <span class="o">=</span> <span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span>
-    
+        
 <div class="viewcode-block" id="INDIGOControlPanel.__init__">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.__init__">[documentos]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -143,7 +141,7 @@
 <span class="sd">        todos los widgets de la interfaz gráfica.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;INDIGO Control Panel - TFG Arturo&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;PYNDIGO- TFG Arturo&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="s2">&quot;1400x900&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">bg</span><span class="o">=</span><span class="s1">&#39;#2c3e50&#39;</span><span class="p">)</span>
         
@@ -153,13 +151,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">auto_refresh</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">BooleanVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_interval</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">IntVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         
-        <span class="c1"># Configurar estilo</span>
+        <span class="c1"># Configuramos el estilo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_styles</span><span class="p">()</span>
         
-        <span class="c1"># Crear la interfaz</span>
+        <span class="c1"># Creamos la interfaz</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">()</span>
         
-        <span class="c1"># Iniciar actualización automática</span>
+        <span class="c1"># Iniciamos la actualización automática</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">auto_update</span><span class="p">()</span></div>
 
         
@@ -174,7 +172,7 @@
         <span class="n">style</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Style</span><span class="p">()</span>
         <span class="n">style</span><span class="o">.</span><span class="n">theme_use</span><span class="p">(</span><span class="s1">&#39;clam&#39;</span><span class="p">)</span>
         
-        <span class="c1"># Configurar colores personalizados</span>
+        <span class="c1"># Configuramos los colores personalizados</span>
         <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="s1">&#39;Title.TLabel&#39;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#ecf0f1&#39;</span><span class="p">)</span>
         <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADER_STYLE</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;bold&#39;</span><span class="p">),</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#3498db&#39;</span><span class="p">)</span>
         <span class="n">style</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">STATUS_STYLE</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">foreground</span><span class="o">=</span><span class="s1">&#39;#e74c3c&#39;</span><span class="p">)</span>
@@ -187,8 +185,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea todos los widgets principales de la interfaz.</span>
 <span class="sd">        </span>
 <span class="sd">        Construye la estructura completa de la interfaz gráfica,</span>
-<span class="sd">        incluyendo el frame principal, título, área de conexión</span>
-<span class="sd">        y el notebook con todas las pestañas.</span>
+<span class="sd">        incluyendo el frame principal, título, área de la conexión</span>
+<span class="sd">        y el notebook en todas las pestañas a realizar.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Frame principal</span>
         <span class="n">main_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span>
@@ -198,14 +196,14 @@
         <span class="n">title_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">main_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;INDIGO Control Panel&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;Title.TLabel&#39;</span><span class="p">)</span>
         <span class="n">title_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
         
-        <span class="c1"># Frame de conexión</span>
+        <span class="c1"># Frame de la conexión</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_connection_frame</span><span class="p">(</span><span class="n">main_frame</span><span class="p">)</span>
         
         <span class="c1"># Notebook para pestañas</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Notebook</span><span class="p">(</span><span class="n">main_frame</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         
-        <span class="c1"># Pestañas</span>
+        <span class="c1"># Pestañas de la interfaz</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_devices_tab</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_properties_tab</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">create_control_tab</span><span class="p">()</span>
@@ -220,8 +218,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea el frame de conexión al servidor INDIGO.</span>
 <span class="sd">        </span>
 <span class="sd">        Construye la interfaz para configurar y establecer la conexión</span>
-<span class="sd">        con el servidor INDIGO, incluyendo campos para host, puerto</span>
-<span class="sd">        y nombre del cliente.</span>
+<span class="sd">        con el servidor INDIGO, incluyendo campos como el host, puerto</span>
+<span class="sd">        y el nombre del cliente.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            parent (ttk.Widget): Widget padre donde se creará el frame</span>
@@ -246,7 +244,7 @@
         
         <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">input_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Nombre:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">input_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;INDIGO_GUI&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;PYNDIGO_GUI&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name_entry</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
         
         <span class="c1"># Botones de conexión</span>
@@ -267,8 +265,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea la pestaña de visualización de dispositivos.</span>
 <span class="sd">        </span>
 <span class="sd">        Construye la interfaz para mostrar la lista de dispositivos</span>
-<span class="sd">        conectados al servidor INDIGO, incluyendo información sobre</span>
-<span class="sd">        su estado, propiedades y última actualización.</span>
+<span class="sd">        conectados al servidor INDIGO, incluyendo información sobre </span>
+<span class="sd">        estos, como su estado, propiedades y última actualización.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">devices_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">devices_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dispositivos&quot;</span><span class="p">)</span>
@@ -288,9 +286,13 @@
         <span class="n">columns</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Dispositivo&#39;</span><span class="p">,</span> <span class="s1">&#39;Tipo&#39;</span><span class="p">,</span> <span class="s1">&#39;Estado&#39;</span><span class="p">,</span> <span class="s1">&#39;Propiedades&#39;</span><span class="p">,</span> <span class="s1">&#39;Última Actualización&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span><span class="n">list_frame</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;headings&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
         
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+         <span class="c1"># Primera columna alineada a la izquierda, el resto va al centro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s1">&#39;Dispositivo&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Dispositivo&#39;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;Dispositivo&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># Resto de columnas</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
         
         <span class="c1"># Scrollbars</span>
         <span class="n">v_scroll</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Scrollbar</span><span class="p">(</span><span class="n">list_frame</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">yview</span><span class="p">)</span>
@@ -315,8 +317,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea la pestaña de visualización de propiedades.</span>
 <span class="sd">        </span>
 <span class="sd">        Construye la interfaz para mostrar las propiedades de los</span>
-<span class="sd">        dispositivos seleccionados, incluyendo detalles de cada</span>
-<span class="sd">        propiedad y sus elementos.</span>
+<span class="sd">        dispositivos seleccionados, incluyendo los detalles de cada</span>
+<span class="sd">        propiedad y sus respectivos elementos.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">props_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">props_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Propiedades&quot;</span><span class="p">)</span>
@@ -326,11 +328,10 @@
         <span class="n">top_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
         
         <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">top_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dispositivo seleccionado:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADER_STYLE</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
-        
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_selector_change</span><span class="p">)</span>
+        <span class="c1"># Combobox para seleccionar dispositivo</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">top_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_selector_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_selector_change</span><span class="p">)</span>
         
         <span class="c1"># Frame principal con dos paneles</span>
         <span class="n">main_props_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">props_frame</span><span class="p">)</span>
@@ -344,9 +345,13 @@
         <span class="n">prop_columns</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Propiedad&#39;</span><span class="p">,</span> <span class="s1">&#39;Tipo&#39;</span><span class="p">,</span> <span class="s1">&#39;Estado&#39;</span><span class="p">,</span> <span class="s1">&#39;Permisos&#39;</span><span class="p">,</span> <span class="s1">&#39;Elementos&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Treeview</span><span class="p">(</span><span class="n">left_frame</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">prop_columns</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="s1">&#39;headings&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
         
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">prop_columns</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">)</span>
+        <span class="c1"># Primera columna alineada a la izquierda, resto al centro</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="s1">&#39;Propiedad&#39;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s1">&#39;Propiedad&#39;</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="s1">&#39;Propiedad&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">prop_columns</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>  <span class="c1"># Resto de columnas</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">heading</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">anchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
         
         <span class="n">prop_scroll</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Scrollbar</span><span class="p">(</span><span class="n">left_frame</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">VERTICAL</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">yview</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">yscrollcommand</span><span class="o">=</span><span class="n">prop_scroll</span><span class="o">.</span><span class="n">set</span><span class="p">)</span>
@@ -354,8 +359,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">prop_scroll</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">Y</span><span class="p">)</span>
         
-        <span class="c1"># Panel derecho - Detalles de propiedad</span>
-        <span class="n">right_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">LabelFrame</span><span class="p">(</span><span class="n">main_props_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Detalles de Propiedad&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="c1"># Panel derecho - Detalles de la propiedad</span>
+        <span class="n">right_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">LabelFrame</span><span class="p">(</span><span class="n">main_props_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Detalles de la Propiedad&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
         <span class="n">right_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">property_details</span> <span class="o">=</span> <span class="n">scrolledtext</span><span class="o">.</span><span class="n">ScrolledText</span><span class="p">(</span><span class="n">right_frame</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
@@ -382,15 +387,15 @@
         <span class="n">select_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
         
         <span class="c1"># Comboboxes para selección</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_combo_change</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dispositivo:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">select_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_combo_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_device_combo_change</span><span class="p">)</span>
         
-        <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_property_combo_change</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Propiedad:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">select_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">COMBO_SELECTED_EVENT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_property_combo_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_property_combo_change</span><span class="p">)</span>
         
         <span class="c1"># Frame de control dinámico</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">control_content_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">LabelFrame</span><span class="p">(</span><span class="n">control_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Controles&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -398,18 +403,18 @@
         
         <span class="c1"># Label de instrucciones</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">control_instructions</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">control_content_frame</span><span class="p">,</span> 
-                                            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Selecciona un dispositivo y propiedad para mostrar los controles&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">control_instructions</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span></div>
+        <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Selecciona un dispositivo y propiedad para mostrar los controles&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">control_instructions</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>    </div>
 
-        
+    
 <div class="viewcode-block" id="INDIGOControlPanel.create_images_tab">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_images_tab">[documentos]</a>
     <span class="k">def</span> <span class="nf">create_images_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea la pestaña de gestión de imágenes BLOB.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea la pestaña de gestión de imágenes.</span>
 <span class="sd">        </span>
-<span class="sd">        Construye la interfaz para gestionar archivos BLOB (imágenes),</span>
-<span class="sd">        incluyendo controles para habilitar propiedades BLOB,</span>
-<span class="sd">        descargar imágenes y visualizar archivos descargados.</span>
+<span class="sd">        Construye la interfaz para gestionar archivos imágenes (archivos BLOB),</span>
+<span class="sd">        incluyendo controles para habilitar sus propiedades,</span>
+<span class="sd">        descargar imágenes y visualizar los archivos descargados.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">images_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">images_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Imágenes&quot;</span><span class="p">)</span>
@@ -422,7 +427,11 @@
         <span class="n">blob_status_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">)</span>
         <span class="n">blob_status_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         
-        <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">blob_status_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Modo BLOB actual:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADER_STYLE</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
+        <span class="c1"># Añadimos información de estado</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blob_status_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blob_status_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">blob_status_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Modo BLOB actual en el servidor:&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADER_STYLE</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode_label</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">blob_status_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;NEVER&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
         
@@ -435,12 +444,14 @@
         <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Dispositivo BLOB:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
-        
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s1">&#39;&lt;&lt;ComboboxSelected&gt;&gt;&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_blob_properties</span><span class="p">)</span>
+    
         <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Propiedad BLOB:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">sticky</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Combobox</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s2">&quot;readonly&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
         
-        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Habilitar BLOB&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enable_blob_property</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">blob_select_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Habilitar BLOB en el dispositivo&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">enable_blob_property</span><span class="p">)</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">row</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
         
         <span class="c1"># Lista de imágenes descargadas</span>
         <span class="n">images_list_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">LabelFrame</span><span class="p">(</span><span class="n">images_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Imágenes Descargadas&quot;</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -467,18 +478,19 @@
         <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">buttons_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Abrir Carpeta&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_images_folder</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="n">ttk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">buttons_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Eliminar&quot;</span><span class="p">,</span> <span class="n">command</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">delete_selected_image</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
         
-        <span class="c1"># Actualizar lista inicial</span>
+        <span class="c1"># Actualizamos la lista inicial </span>
+        <span class="c1"># (de forma automática aunque si pulsamos Actualizar Lista se hace de forma manual)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_images_list</span><span class="p">()</span></div>
 
-        
+            
 <div class="viewcode-block" id="INDIGOControlPanel.create_logs_tab">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.create_logs_tab">[documentos]</a>
     <span class="k">def</span> <span class="nf">create_logs_tab</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea la pestaña de logs y mensajes del sistema.</span>
 <span class="sd">        </span>
 <span class="sd">        Construye la interfaz para visualizar los logs de la aplicación,</span>
-<span class="sd">        incluyendo mensajes de información, advertencias y errores,</span>
-<span class="sd">        con opciones para limpiar y guardar los logs.</span>
+<span class="sd">        incluyendo mensajes de información, las advertencias y los errores,</span>
+<span class="sd">        incluye como opciones limpiar y guardar los logs visualizados.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">logs_frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">notebook</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">logs_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Logs&quot;</span><span class="p">)</span>
@@ -498,7 +510,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_text</span> <span class="o">=</span> <span class="n">scrolledtext</span><span class="o">.</span><span class="n">ScrolledText</span><span class="p">(</span><span class="n">logs_frame</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;Consolas&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_text</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         
-        <span class="c1"># Configurar tags para colores</span>
+        <span class="c1"># Configuramos colores de los tags</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_text</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_text</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_text</span><span class="o">.</span><span class="n">tag_configure</span><span class="p">(</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="n">foreground</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">)</span>
@@ -539,12 +551,12 @@
         <span class="n">info_frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">padx</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
         
         <span class="n">info_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">INDIGO Control Panel</span>
-<span class="s2">Proyecto TFG - Arturo</span>
-<span class="s2">Python </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span>
-<span class="s2">Directorio de trabajo: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span>
-<span class="s2">Carpeta de imágenes: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;images&#39;</span><span class="p">)</span><span class="si">}</span>
-<span class="s2">        &quot;&quot;&quot;</span>
+<span class="s2">        INDIGO Control Panel</span>
+<span class="s2">        Proyecto TFG - Arturo</span>
+<span class="s2">        Python </span><span class="si">{</span><span class="n">sys</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">        Directorio de trabajo: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span><span class="si">}</span>
+<span class="s2">        Carpeta de imágenes: </span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="w"> </span><span class="s1">&#39;images&#39;</span><span class="p">)</span><span class="si">}</span>
+<span class="s2">                &quot;&quot;&quot;</span>
         
         <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">info_frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">info_text</span><span class="p">,</span> <span class="n">justify</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
         
@@ -598,11 +610,11 @@
             
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intentando conectar a </span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             
-            <span class="c1"># Crear servidor y conectar</span>
+            <span class="c1"># Creamos el servidor y nos conectamos a él</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">INDIGOServer</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
             
-            <span class="c1"># Actualizar UI</span>
+            <span class="c1"># Actualizamos la UI</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">status_label</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;[OK] Conectado a </span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">CONNECTED_STYLE</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">connect_btn</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
@@ -610,9 +622,9 @@
             
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Conectado exitosamente a </span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
             
-            <span class="c1"># Esperar un poco para que lleguen los dispositivos</span>
+            <span class="c1"># Esperamos un poco para que lleguen los nuevos datos de los dispositivos</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh_all_data</span><span class="p">)</span>
-            
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">2500</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_register_blob_listeners</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error de conexión: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
             <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error de Conexión&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No se pudo conectar al servidor:</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -636,7 +648,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">connect_btn</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">NORMAL</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_btn</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">DISABLED</span><span class="p">)</span>
             
-            <span class="c1"># Limpiar datos</span>
+            <span class="c1"># Limpiamos todos los datos</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">clear_all_data</span><span class="p">()</span>
             
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Desconectado del servidor&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
@@ -661,11 +673,19 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">refresh_combos</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">update_blob_mode_display</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">refresh_blob_combos</span><span class="p">()</span>
-            
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_blob_properties</span><span class="p">()</span>
+            <span class="c1"># Suscripción de los listeners para actualización en tiempo real</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;server&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">device_name</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                        <span class="c1"># Se evita registrar el mismo listener varias veces</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">add_device_property_listener</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_property_update</span><span class="p">)</span>
+            <span class="c1"># Registro automático de los listeners de tipo BLOB</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">auto_register_blob_listeners</span><span class="p">()</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error actualizando datos: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span></div>
 
-        
+                    
 <div class="viewcode-block" id="INDIGOControlPanel.refresh_devices">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_devices">[documentos]</a>
     <span class="k">def</span> <span class="nf">refresh_devices</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -677,17 +697,17 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
             <span class="k">return</span>
         
-        <span class="c1"># Limpiar lista actual</span>
+        <span class="c1"># Limpiamos la lista actual</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         
-        <span class="c1"># Añadir dispositivos</span>
+        <span class="c1"># Añadimos los dispositivos</span>
         <span class="n">devices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">device_name</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="n">devices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">properties_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">())</span>
             <span class="n">last_update</span> <span class="o">=</span> <span class="s2">&quot;N/A&quot;</span>
             
-            <span class="c1"># Buscar la última actualización</span>
+            <span class="c1"># Buscamos la última actualización</span>
             <span class="n">latest_time</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
                 <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">last_update</span> <span class="o">&gt;</span> <span class="n">latest_time</span><span class="p">:</span>
@@ -711,7 +731,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza los comboboxes de selección de dispositivos.</span>
 <span class="sd">        </span>
 <span class="sd">        Obtiene la lista de dispositivos disponibles y actualiza</span>
-<span class="sd">        todos los comboboxes que permiten seleccionar dispositivos.</span>
+<span class="sd">        todos los comboboxes que permiten seleccionar estos dispositivos.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
             <span class="k">return</span>
@@ -724,10 +744,10 @@
 <div class="viewcode-block" id="INDIGOControlPanel.refresh_blob_combos">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_blob_combos">[documentos]</a>
     <span class="k">def</span> <span class="nf">refresh_blob_combos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza los comboboxes específicos para propiedades BLOB.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza los comboboxes específicos para propiedades de tipo BLOB.</span>
 <span class="sd">        </span>
 <span class="sd">        Actualiza los comboboxes utilizados en la pestaña de imágenes</span>
-<span class="sd">        para seleccionar dispositivos con propiedades BLOB.</span>
+<span class="sd">        para seleccionar dispositivos con propiedades de tipo BLOB.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
             <span class="k">return</span>
@@ -751,7 +771,7 @@
         <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">selection</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">device_name</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         
-        <span class="c1"># Actualizar el selector de dispositivos en la pestaña de propiedades</span>
+        <span class="c1"># Actualizamos el selector de dispositivos en la pestaña de propiedades</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">refresh_properties</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span></div>
 
@@ -777,33 +797,25 @@
 <span class="sd">        Args:</span>
 <span class="sd">            device_name (str): Nombre del dispositivo cuyas propiedades se van a mostrar</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;properties_tree&#39;</span><span class="p">):</span>
             <span class="k">return</span>
-        
-        <span class="c1"># Limpiar lista actual</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
-        
-        <span class="c1"># Obtener dispositivo</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span><span class="p">:</span>
-            <span class="k">return</span>
-        
-        <span class="n">properties</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span>
-        
-        <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">elements_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">())</span>
-            <span class="n">prop_type</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;Unknown&quot;</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span>
-            <span class="n">perm</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;perm&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span>
-            
-            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span>
-                <span class="n">prop_name</span><span class="p">,</span>
-                <span class="n">prop_type</span><span class="p">,</span>
-                <span class="n">state</span><span class="p">,</span>
-                <span class="n">perm</span><span class="p">,</span>
-                <span class="n">elements_count</span>
-            <span class="p">))</span></div>
+        <span class="n">selected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">selection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">())</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span>
+                        <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span>
+                        <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span>
+                        <span class="n">prop</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                        <span class="n">prop</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;perm&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;N/A&quot;</span><span class="p">,</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="c1"># Restauramos la selección</span>
+        <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">selection_set</span><span class="p">(</span><span class="n">selected</span><span class="p">)</span></div>
 
         
 <div class="viewcode-block" id="INDIGOControlPanel.on_property_select">
@@ -828,6 +840,34 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">show_property_details</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span></div>
 
         
+<div class="viewcode-block" id="INDIGOControlPanel.on_property_update">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.on_property_update">[documentos]</a>
+    <span class="k">def</span> <span class="nf">on_property_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Listener para cambios en propiedades INDIGO.&quot;&quot;&quot;</span>
+        <span class="c1"># Se refresca solo la propiedad seleccionada en la pestaña de propiedades</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">selected_device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;device_selector_combo&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="n">selected_prop</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;properties_tree&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">selection</span><span class="p">():</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">selection</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">selected_prop</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">selected_device</span> <span class="ow">and</span> <span class="n">selected_prop</span> <span class="ow">and</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">selected_prop</span> <span class="ow">and</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">selected_device</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_property_details</span><span class="p">(</span><span class="n">selected_device</span><span class="p">,</span> <span class="n">selected_prop</span><span class="p">))</span>
+            <span class="c1"># Se refresca la lista de propiedades si es necesario</span>
+            <span class="k">if</span> <span class="n">selected_device</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh_properties</span><span class="p">(</span><span class="n">selected_device</span><span class="p">))</span>
+            <span class="c1"># Se refresca controles si la propiedad está seleccionada en la pestaña de control</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;device_combo&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;property_combo&#39;</span><span class="p">):</span>
+                <span class="n">device_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="n">prop_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">prop_name</span> <span class="ow">and</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">device_name</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_property_controls</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error actualizando los valores de las propiedades: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span></div>
+
+
+                
+                
 <div class="viewcode-block" id="INDIGOControlPanel.show_property_details">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.show_property_details">[documentos]</a>
     <span class="k">def</span> <span class="nf">show_property_details</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -843,6 +883,15 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_prop_of_device</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">prop</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">prop_type</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">prop_type</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tipo de propiedad desconocido para </span><span class="si">{</span><span class="n">prop_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+                
+            <span class="n">elements</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">elements</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No hay elementos en la propiedad </span><span class="si">{</span><span class="n">prop_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
                 <span class="k">return</span>
             <span class="n">details</span> <span class="o">=</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot;DETALLES DE PROPIEDAD</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">+</span> <span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">10</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="n">details</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;Nombre: </span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
@@ -881,14 +930,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">device_name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
             <span class="k">return</span>
         
-        <span class="c1"># Actualizar combo de propiedades</span>
+        <span class="c1"># Actualizamos los combobox de las propiedades</span>
         <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
             <span class="n">properties</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">properties</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         
-        <span class="c1"># Limpiar controles</span>
+        <span class="c1"># Limpiamos los controles de los widgets</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_control_widgets</span><span class="p">()</span></div>
 
         
@@ -909,7 +958,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Crea controles dinámicos para la propiedad seleccionada.</span>
 <span class="sd">        </span>
 <span class="sd">        Genera automáticamente los controles apropiados según el tipo</span>
-<span class="sd">        de propiedad (Switch, Number, Text, Light, BLOB).</span>
+<span class="sd">        de la propiedad (Switch, Number, Text, Light, BLOB).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">device_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">prop_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -937,7 +986,7 @@
                                   <span class="n">style</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">HEADER_STYLE</span><span class="p">)</span>
             <span class="n">title_label</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">pady</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
             
-            <span class="c1"># Crear controles según el tipo</span>
+            <span class="c1"># Creamos los controles según el tipo de la propiedad</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span> <span class="o">=</span> <span class="p">{}</span>
             
             <span class="k">if</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;Switch&quot;</span><span class="p">:</span>
@@ -946,7 +995,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_number_controls</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;Text&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_text_controls</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;Light&quot;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;Light&quot;</span><span class="p">:</span> <span class="c1"># Como la propiedad GPS_STATUS (No hay muchas)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_light_display</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">create_blob_controls</span><span class="p">(</span><span class="n">controls_frame</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
@@ -971,20 +1020,31 @@
 <span class="sd">            elements (dict): Diccionario de elementos de la propiedad</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span> <span class="o">=</span> <span class="p">{}</span>
-        
-        <span class="k">for</span> <span class="n">elem_name</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">elements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">frame</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Frame</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
-            <span class="n">frame</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">fill</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="n">pady</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-            
-            <span class="n">var</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="ow">or</span> <span class="s2">&quot;Off&quot;</span><span class="p">)</span>
-            
-            <span class="c1"># Checkbuttons</span>
-            <span class="n">cb</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Checkbutton</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">elem_name</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;On&quot;</span><span class="p">:</span>
-                <span class="n">cb</span><span class="o">.</span><span class="n">state</span><span class="p">([</span><span class="s1">&#39;selected&#39;</span><span class="p">])</span>
-            <span class="n">cb</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
-            
-            <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">var</span></div>
+        <span class="n">element_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">elements</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Se intenta obtener la regla (OneOfMany, AtMostOne, etc.)</span>
+        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_prop</span><span class="p">()</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;OneOfMany&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">element_names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c1"># Se usa un radiobutton para el tipo switch</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_var</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">()</span>
+            <span class="c1"># Se selecciona el que está On</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;On&quot;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">switch_var</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">element_names</span><span class="p">:</span>
+                <span class="n">rb</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Radiobutton</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">switch_var</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">rb</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="p">[</span><span class="s2">&quot;__switch__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch_var</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Para otros casos, usa checkboxes</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">elements</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">var</span> <span class="o">=</span> <span class="n">tk</span><span class="o">.</span><span class="n">BooleanVar</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;On&quot;</span><span class="p">))</span>
+                <span class="n">cb</span> <span class="o">=</span> <span class="n">ttk</span><span class="o">.</span><span class="n">Checkbutton</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">variable</span><span class="o">=</span><span class="n">var</span><span class="p">)</span>
+                <span class="n">cb</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">anchor</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">W</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">var</span></div>
 
         
 <div class="viewcode-block" id="INDIGOControlPanel.create_number_controls">
@@ -1004,7 +1064,7 @@
             
             <span class="n">ttk</span><span class="o">.</span><span class="n">Label</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">elem_name</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">tk</span><span class="o">.</span><span class="n">LEFT</span><span class="p">)</span>
             
-            <span class="c1"># Obtener rango si está disponible</span>
+            <span class="c1"># Obtiene rango si está disponible</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">min_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">))</span>
                 <span class="n">max_val</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">))</span>
@@ -1123,16 +1183,26 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
-            
-            <span class="k">for</span> <span class="n">elem_name</span><span class="p">,</span> <span class="n">widget_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget_var</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">):</span>
-                    <span class="n">values</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">widget_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget_var</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">DoubleVar</span><span class="p">):</span>
-                    <span class="n">values</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">widget_var</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
-            
+            <span class="n">prop_type</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">elements</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">prop_type</span> <span class="o">==</span> <span class="s2">&quot;Switch&quot;</span> <span class="ow">and</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;OneOfMany&quot;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="s2">&quot;__switch__&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="p">:</span>
+                <span class="n">selected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="p">[</span><span class="s2">&quot;__switch__&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+                    <span class="n">values</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;On&quot;</span> <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="n">selected</span> <span class="k">else</span> <span class="s2">&quot;Off&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">elem_name</span><span class="p">,</span> <span class="n">widget_var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">control_widgets</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget_var</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">StringVar</span><span class="p">):</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">widget_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget_var</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">BooleanVar</span><span class="p">):</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;On&quot;</span> <span class="k">if</span> <span class="n">widget_var</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;Off&quot;</span>
+                    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">widget_var</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">DoubleVar</span><span class="p">):</span>
+                        <span class="n">values</span><span class="p">[</span><span class="n">elem_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">widget_var</span><span class="o">.</span><span class="n">get</span><span class="p">())</span>
+
             <span class="n">prop</span><span class="o">.</span><span class="n">send_values_to_server</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Valores enviados para </span><span class="si">{</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
-            
+
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error enviando valores: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
             <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error enviando valores:</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
@@ -1174,49 +1244,161 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode_label</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span></div>
 
         
+<div class="viewcode-block" id="INDIGOControlPanel.update_blob_properties">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.update_blob_properties">[documentos]</a>
+    <span class="k">def</span> <span class="nf">update_blob_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza la lista de propiedades BLOB disponibles.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="k">return</span>
+                
+        <span class="n">device_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">device_name</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
+                <span class="c1"># Verificamos interfaz BLOB/CCD</span>
+                <span class="n">info_prop</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">info_prop</span><span class="p">:</span>
+                    <span class="n">device_interface</span> <span class="o">=</span> <span class="n">info_prop</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="s2">&quot;DEVICE_INTERFACE&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">device_interface</span><span class="p">:</span>
+                        <span class="n">interface_value</span> <span class="o">=</span> <span class="n">device_interface</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+                        <span class="c1"># Verificamos si es un dispositivo CCD (interfaz 2)</span>
+                        <span class="k">if</span> <span class="n">interface_value</span> <span class="ow">and</span> <span class="s2">&quot;2&quot;</span> <span class="ow">in</span> <span class="n">interface_value</span><span class="p">:</span>
+                            <span class="n">blob_properties</span> <span class="o">=</span> <span class="p">[]</span>
+                            <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                                <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
+                                    <span class="n">blob_properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+                            
+                            <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_properties</span>
+                            <span class="k">if</span> <span class="n">blob_properties</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">blob_properties</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;El dispositivo </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2"> no es un CCD&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+                                
+    <span class="k">def</span> <span class="nf">_update_blob_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza la lista de propiedades BLOB después de conectar.&quot;&quot;&quot;</span>
+        <span class="n">blob_properties</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">INDIGOProperty</span><span class="p">)</span> <span class="ow">and</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
+                    <span class="n">blob_properties</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob_properties</span>
+        <span class="k">if</span> <span class="n">blob_properties</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">blob_properties</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                        
 <div class="viewcode-block" id="INDIGOControlPanel.enable_blob_property">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.enable_blob_property">[documentos]</a>
     <span class="k">def</span> <span class="nf">enable_blob_property</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Habilita una propiedad BLOB específica para recibir datos.&quot;&quot;&quot;</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Habilita una propiedad BLOB específica.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="n">device_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="n">property_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">device</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">property_name</span><span class="p">:</span>
-            <span class="n">messagebox</span><span class="o">.</span><span class="n">showwarning</span><span class="p">(</span><span class="s2">&quot;Advertencia&quot;</span><span class="p">,</span> <span class="s2">&quot;Selecciona dispositivo y propiedad BLOB&quot;</span><span class="p">)</span>
-            <span class="k">return</span>
-        
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
-            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">device_name</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">property_name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Selecciona dispositivo y propiedad BLOB&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">)</span>
             <span class="k">return</span>
         
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send_blob_message</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BLOB habilitado para </span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">property_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
-            
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">)</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">device</span><span class="p">:</span>
+                <span class="c1"># Verificamos el estado de conexión</span>
+                <span class="n">connection_prop</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="s2">&quot;CONNECTION&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">connection_prop</span><span class="p">:</span>
+                    <span class="n">current_state</span> <span class="o">=</span> <span class="n">connection_prop</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="s2">&quot;CONNECTED&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">current_state</span> <span class="o">!=</span> <span class="s2">&quot;On&quot;</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Conectando dispositivo </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                        <span class="n">connection_prop</span><span class="o">.</span><span class="n">send_values_to_server</span><span class="p">({</span><span class="s2">&quot;CONNECTED&quot;</span><span class="p">:</span> <span class="s2">&quot;On&quot;</span><span class="p">})</span>
+                        <span class="c1"># Esperamos a que se conecte antes de habilitar BLOB</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enable_blob_after_connect</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">property_name</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_enable_blob_after_connect</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error habilitando BLOB: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
-            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error habilitando BLOB:</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error habilitando BLOB: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span></div>
 
         
+    <span class="k">def</span> <span class="nf">_enable_blob_after_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Habilita una propiedad BLOB después de que el dispositivo está conectado.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            device_name (str): Nombre del dispositivo</span>
+<span class="sd">            property_name (str): Nombre de la propiedad BLOB</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">send_blob_message</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Esperando BLOB en </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">property_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+
+            <span class="c1"># Listener para descargar la imagen automáticamente cuando llegue el BLOB</span>
+            <span class="k">def</span> <span class="nf">blob_listener</span><span class="p">(</span><span class="n">prop</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="c1"># El path puede estar en atributos o como valor</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_attributes</span><span class="p">()</span> <span class="k">else</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Listener BLOB detectado path: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.fits&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">download_blob</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">add_device_property_listener</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="n">blob_listener</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BLOB habilitado para </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">property_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error habilitando BLOB: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+            
+<div class="viewcode-block" id="INDIGOControlPanel.auto_register_blob_listeners">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.auto_register_blob_listeners">[documentos]</a>
+    <span class="k">def</span> <span class="nf">auto_register_blob_listeners</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registra listeners para todas las propiedades BLOB de todos los dispositivos conectados.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">device_name</span><span class="p">,</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">get_devices</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">device</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
+                    <span class="c1"># Se evita registrar el mismo listener varias veces</span>
+                    <span class="k">def</span> <span class="nf">blob_listener</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">device_name</span><span class="o">=</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="o">=</span><span class="n">prop_name</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                            <span class="n">path</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="s2">&quot;path&quot;</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_attributes</span><span class="p">()</span> <span class="k">else</span> <span class="n">elem</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[AUTO] Listener BLOB detectado path: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.fits&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">download_blob</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">add_device_property_listener</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">blob_listener</span><span class="p">)</span></div>
+
+                    
 <div class="viewcode-block" id="INDIGOControlPanel.download_blob">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.download_blob">[documentos]</a>
     <span class="k">def</span> <span class="nf">download_blob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Descarga un archivo BLOB desde el servidor.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            path (str): Ruta del archivo BLOB en el servidor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Descarga un archivo BLOB desde el servidor.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;No hay conexión al servidor&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
             <span class="k">return</span>
-        
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">download_image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Imagen descargada: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">refresh_images_list</span><span class="p">()</span>
-            
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error descargando imagen: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span></div>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Ruta de BLOB no válida&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Intentando descargar imagen: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">download_image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Imagen descargada correctamente: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">refresh_images_list</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error al descargar la imagen: </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+                <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;No se pudo descargar la imagen:</span><span class="se">\n</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error descargando imagen: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">)</span>
+            <span class="n">messagebox</span><span class="o">.</span><span class="n">showerror</span><span class="p">(</span><span class="s2">&quot;Error&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Error descargando imagen:</span><span class="se">\n</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+            
         
 <div class="viewcode-block" id="INDIGOControlPanel.refresh_images_list">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.refresh_images_list">[documentos]</a>
@@ -1225,6 +1407,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">images_listbox</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
         
         <span class="n">images_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
+        
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">images_dir</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">images_dir</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">endswith</span><span class="p">((</span><span class="s1">&#39;.fits&#39;</span><span class="p">,</span> <span class="s1">&#39;.fit&#39;</span><span class="p">,</span> <span class="s1">&#39;.fts&#39;</span><span class="p">)):</span>
@@ -1248,7 +1431,7 @@
             <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="kn">import</span> <span class="n">fits</span>
             <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
             
-            <span class="c1"># Abrir archivo FITS correctamente</span>
+            <span class="c1"># Abrimos el archivo FITS</span>
             <span class="n">hdul</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
             <span class="n">img_data</span> <span class="o">=</span> <span class="n">hdul</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
             <span class="n">hdul</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1274,9 +1457,9 @@
         <span class="n">images_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
         
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>  <span class="c1"># Windows</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;nt&#39;</span><span class="p">:</span>  <span class="c1"># Para Windows</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">startfile</span><span class="p">(</span><span class="n">images_dir</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>  <span class="c1"># Linux/Mac</span>
+            <span class="k">elif</span> <span class="n">os</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;posix&#39;</span><span class="p">:</span>  <span class="c1"># Para Linux/Mac</span>
                 <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;xdg-open &quot;</span><span class="si">{</span><span class="n">images_dir</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
             
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -1399,43 +1582,52 @@
     <span class="k">def</span> <span class="nf">quit_application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Cierra completamente la aplicación.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">messagebox</span><span class="o">.</span><span class="n">askyesno</span><span class="p">(</span><span class="s2">&quot;Confirmar&quot;</span><span class="p">,</span> <span class="s2">&quot;¿Salir de la aplicación?&quot;</span><span class="p">):</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_server</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span></div>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">disconnect_server</span><span class="p">()</span>
+                <span class="c1"># Limpiamos los recursos</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_all_data</span><span class="p">()</span>
+                <span class="c1"># Cerramos los logs pendientes</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log_message</span><span class="p">(</span><span class="s2">&quot;Cerrando aplicación...&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error cerrando aplicación: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
+                
         
 <div class="viewcode-block" id="INDIGOControlPanel.clear_all_data">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.clear_all_data">[documentos]</a>
     <span class="k">def</span> <span class="nf">clear_all_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Limpia todos los datos mostrados en la interfaz.&quot;&quot;&quot;</span>
-        <span class="c1"># Limpiar listas</span>
+        <span class="c1"># Limpiamos las listas</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">devices_tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">properties_tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
         
-        <span class="c1"># Limpiar combos</span>
+        <span class="c1"># Limpiamos los combos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="p">[</span><span class="s1">&#39;values&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         
-        <span class="c1"># Limpiar selecciones</span>
+        <span class="c1"># Limpiamos las selecciones</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_device_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_property_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device_selector_combo</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
         
-        <span class="c1"># Limpiar detalles</span>
+        <span class="c1"># Limpiamos los detalles</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">property_details</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">tk</span><span class="o">.</span><span class="n">END</span><span class="p">)</span>
         
-        <span class="c1"># Limpiar controles</span>
+        <span class="c1"># Limpiamos los controles</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear_control_widgets</span><span class="p">()</span></div>
 
-        
+    
+    
 <div class="viewcode-block" id="INDIGOControlPanel.auto_update">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO_Gui.INDIGOControlPanel.auto_update">[documentos]</a>
     <span class="k">def</span> <span class="nf">auto_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1447,7 +1639,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_refresh</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">connected</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">refresh_all_data</span><span class="p">()</span>
         
-        <span class="c1"># Programar siguiente actualización</span>
+        <span class="c1"># Programamos siguiente actualización</span>
         <span class="n">interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">refresh_interval</span><span class="o">.</span><span class="n">get</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span>  <span class="c1"># Convertir a milisegundos</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">after</span><span class="p">(</span><span class="n">interval</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_update</span><span class="p">)</span></div>
 
@@ -1477,6 +1669,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">app</span> <span class="o">=</span> <span class="n">INDIGOControlPanel</span><span class="p">()</span>
+        <span class="kn">import</span> <span class="nn">signal</span>
+        <span class="k">def</span> <span class="nf">graceful_exit</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cerrando GUI y conexión INDIGO de forma segura...&quot;</span><span class="p">)</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">quit_application</span><span class="p">()</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">graceful_exit</span><span class="p">)</span>
         <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error iniciando la aplicación: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>

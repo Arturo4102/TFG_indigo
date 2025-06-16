@@ -9,7 +9,7 @@ try:
 except ImportError:
     print("Error: No se pudo importar Cliente_INDIGO.py")
     sys.exit(1)
-    # ~~~~~~~~~~~ Para la documentación sacar env_indigo de la carpeta  
+    # ~~~~~~~~~~~ Para la documentación sacar env_indigo de la carpeta ~~~~~~~~~~~ 
     # Esta parte se hace para la documentación con Sphinx, para que no dé errores, de normal comentar
     # if __name__ == "__main__":
     #     sys.exit(1)
@@ -20,6 +20,7 @@ except ImportError:
     #     class INDIGOProperty: pass
     #     class INDIGOElement: pass
     
+
 
 class INDIGOControlPanel:
     """Interfaz gráfica completa para el control de dispositivos INDIGO.
@@ -36,19 +37,16 @@ class INDIGOControlPanel:
         refresh_interval (tk.IntVar): Intervalo de actualización en segundos
         notebook (ttk.Notebook): Widget de pestañas principal
         devices_tree (ttk.Treeview): Árbol de dispositivos
-        properties_tree (ttk.Treeview): Árbol de propiedades
+        properties_tree (ttk.Treeview): Árbol de propeidades
         control_widgets (dict): Diccionario de widgets de control dinámicos
         logs_text (scrolledtext.ScrolledText): Área de texto para logs
     """
     
-    # Constantes para estilos
+    # Constantes para los estilos
     HEADER_STYLE = 'Header.TLabel'
     STATUS_STYLE = 'Status.TLabel'
     CONNECTED_STYLE = 'Connected.TLabel'
-    
-    # Constantes para eventos
-    COMBO_SELECTED_EVENT = '<<ComboboxSelected>>'
-    
+        
     def __init__(self):
         """Constructor de la clase INDIGOControlPanel.
         
@@ -56,7 +54,7 @@ class INDIGOControlPanel:
         todos los widgets de la interfaz gráfica.
         """
         self.root = tk.Tk()
-        self.root.title("INDIGO Control Panel - TFG Arturo")
+        self.root.title("PYNDIGO- TFG Arturo")
         self.root.geometry("1400x900")
         self.root.configure(bg='#2c3e50')
         
@@ -66,13 +64,13 @@ class INDIGOControlPanel:
         self.auto_refresh = tk.BooleanVar(value=True)
         self.refresh_interval = tk.IntVar(value=2)
         
-        # Configurar estilo
+        # Configuramos el estilo
         self.setup_styles()
         
-        # Crear la interfaz
+        # Creamos la interfaz
         self.create_widgets()
         
-        # Iniciar actualización automática
+        # Iniciamos la actualización automática
         self.auto_update()
         
     def setup_styles(self):
@@ -84,7 +82,7 @@ class INDIGOControlPanel:
         style = ttk.Style()
         style.theme_use('clam')
         
-        # Configurar colores personalizados
+        # Configuramos los colores personalizados
         style.configure('Title.TLabel', font=('Arial', 16, 'bold'), foreground='#ecf0f1')
         style.configure(self.HEADER_STYLE, font=('Arial', 12, 'bold'), foreground='#3498db')
         style.configure(self.STATUS_STYLE, font=('Arial', 10), foreground='#e74c3c')
@@ -94,8 +92,8 @@ class INDIGOControlPanel:
         """Crea todos los widgets principales de la interfaz.
         
         Construye la estructura completa de la interfaz gráfica,
-        incluyendo el frame principal, título, área de conexión
-        y el notebook con todas las pestañas.
+        incluyendo el frame principal, título, área de la conexión
+        y el notebook en todas las pestañas a realizar.
         """
         # Frame principal
         main_frame = ttk.Frame(self.root)
@@ -105,14 +103,14 @@ class INDIGOControlPanel:
         title_label = ttk.Label(main_frame, text="INDIGO Control Panel", style='Title.TLabel')
         title_label.pack(pady=(0, 20))
         
-        # Frame de conexión
+        # Frame de la conexión
         self.create_connection_frame(main_frame)
         
         # Notebook para pestañas
         self.notebook = ttk.Notebook(main_frame)
         self.notebook.pack(fill=tk.BOTH, expand=True, pady=(20, 0))
         
-        # Pestañas
+        # Pestañas de la interfaz
         self.create_devices_tab()
         self.create_properties_tab()
         self.create_control_tab()
@@ -124,8 +122,8 @@ class INDIGOControlPanel:
         """Crea el frame de conexión al servidor INDIGO.
         
         Construye la interfaz para configurar y establecer la conexión
-        con el servidor INDIGO, incluyendo campos para host, puerto
-        y nombre del cliente.
+        con el servidor INDIGO, incluyendo campos como el host, puerto
+        y el nombre del cliente.
 
         Args:
             parent (ttk.Widget): Widget padre donde se creará el frame
@@ -150,7 +148,7 @@ class INDIGOControlPanel:
         
         ttk.Label(input_frame, text="Nombre:").grid(row=0, column=4, sticky=tk.W, padx=(0, 5))
         self.name_entry = ttk.Entry(input_frame, width=15)
-        self.name_entry.insert(0, "INDIGO_GUI")
+        self.name_entry.insert(0, "PYNDIGO_GUI")
         self.name_entry.grid(row=0, column=5, padx=(0, 20))
         
         # Botones de conexión
@@ -168,8 +166,8 @@ class INDIGOControlPanel:
         """Crea la pestaña de visualización de dispositivos.
         
         Construye la interfaz para mostrar la lista de dispositivos
-        conectados al servidor INDIGO, incluyendo información sobre
-        su estado, propiedades y última actualización.
+        conectados al servidor INDIGO, incluyendo información sobre 
+        estos, como su estado, propiedades y última actualización.
         """
         devices_frame = ttk.Frame(self.notebook)
         self.notebook.add(devices_frame, text="Dispositivos")
@@ -189,9 +187,13 @@ class INDIGOControlPanel:
         columns = ('Dispositivo', 'Tipo', 'Estado', 'Propiedades', 'Última Actualización')
         self.devices_tree = ttk.Treeview(list_frame, columns=columns, show='headings', height=15)
         
-        for col in columns:
-            self.devices_tree.heading(col, text=col)
-            self.devices_tree.column(col, width=200)
+         # Primera columna alineada a la izquierda, el resto va al centro
+        self.devices_tree.heading('Dispositivo', text='Dispositivo', anchor="w")
+        self.devices_tree.column('Dispositivo', width=200, anchor="w")
+        
+        for col in columns[1:]:  # Resto de columnas
+            self.devices_tree.heading(col, text=col, anchor="center")
+            self.devices_tree.column(col, width=200, anchor="center")
         
         # Scrollbars
         v_scroll = ttk.Scrollbar(list_frame, orient=tk.VERTICAL, command=self.devices_tree.yview)
@@ -213,8 +215,8 @@ class INDIGOControlPanel:
         """Crea la pestaña de visualización de propiedades.
         
         Construye la interfaz para mostrar las propiedades de los
-        dispositivos seleccionados, incluyendo detalles de cada
-        propiedad y sus elementos.
+        dispositivos seleccionados, incluyendo los detalles de cada
+        propiedad y sus respectivos elementos.
         """
         props_frame = ttk.Frame(self.notebook)
         self.notebook.add(props_frame, text="Propiedades")
@@ -224,11 +226,10 @@ class INDIGOControlPanel:
         top_frame.pack(fill=tk.X, padx=10, pady=10)
         
         ttk.Label(top_frame, text="Dispositivo seleccionado:", style=self.HEADER_STYLE).pack(side=tk.LEFT)
-        
-        self.device_selector_combo.bind(self.COMBO_SELECTED_EVENT, self.on_device_selector_change)
+        # Combobox para seleccionar dispositivo
         self.device_selector_combo = ttk.Combobox(top_frame, width=30, state="readonly")
         self.device_selector_combo.pack(side=tk.LEFT, padx=(10, 0))
-        self.device_selector_combo.bind(self.COMBO_SELECTED_EVENT, self.on_device_selector_change)
+        self.device_selector_combo.bind('<<ComboboxSelected>>', self.on_device_selector_change)
         
         # Frame principal con dos paneles
         main_props_frame = ttk.Frame(props_frame)
@@ -242,9 +243,13 @@ class INDIGOControlPanel:
         prop_columns = ('Propiedad', 'Tipo', 'Estado', 'Permisos', 'Elementos')
         self.properties_tree = ttk.Treeview(left_frame, columns=prop_columns, show='headings', height=20)
         
-        for col in prop_columns:
-            self.properties_tree.heading(col, text=col)
-            self.properties_tree.column(col, width=120)
+        # Primera columna alineada a la izquierda, resto al centro
+        self.properties_tree.heading('Propiedad', text='Propiedad', anchor="w")
+        self.properties_tree.column('Propiedad', width=120, anchor="w")
+        
+        for col in prop_columns[1:]:  # Resto de columnas
+            self.properties_tree.heading(col, text=col, anchor="center")
+            self.properties_tree.column(col, width=120, anchor="center")
         
         prop_scroll = ttk.Scrollbar(left_frame, orient=tk.VERTICAL, command=self.properties_tree.yview)
         self.properties_tree.configure(yscrollcommand=prop_scroll.set)
@@ -252,8 +257,8 @@ class INDIGOControlPanel:
         self.properties_tree.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         prop_scroll.pack(side=tk.RIGHT, fill=tk.Y)
         
-        # Panel derecho - Detalles de propiedad
-        right_frame = ttk.LabelFrame(main_props_frame, text="Detalles de Propiedad", padding=5)
+        # Panel derecho - Detalles de la propiedad
+        right_frame = ttk.LabelFrame(main_props_frame, text="Detalles de la Propiedad", padding=5)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=(5, 0))
         
         self.property_details = scrolledtext.ScrolledText(right_frame, height=20, width=40)
@@ -277,15 +282,15 @@ class INDIGOControlPanel:
         select_frame.pack(fill=tk.X, padx=10, pady=10)
         
         # Comboboxes para selección
-        self.device_combo.bind(self.COMBO_SELECTED_EVENT, self.on_device_combo_change)
+        ttk.Label(select_frame, text="Dispositivo:").grid(row=0, column=0, sticky=tk.W, padx=(0, 5))
         self.device_combo = ttk.Combobox(select_frame, width=30, state="readonly")
         self.device_combo.grid(row=0, column=1, padx=(0, 20))
-        self.device_combo.bind(self.COMBO_SELECTED_EVENT, self.on_device_combo_change)
+        self.device_combo.bind('<<ComboboxSelected>>', self.on_device_combo_change)
         
-        self.property_combo.bind(self.COMBO_SELECTED_EVENT, self.on_property_combo_change)
+        ttk.Label(select_frame, text="Propiedad:").grid(row=0, column=2, sticky=tk.W, padx=(0, 5))
         self.property_combo = ttk.Combobox(select_frame, width=30, state="readonly")
         self.property_combo.grid(row=0, column=3, padx=(0, 20))
-        self.property_combo.bind(self.COMBO_SELECTED_EVENT, self.on_property_combo_change)
+        self.property_combo.bind('<<ComboboxSelected>>', self.on_property_combo_change)
         
         # Frame de control dinámico
         self.control_content_frame = ttk.LabelFrame(control_frame, text="Controles", padding=10)
@@ -293,15 +298,15 @@ class INDIGOControlPanel:
         
         # Label de instrucciones
         self.control_instructions = ttk.Label(self.control_content_frame, 
-                                            text="Selecciona un dispositivo y propiedad para mostrar los controles")
-        self.control_instructions.pack(pady=50)
-        
+        text="Selecciona un dispositivo y propiedad para mostrar los controles")
+        self.control_instructions.pack(pady=50)    
+    
     def create_images_tab(self):
-        """Crea la pestaña de gestión de imágenes BLOB.
+        """Crea la pestaña de gestión de imágenes.
         
-        Construye la interfaz para gestionar archivos BLOB (imágenes),
-        incluyendo controles para habilitar propiedades BLOB,
-        descargar imágenes y visualizar archivos descargados.
+        Construye la interfaz para gestionar archivos imágenes (archivos BLOB),
+        incluyendo controles para habilitar sus propiedades,
+        descargar imágenes y visualizar los archivos descargados.
         """
         images_frame = ttk.Frame(self.notebook)
         self.notebook.add(images_frame, text="Imágenes")
@@ -314,7 +319,11 @@ class INDIGOControlPanel:
         blob_status_frame = ttk.Frame(controls_frame)
         blob_status_frame.pack(fill=tk.X, pady=(0, 10))
         
-        ttk.Label(blob_status_frame, text="Modo BLOB actual:", style=self.HEADER_STYLE).pack(side=tk.LEFT)
+        # Añadimos información de estado
+        self.blob_status_label = ttk.Label(controls_frame, text="")
+        self.blob_status_label.pack(fill=tk.X, pady=(0, 10))
+        
+        ttk.Label(blob_status_frame, text="Modo BLOB actual en el servidor:", style=self.HEADER_STYLE).pack(side=tk.LEFT)
         self.blob_mode_label = ttk.Label(blob_status_frame, text="NEVER")
         self.blob_mode_label.pack(side=tk.LEFT, padx=(10, 0))
         
@@ -327,12 +336,14 @@ class INDIGOControlPanel:
         ttk.Label(blob_select_frame, text="Dispositivo BLOB:").grid(row=0, column=0, sticky=tk.W, padx=(0, 5))
         self.blob_device_combo = ttk.Combobox(blob_select_frame, width=25, state="readonly")
         self.blob_device_combo.grid(row=0, column=1, padx=(0, 20))
-        
+
+        self.blob_device_combo.bind('<<ComboboxSelected>>', self.update_blob_properties)
+    
         ttk.Label(blob_select_frame, text="Propiedad BLOB:").grid(row=0, column=2, sticky=tk.W, padx=(0, 5))
         self.blob_property_combo = ttk.Combobox(blob_select_frame, width=25, state="readonly")
         self.blob_property_combo.grid(row=0, column=3, padx=(0, 20))
         
-        ttk.Button(blob_select_frame, text="Habilitar BLOB", command=self.enable_blob_property).grid(row=0, column=4)
+        ttk.Button(blob_select_frame, text="Habilitar BLOB en el dispositivo", command=self.enable_blob_property).grid(row=0, column=4)
         
         # Lista de imágenes descargadas
         images_list_frame = ttk.LabelFrame(images_frame, text="Imágenes Descargadas", padding=10)
@@ -359,15 +370,16 @@ class INDIGOControlPanel:
         ttk.Button(buttons_frame, text="Abrir Carpeta", command=self.open_images_folder).pack(side=tk.LEFT, padx=(0, 10))
         ttk.Button(buttons_frame, text="Eliminar", command=self.delete_selected_image).pack(side=tk.LEFT)
         
-        # Actualizar lista inicial
+        # Actualizamos la lista inicial 
+        # (de forma automática aunque si pulsamos Actualizar Lista se hace de forma manual)
         self.refresh_images_list()
-        
+            
     def create_logs_tab(self):
         """Crea la pestaña de logs y mensajes del sistema.
         
         Construye la interfaz para visualizar los logs de la aplicación,
-        incluyendo mensajes de información, advertencias y errores,
-        con opciones para limpiar y guardar los logs.
+        incluyendo mensajes de información, las advertencias y los errores,
+        incluye como opciones limpiar y guardar los logs visualizados.
         """
         logs_frame = ttk.Frame(self.notebook)
         self.notebook.add(logs_frame, text="Logs")
@@ -387,7 +399,7 @@ class INDIGOControlPanel:
         self.logs_text = scrolledtext.ScrolledText(logs_frame, height=25, font=('Consolas', 10))
         self.logs_text.pack(fill=tk.BOTH, expand=True, padx=10, pady=(0, 10))
         
-        # Configurar tags para colores
+        # Configuramos colores de los tags
         self.logs_text.tag_configure("INFO", foreground="blue")
         self.logs_text.tag_configure("WARNING", foreground="orange")
         self.logs_text.tag_configure("ERROR", foreground="red")
@@ -425,12 +437,12 @@ class INDIGOControlPanel:
         info_frame.pack(fill=tk.X, padx=10, pady=(0, 10))
         
         info_text = f"""
-INDIGO Control Panel
-Proyecto TFG - Arturo
-Python {sys.version.split()[0]}
-Directorio de trabajo: {os.getcwd()}
-Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
-        """
+        INDIGO Control Panel
+        Proyecto TFG - Arturo
+        Python {sys.version.split()[0]}
+        Directorio de trabajo: {os.getcwd()}
+        Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
+                """
         
         ttk.Label(info_frame, text=info_text, justify=tk.LEFT).pack(anchor=tk.W)
         
@@ -478,11 +490,11 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             
             self.log_message(f"Intentando conectar a {host}:{port}...")
             
-            # Crear servidor y conectar
+            # Creamos el servidor y nos conectamos a él
             self.server = INDIGOServer(name, host, port)
             self.server.connect()
             
-            # Actualizar UI
+            # Actualizamos la UI
             self.connected = True
             self.status_label.config(text=f"[OK] Conectado a {host}:{port}", style=self.CONNECTED_STYLE)
             self.connect_btn.config(state=tk.DISABLED)
@@ -490,9 +502,9 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             
             self.log_message(f"Conectado exitosamente a {host}:{port}", "SUCCESS")
             
-            # Esperar un poco para que lleguen los dispositivos
+            # Esperamos un poco para que lleguen los nuevos datos de los dispositivos
             self.root.after(2000, self.refresh_all_data)
-            
+            self.root.after(2500, self.auto_register_blob_listeners)
         except Exception as e:
             self.log_message(f"Error de conexión: {str(e)}", "ERROR")
             messagebox.showerror("Error de Conexión", f"No se pudo conectar al servidor:\n{str(e)}")
@@ -513,7 +525,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             self.connect_btn.config(state=tk.NORMAL)
             self.disconnect_btn.config(state=tk.DISABLED)
             
-            # Limpiar datos
+            # Limpiamos todos los datos
             self.clear_all_data()
             
             self.log_message("Desconectado del servidor", "INFO")
@@ -535,10 +547,18 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             self.refresh_combos()
             self.update_blob_mode_display()
             self.refresh_blob_combos()
-            
+            self.update_blob_properties()
+            # Suscripción de los listeners para actualización en tiempo real
+            if hasattr(self, 'server') and self.server:
+                for device_name, device in self.server.get_devices().items():
+                    for prop_name in device.get_properties().keys():
+                        # Se evita registrar el mismo listener varias veces
+                        self.server.add_device_property_listener(device_name, prop_name, self.on_property_update)
+            # Registro automático de los listeners de tipo BLOB
+            self.auto_register_blob_listeners()
         except Exception as e:
             self.log_message(f"Error actualizando datos: {str(e)}", "ERROR")
-        
+                    
     def refresh_devices(self):
         """Actualiza la lista de dispositivos en la pestaña correspondiente.
         
@@ -548,17 +568,17 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         if not self.connected or not self.server:
             return
         
-        # Limpiar lista actual
+        # Limpiamos la lista actual
         for item in self.devices_tree.get_children():
             self.devices_tree.delete(item)
         
-        # Añadir dispositivos
+        # Añadimos los dispositivos
         devices = self.server.get_devices()
         for device_name, device in devices.items():
             properties_count = len(device.get_properties())
             last_update = "N/A"
             
-            # Buscar la última actualización
+            # Buscamos la última actualización
             latest_time = 0
             for prop in device.get_properties().values():
                 if prop.last_update > latest_time:
@@ -579,7 +599,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         """Actualiza los comboboxes de selección de dispositivos.
         
         Obtiene la lista de dispositivos disponibles y actualiza
-        todos los comboboxes que permiten seleccionar dispositivos.
+        todos los comboboxes que permiten seleccionar estos dispositivos.
         """
         if not self.connected or not self.server:
             return
@@ -589,10 +609,10 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         self.device_selector_combo['values'] = devices
         
     def refresh_blob_combos(self):
-        """Actualiza los comboboxes específicos para propiedades BLOB.
+        """Actualiza los comboboxes específicos para propiedades de tipo BLOB.
         
         Actualiza los comboboxes utilizados en la pestaña de imágenes
-        para seleccionar dispositivos con propiedades BLOB.
+        para seleccionar dispositivos con propiedades de tipo BLOB.
         """
         if not self.connected or not self.server:
             return
@@ -613,7 +633,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         item = self.devices_tree.item(selection[0])
         device_name = item['values'][0]
         
-        # Actualizar el selector de dispositivos en la pestaña de propiedades
+        # Actualizamos el selector de dispositivos en la pestaña de propiedades
         self.device_selector_combo.set(device_name)
         self.refresh_properties(device_name)
         
@@ -633,33 +653,25 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         Args:
             device_name (str): Nombre del dispositivo cuyas propiedades se van a mostrar
         """
-        if not self.connected or not self.server:
+        if not hasattr(self, 'properties_tree'):
             return
-        
-        # Limpiar lista actual
-        for item in self.properties_tree.get_children():
-            self.properties_tree.delete(item)
-        
-        # Obtener dispositivo
-        device = self.server.get_device_by_name(device_name)
-        if not device:
-            return
-        
-        properties = device.get_properties()
-        
-        for prop_name, prop in properties.items():
-            elements_count = len(prop.get_elements())
-            prop_type = prop.get_type() or "Unknown"
-            state = prop.get_from_attributes('state') or "N/A"
-            perm = prop.get_from_attributes('perm') or "N/A"
-            
-            self.properties_tree.insert('', tk.END, values=(
-                prop_name,
-                prop_type,
-                state,
-                perm,
-                elements_count
-            ))
+        selected = self.properties_tree.selection()
+        self.properties_tree.delete(*self.properties_tree.get_children())
+        device = self.server.get_device_by_name(device_name) if self.server else None
+        if device:
+            for prop in device.get_properties().values():
+                self.properties_tree.insert(
+                    "", "end", values=(
+                        prop.get_name(),
+                        prop.get_type(),
+                        prop.get_from_attributes('state') or "N/A",
+                        prop.get_from_attributes('perm') or "N/A",
+                        len(prop.get_elements()),
+                    )
+                )
+        # Restauramos la selección
+        if selected:
+            self.properties_tree.selection_set(selected)
         
     def on_property_select(self, event):
         """Maneja la selección de una propiedad en la lista.
@@ -680,6 +692,31 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         
         self.show_property_details(device_name, prop_name)
         
+    def on_property_update(self, prop):
+        """Listener para cambios en propiedades INDIGO."""
+        # Se refresca solo la propiedad seleccionada en la pestaña de propiedades
+        try:
+            selected_device = self.device_selector_combo.get() if hasattr(self, 'device_selector_combo') else None
+            selected_prop = None
+            if hasattr(self, 'properties_tree') and self.properties_tree.selection():
+                item = self.properties_tree.item(self.properties_tree.selection()[0])
+                selected_prop = item['values'][0]
+            if selected_device and selected_prop and prop.get_name() == selected_prop and prop.get_device().get_name() == selected_device:
+                self.root.after(0, lambda: self.show_property_details(selected_device, selected_prop))
+            # Se refresca la lista de propiedades si es necesario
+            if selected_device:
+                self.root.after(0, lambda: self.refresh_properties(selected_device))
+            # Se refresca controles si la propiedad está seleccionada en la pestaña de control
+            if hasattr(self, 'device_combo') and hasattr(self, 'property_combo'):
+                device_name = self.device_combo.get()
+                prop_name = self.property_combo.get()
+                if prop.get_name() == prop_name and prop.get_device().get_name() == device_name:
+                    self.root.after(0, self.create_property_controls)
+        except Exception as e:
+            self.log_message(f"Error actualizando los valores de las propiedades: {str(e)}", "ERROR")
+
+                
+                
     def show_property_details(self, device_name: str, prop_name: str):
         """Muestra los detalles completos de una propiedad seleccionada.
 
@@ -693,6 +730,15 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         try:
             prop = self.server.get_prop_of_device(device_name, prop_name)
             if not prop:
+                return
+            prop_type = prop.get_type()
+            if not prop_type:
+                self.log_message(f"Tipo de propiedad desconocido para {prop_name}", "WARNING")
+                return
+                
+            elements = prop.get_elements()
+            if not elements:
+                self.log_message(f"No hay elementos en la propiedad {prop_name}", "WARNING")
                 return
             details = "="*10 + "DETALLES DE PROPIEDAD\n"+ "="*10 + "\n\n"
             details += f"Nombre: {prop.get_name()}\n"
@@ -728,14 +774,14 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         if not device_name or not self.connected or not self.server:
             return
         
-        # Actualizar combo de propiedades
+        # Actualizamos los combobox de las propiedades
         device = self.server.get_device_by_name(device_name)
         if device:
             properties = list(device.get_properties().keys())
             self.property_combo['values'] = properties
             self.property_combo.set('')
         
-        # Limpiar controles
+        # Limpiamos los controles de los widgets
         self.clear_control_widgets()
         
     def on_property_combo_change(self, event):
@@ -750,7 +796,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         """Crea controles dinámicos para la propiedad seleccionada.
         
         Genera automáticamente los controles apropiados según el tipo
-        de propiedad (Switch, Number, Text, Light, BLOB).
+        de la propiedad (Switch, Number, Text, Light, BLOB).
         """
         device_name = self.device_combo.get()
         prop_name = self.property_combo.get()
@@ -778,7 +824,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
                                   style=self.HEADER_STYLE)
             title_label.pack(pady=(0, 20))
             
-            # Crear controles según el tipo
+            # Creamos los controles según el tipo de la propiedad
             self.control_widgets = {}
             
             if prop_type == "Switch":
@@ -787,7 +833,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
                 self.create_number_controls(controls_frame, elements)
             elif prop_type == "Text":
                 self.create_text_controls(controls_frame, prop, elements)
-            elif prop_type == "Light":
+            elif prop_type == "Light": # Como la propiedad GPS_STATUS (No hay muchas)
                 self.create_light_display(controls_frame, elements)
             elif prop_type == "BLOB":
                 self.create_blob_controls(controls_frame, elements)
@@ -809,20 +855,31 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             elements (dict): Diccionario de elementos de la propiedad
         """
         self.control_widgets = {}
-        
-        for elem_name, element in elements.items():
-            frame = ttk.Frame(parent)
-            frame.pack(fill=tk.X, pady=2)
-            
-            var = tk.StringVar(value=element.get_value() or "Off")
-            
-            # Checkbuttons
-            cb = ttk.Checkbutton(frame, text=elem_name)
-            if element.get_value() == "On":
-                cb.state(['selected'])
-            cb.pack(side=tk.LEFT)
-            
-            self.control_widgets[elem_name] = var
+        element_names = list(elements.keys())
+        rule = None
+        # Se intenta obtener la regla (OneOfMany, AtMostOne, etc.)
+        for elem in elements.values():
+            rule = elem.get_prop().get_from_attributes('rule')
+            break
+
+        if rule == "OneOfMany" and len(element_names) == 2:
+            # Se usa un radiobutton para el tipo switch
+            self.switch_var = tk.StringVar()
+            # Se selecciona el que está On
+            for name, elem in elements.items():
+                if elem.get_value() == "On":
+                    self.switch_var.set(name)
+            for name in element_names:
+                rb = ttk.Radiobutton(parent, text=name, variable=self.switch_var, value=name)
+                rb.pack(anchor=tk.W)
+            self.control_widgets["__switch__"] = self.switch_var
+        else:
+            # Para otros casos, usa checkboxes
+            for name, elem in elements.items():
+                var = tk.BooleanVar(value=(elem.get_value() == "On"))
+                cb = ttk.Checkbutton(parent, text=name, variable=var)
+                cb.pack(anchor=tk.W)
+                self.control_widgets[name] = var
         
     def create_number_controls(self, parent, elements: dict):
         """Crea controles para propiedades de tipo Number.
@@ -839,7 +896,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             
             ttk.Label(frame, text=f"{elem_name}:", width=20).pack(side=tk.LEFT)
             
-            # Obtener rango si está disponible
+            # Obtiene rango si está disponible
             try:
                 min_val = float(element.get_from_attributes("min"))
                 max_val = float(element.get_from_attributes("max"))
@@ -946,16 +1003,26 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         """
         try:
             values = {}
-            
-            for elem_name, widget_var in self.control_widgets.items():
-                if isinstance(widget_var, tk.StringVar):
-                    values[elem_name] = widget_var.get()
-                elif isinstance(widget_var, tk.DoubleVar):
-                    values[elem_name] = str(widget_var.get())
-            
+            prop_type = prop.get_type()
+            rule = prop.attributes.get('rule', None)
+            elements = prop.get_elements()
+
+            if prop_type == "Switch" and rule == "OneOfMany" and len(elements) == 2 and "__switch__" in self.control_widgets:
+                selected = self.control_widgets["__switch__"].get()
+                for name in elements:
+                    values[name] = "On" if name == selected else "Off"
+            else:
+                for elem_name, widget_var in self.control_widgets.items():
+                    if isinstance(widget_var, tk.StringVar):
+                        values[elem_name] = widget_var.get()
+                    elif isinstance(widget_var, tk.BooleanVar):
+                        values[elem_name] = "On" if widget_var.get() else "Off"
+                    elif isinstance(widget_var, tk.DoubleVar):
+                        values[elem_name] = str(widget_var.get())
+
             prop.send_values_to_server(values)
             self.log_message(f"Valores enviados para {prop.get_name()}", "SUCCESS")
-            
+
         except Exception as e:
             self.log_message(f"Error enviando valores: {str(e)}", "ERROR")
             messagebox.showerror("Error", f"Error enviando valores:\n{str(e)}")
@@ -987,49 +1054,156 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             mode = self.server.get_blob_mode()
             self.blob_mode_label.config(text=mode)
         
-    def enable_blob_property(self):
-        """Habilita una propiedad BLOB específica para recibir datos."""
-        device = self.blob_device_combo.get()
-        property_name = self.blob_property_combo.get()
-        
-        if not device or not property_name:
-            messagebox.showwarning("Advertencia", "Selecciona dispositivo y propiedad BLOB")
-            return
-        
-        if not self.server:
-            messagebox.showerror("Error", "No hay conexión al servidor")
-            return
-        
-        try:
-            self.server.send_blob_message(device, property_name)
-            self.log_message(f"BLOB habilitado para {device}.{property_name}", "SUCCESS")
-            
-        except Exception as e:
-            self.log_message(f"Error habilitando BLOB: {str(e)}", "ERROR")
-            messagebox.showerror("Error", f"Error habilitando BLOB:\n{str(e)}")
-        
-    def download_blob(self, path: str):
-        """Descarga un archivo BLOB desde el servidor.
-
-        Args:
-            path (str): Ruta del archivo BLOB en el servidor
-        """
+    def update_blob_properties(self, *args):
+        """Actualiza la lista de propiedades BLOB disponibles."""
         if not self.connected or not self.server:
             return
+                
+        device_name = self.blob_device_combo.get()
+        if device_name:
+            device = self.server.get_device_by_name(device_name)
+            if device:
+                # Verificamos interfaz BLOB/CCD
+                info_prop = device.get_property_by_name("INFO")
+                if info_prop:
+                    device_interface = info_prop.get_element("DEVICE_INTERFACE")
+                    if device_interface:
+                        interface_value = device_interface.get_value()
+                        # Verificamos si es un dispositivo CCD (interfaz 2)
+                        if interface_value and "2" in interface_value:
+                            blob_properties = []
+                            for prop_name, prop in device.get_properties().items():
+                                if prop.get_type() == "BLOB":
+                                    blob_properties.append(prop_name)
+                            
+                            self.blob_property_combo['values'] = blob_properties
+                            if blob_properties:
+                                self.blob_property_combo.set(blob_properties[0])
+                        else:
+                            self.log_message(f"El dispositivo {device_name} no es un CCD", "INFO")
+                            self.blob_property_combo['values'] = []
+                            self.blob_property_combo.set('')
+                                
+    def _update_blob_list(self, device):
+        """Actualiza la lista de propiedades BLOB después de conectar."""
+        blob_properties = []
+        for prop_name, prop in device.get_properties().items():
+            if isinstance(prop, INDIGOProperty) and prop.get_type() == "BLOB":
+                    blob_properties.append(prop_name)
+        
+        self.blob_property_combo['values'] = blob_properties
+        if blob_properties:
+            self.blob_property_combo.set(blob_properties[0])
+                        
+    def enable_blob_property(self):
+        """Habilita una propiedad BLOB específica."""
+        if not self.server:
+            self.log_message("No hay conexión al servidor", "ERROR")
+            return
+
+        device_name = self.blob_device_combo.get()
+        property_name = self.blob_property_combo.get()
+        
+        if not device_name or not property_name:
+            self.log_message("Selecciona dispositivo y propiedad BLOB", "WARNING")
+            return
         
         try:
-            self.server.download_image(path)
-            self.log_message(f"Imagen descargada: {path}", "SUCCESS")
-            self.refresh_images_list()
+            if not self.server:
+                raise ConnectionError("No hay conexión al servidor")
+            if not self.server:
+                raise ConnectionError("No hay conexión al servidor")
+            device = self.server.get_device_by_name(device_name)
+            if device:
+                # Verificamos el estado de conexión
+                connection_prop = device.get_property_by_name("CONNECTION")
+                if connection_prop:
+                    current_state = connection_prop.get_element("CONNECTED").get_value()
+                    if current_state != "On":
+                        self.log_message(f"Conectando dispositivo {device_name}...", "INFO")
+                        connection_prop.send_values_to_server({"CONNECTED": "On"})
+                        # Esperamos a que se conecte antes de habilitar BLOB
+                        self.root.after(2000, lambda: self._enable_blob_after_connect(device_name, property_name))
+                    else:
+                        self._enable_blob_after_connect(device_name, property_name)
+        except Exception as e:
+            self.log_message(f"Error habilitando BLOB: {str(e)}", "ERROR")
+        
+    def _enable_blob_after_connect(self, device_name: str, property_name: str):
+        """Habilita una propiedad BLOB después de que el dispositivo está conectado.
+        
+        Args:
+            device_name (str): Nombre del dispositivo
+            property_name (str): Nombre de la propiedad BLOB
+        """
+        try:
+            if not self.server:
+                self.log_message("No hay conexión al servidor", "ERROR")
+                return
+            self.server.send_blob_message(device_name, property_name)
+            self.log_message(f"Esperando BLOB en {device_name}.{property_name}", "INFO")
+
+            # Listener para descargar la imagen automáticamente cuando llegue el BLOB
+            def blob_listener(prop):
+                for elem in prop.get_elements().values():
+                    # El path puede estar en atributos o como valor
+                    path = elem.get_from_attributes("path") if "path" in elem.get_attributes() else elem.get_value()
+                    self.log_message(f"Listener BLOB detectado path: {path}", "INFO")
+                    if path and path.endswith(".fits"):
+                        if self.server is not None:
+                            self.download_blob(path)
+            self.server.add_device_property_listener(device_name, property_name, blob_listener)
+            self.log_message(f"BLOB habilitado para {device_name}.{property_name}", "SUCCESS")
+        except Exception as e:
+            self.log_message(f"Error habilitando BLOB: {str(e)}", "ERROR")
             
+    def auto_register_blob_listeners(self):
+        """Registra listeners para todas las propiedades BLOB de todos los dispositivos conectados."""
+        if not self.connected or not self.server:
+            return
+        for device_name, device in self.server.get_devices().items():
+            for prop_name, prop in device.get_properties().items():
+                if prop.get_type() == "BLOB":
+                    # Se evita registrar el mismo listener varias veces
+                    def blob_listener(prop, device_name=device_name, prop_name=prop_name):
+                        for elem in prop.get_elements().values():
+                            path = elem.get_from_attributes("path") if "path" in elem.get_attributes() else elem.get_value()
+                            self.log_message(f"[AUTO] Listener BLOB detectado path: {path}", "INFO")
+                            if path and path.endswith(".fits"):
+                                if self.server is not None:
+                                    self.download_blob(path)
+                    self.server.add_device_property_listener(device_name, prop_name, blob_listener)
+                    
+    def download_blob(self, path: str):
+        """Descarga un archivo BLOB desde el servidor."""
+        if not self.connected or not self.server:
+            self.log_message("No hay conexión al servidor", "ERROR")
+            return
+
+        if not path:
+            self.log_message("Ruta de BLOB no válida", "ERROR")
+            return
+
+        self.log_message(f"Intentando descargar imagen: {path}", "INFO")
+        try:
+            result = self.server.download_image(path)
+            if result:
+                self.log_message(f"Imagen descargada correctamente: {path}", "SUCCESS")
+                self.refresh_images_list()
+            else:
+                self.log_message(f"Error al descargar la imagen: {path}", "ERROR")
+                messagebox.showerror("Error", f"No se pudo descargar la imagen:\n{path}")
         except Exception as e:
             self.log_message(f"Error descargando imagen: {str(e)}", "ERROR")
+            messagebox.showerror("Error", f"Error descargando imagen:\n{str(e)}")
+            
         
     def refresh_images_list(self):
         """Actualiza la lista de imágenes descargadas en la carpeta local."""
         self.images_listbox.delete(0, tk.END)
         
         images_dir = os.path.join(os.getcwd(), "images")
+        
         if os.path.exists(images_dir):
             for filename in os.listdir(images_dir):
                 if filename.lower().endswith(('.fits', '.fit', '.fts')):
@@ -1050,7 +1224,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
             from astropy.io import fits
             import numpy as np
             
-            # Abrir archivo FITS correctamente
+            # Abrimos el archivo FITS
             hdul = fits.open(filepath)
             img_data = hdul[0].data
             hdul.close()
@@ -1073,9 +1247,9 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         images_dir = os.path.join(os.getcwd(), "images")
         
         try:
-            if os.name == 'nt':  # Windows
+            if os.name == 'nt':  # Para Windows
                 os.startfile(images_dir)
-            elif os.name == 'posix':  # Linux/Mac
+            elif os.name == 'posix':  # Para Linux/Mac
                 os.system(f'xdg-open "{images_dir}"')
             
         except Exception as e:
@@ -1177,39 +1351,48 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
     def quit_application(self):
         """Cierra completamente la aplicación."""
         if messagebox.askyesno("Confirmar", "¿Salir de la aplicación?"):
-            if self.connected:
-                self.disconnect_server()
-            self.root.quit()
+            try:
+                if self.connected:
+                    self.disconnect_server()
+                # Limpiamos los recursos
+                self.clear_all_data()
+                # Cerramos los logs pendientes
+                self.log_message("Cerrando aplicación...", "INFO")
+                self.root.quit()
+            except Exception as e:
+                print(f"Error cerrando aplicación: {e}")
+                
         
     def clear_all_data(self):
         """Limpia todos los datos mostrados en la interfaz."""
-        # Limpiar listas
+        # Limpiamos las listas
         for item in self.devices_tree.get_children():
             self.devices_tree.delete(item)
         
         for item in self.properties_tree.get_children():
             self.properties_tree.delete(item)
         
-        # Limpiar combos
+        # Limpiamos los combos
         self.device_combo['values'] = []
         self.property_combo['values'] = []
         self.blob_device_combo['values'] = []
         self.blob_property_combo['values'] = []
         self.device_selector_combo['values'] = []
         
-        # Limpiar selecciones
+        # Limpiamos las selecciones
         self.device_combo.set('')
         self.property_combo.set('')
         self.blob_device_combo.set('')
         self.blob_property_combo.set('')
         self.device_selector_combo.set('')
         
-        # Limpiar detalles
+        # Limpiamos los detalles
         self.property_details.delete(1.0, tk.END)
         
-        # Limpiar controles
+        # Limpiamos los controles
         self.clear_control_widgets()
-        
+    
+    
     def auto_update(self):
         """Ejecuta la actualización automática de datos si está habilitada.
         
@@ -1219,7 +1402,7 @@ Carpeta de imágenes: {os.path.join(os.getcwd(), 'images')}
         if self.auto_refresh.get() and self.connected:
             self.refresh_all_data()
         
-        # Programar siguiente actualización
+        # Programamos siguiente actualización
         interval = self.refresh_interval.get() * 1000  # Convertir a milisegundos
         self.root.after(interval, self.auto_update)
         
@@ -1242,6 +1425,12 @@ def main():
     """
     try:
         app = INDIGOControlPanel()
+        import signal
+        def graceful_exit(signum, frame):
+            print("\nCerrando GUI y conexión INDIGO de forma segura...")
+            app.quit_application()
+            sys.exit(0)
+        signal.signal(signal.SIGINT, graceful_exit)
         app.run()
     except Exception as e:
         print(f"Error iniciando la aplicación: {e}")

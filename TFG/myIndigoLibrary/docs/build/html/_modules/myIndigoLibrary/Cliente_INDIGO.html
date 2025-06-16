@@ -79,12 +79,10 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 
-
-
 <div class="viewcode-block" id="INDIGOElement">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOElement">[documentos]</a>
 <span class="k">class</span> <span class="nc">INDIGOElement</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase que representa un elemento de una propiedad de dispositivo INDIGO.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representa un elemento de una propiedad de dispositivo INDIGO.</span>
 <span class="sd">    </span>
 <span class="sd">    Un elemento es la unidad mínima de información dentro de una propiedad INDIGO.</span>
 <span class="sd">    Por ejemplo, una propiedad de coordenadas puede tener elementos para </span>
@@ -107,7 +105,7 @@
 <span class="sd">            prop (INDIGOProperty): Propiedad INDIGO donde se incluye el elemento</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">prop</span> <span class="o">=</span> <span class="n">prop</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">xml_property</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>    <span class="c1">#ó se puede conseguir también con xml_property.attrib[&#39;name&#39;]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">xml_property</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="kc">None</span></div>
 
@@ -121,18 +119,19 @@
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">INDIGOElement(name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">, value=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">, attributes=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="si">}</span><span class="s2">)&quot;</span>
     
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción del elemento.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción actualizada del elemento.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Listado con los valore del elemento.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
+        <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prop</span><span class="p">()</span>
+        <span class="n">prop</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">device_name</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">property_name</span><span class="o">=</span><span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
     
 <div class="viewcode-block" id="INDIGOElement.parse_elements">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOElement.parse_elements">[documentos]</a>
     <span class="k">def</span> <span class="nf">parse_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_property</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza los atributos y valor del elemento desde XML pasado como parámetro.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza los atributos y valor del elemento desde el XML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            xml_property (xml.etree.Element.Element): Elemento XML con los nuevos datos</span>
@@ -147,7 +146,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene el nombre del elemento.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">        str or None: Nombre del elemento</span>
+<span class="sd">            str or None: Nombre del elemento</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
 
@@ -157,7 +156,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene el valor del elemento.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Returns:</span>
 <span class="sd">            str or None: Valor actual del elemento</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span></div>
@@ -179,25 +177,30 @@
     <span class="k">def</span> <span class="nf">get_from_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene el valor de un atributo específico del elemento.</span>
 <span class="sd">        </span>
-<span class="sd">        Los atributos comunes incluyen:</span>
-<span class="sd">        </span>
-<span class="sd">        - label: Etiqueta descriptiva del elemento</span>
-<span class="sd">        - format: Formato de presentación del elemento</span>
-<span class="sd">        - min: Valor mínimo permitido</span>
-<span class="sd">        - max: Valor máximo permitido</span>
-<span class="sd">        - step: Incremento entre valores válidos</span>
-<span class="sd">        - path: Ruta de imagen (solo para propiedades BLOB)</span>
-<span class="sd">        - target: Valor objetivo del elemento</span>
+<span class="sd">        Entre los atributos que nos encontramos tenemos:</span>
+<span class="sd">        - name: Nombre del elemento (ejemplo: name=&#39;WIDTH&#39;)</span>
+<span class="sd">        - label: Etiqueta descriptiva (ejemplo: label=&#39;Horizontal resolution&#39;)</span>
+<span class="sd">        - format: Formato de presentación (ejemplo: format=&#39;%g&#39;)</span>
+<span class="sd">        - min: Valor mínimo permitido (ejemplo: min=&#39;0&#39;)</span>
+<span class="sd">        - max: Valor máximo permitido (ejemplo: max=&#39;1600&#39;)</span>
+<span class="sd">        - step: Incremento entre valores válidos (ejemplo: step=&#39;1&#39;)</span>
+<span class="sd">        - target: Valor objetivo del elemento (ejemplo: target=&#39;0&#39;)</span>
+<span class="sd">        - path: Ruta de imagen o archivo BLOB (ejemplo: path=&#39;/blob/0x5a999035ff38.fits&#39;)</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            name (str): Nombre del atributo a obtener</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Valor del atributo solicitado</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: Si el atributo no existe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atributo &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; no encontrado en </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
-    
+            
 <div class="viewcode-block" id="INDIGOElement.get_attributes">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOElement.get_attributes">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -215,7 +218,7 @@
 <div class="viewcode-block" id="INDIGOProperty">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty">[documentos]</a>
 <span class="k">class</span> <span class="nc">INDIGOProperty</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase que representa una propiedad de un dispositivo INDIGO.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representa una propiedad de un dispositivo INDIGO.</span>
 <span class="sd">    </span>
 <span class="sd">    Una propiedad agrupa elementos relacionados y define su comportamiento,</span>
 <span class="sd">    tipo y restricciones. Los tipos de propiedades incluyen Text, Number,</span>
@@ -227,7 +230,9 @@
 <span class="sd">        type (str): Tipo de propiedad (Text, Number, Switch, Light, BLOB)</span>
 <span class="sd">        attributes (dict): Atributos específicos de la propiedad</span>
 <span class="sd">        elements (dict): Diccionario de elementos (elementos de la clase INDIGOElement) que componen la propiedad</span>
-<span class="sd">        lastUpdate (float): Timestamp de la última actualización</span>
+<span class="sd">        last_pdate (float): Timestamp de la última actualización</span>
+<span class="sd">        is_complete (bool): Indica si la propiedad ha sido completamente inicializada.</span>
+<span class="sd">        _last_hash (int): Hash de los valores de los elementos para detectar cambios.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
 <div class="viewcode-block" id="INDIGOProperty.__init__">
@@ -245,7 +250,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_update</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="kc">None</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_complete</span> <span class="o">=</span> <span class="kc">False</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_hash</span> <span class="o">=</span> <span class="mi">0</span>
+
         <span class="c1"># Determinar el tipo de propiedad basado en el tag del XML</span>
         <span class="n">list_names</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span> <span class="s2">&quot;Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Switch&quot;</span><span class="p">,</span> <span class="s2">&quot;Light&quot;</span><span class="p">,</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">}</span>
         
@@ -273,18 +280,18 @@
                 <span class="sa">f</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>        
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción de la propiedad.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción actualizada de la propiedad.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Listado con los elementos de la propiedad</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">device_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="n">property_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
     
 <div class="viewcode-block" id="INDIGOProperty.parse_properties">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.parse_properties">[documentos]</a>
     <span class="k">def</span> <span class="nf">parse_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xml_properties</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza la propiedad y sus elementos con el XML pasado.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Actualiza la propiedad y sus elementos con el XML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            xml_properties (xml.etree.ElementTree.Element): Elemento XML con los datos de la propiedad</span>
@@ -297,9 +304,15 @@
             <span class="n">name_elem</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name_elem</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">name_elem</span><span class="p">]</span> <span class="o">=</span> <span class="n">INDIGOElement</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">name_elem</span><span class="p">]</span><span class="o">.</span><span class="n">parse_elements</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">name_elem</span><span class="p">]</span><span class="o">.</span><span class="n">parse_elements</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+        <span class="c1"># Solo marcamos como completa si el XML es un cierre de vector y hay elementos</span>
+        <span class="k">if</span> <span class="n">xml_properties</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;defTextVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defNumberVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defSwitchVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defLightVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defBLOBVector&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_complete</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_complete</span> <span class="o">=</span> <span class="kc">False</span></div>
 
-
+        
+        
 <div class="viewcode-block" id="INDIGOProperty.get_name">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.get_name">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
@@ -322,14 +335,19 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            INDIGOElement: Instancia del elemento solicitado</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: Si el elemento no existe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span></div>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Elemento &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; no encontrado en la propiedad &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>    </div>
 
     
 <div class="viewcode-block" id="INDIGOProperty.get_elements">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.get_elements">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_elements</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene todos los elementos de la propiedad.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene todos los elementso de la propiedad.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            dict: Diccionario con todos los elementos de la propiedad</span>
@@ -343,7 +361,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene el tipo de la propiedad.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Returns:</span>
 <span class="sd">            str orNone: Tipo de la propiedad (Text, Number, Switch, Light, BLOB)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span></div>
@@ -370,13 +387,15 @@
 <span class="sd">            </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Valor del atributo o mensaje de error si no existe</span>
+<span class="sd">        </span>
+<span class="sd">        Raises:</span>
+<span class="sd">            KeyError: Si el atributo no existe.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
-        
-        <span class="k">return</span> <span class="s2">&quot;No existe este atributo en esta propiedad.&quot;</span></div>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Atributo &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; no encontrado en </span><span class="si">{</span><span class="bp">self</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span></div>
 
-    
+            
 <div class="viewcode-block" id="INDIGOProperty.get_attributes">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOProperty.get_attributes">[documentos]</a>
     <span class="k">def</span> <span class="nf">get_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -406,55 +425,62 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            values (dict): Diccionario con nombres de elementos como claves </span>
-<span class="sd">                          y sus nuevos valores como valores -&gt; [name, INDIGOElement]</span>
+<span class="sd">                          y sus nuevos valores como valores</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">server</span> <span class="p">:</span> <span class="n">INDIGOServer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;new</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">Vector device=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">server</span><span class="p">:</span> <span class="n">INDIGOServer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_server</span><span class="p">()</span>
+        <span class="n">send_message</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">perm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;perm&#39;</span><span class="p">,</span> <span class="s1">&#39;rw&#39;</span><span class="p">)</span>  <span class="c1"># Por defecto &#39;rw&#39; si no está perm en los atributos</span>
         
-        <span class="k">match</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">:</span>
-            <span class="k">case</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;new</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">Vector device=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span><span class="si">}</span><span class="s2">&#39; name=&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Switch&quot;</span><span class="p">:</span>
+            <span class="n">number_on</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;On&quot;</span><span class="p">:</span>
+                    <span class="n">number_on</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;OneOfMany&quot;</span> <span class="ow">and</span> <span class="n">number_on</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">***** ERROR: Debes seleccionar solo un elemento *****</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">send_message</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;AtMostOne&quot;</span> <span class="ow">and</span> <span class="n">number_on</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">***** ERROR: Debes seleccionar uno o ninguno *****</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">send_message</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Text&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">perm</span> <span class="o">==</span> <span class="s2">&quot;ro&quot;</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">***** ERROR: Solo lectura *****</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">send_message</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">server</span><span class="o">.</span><span class="n">download_image</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        
-            <span class="k">case</span> <span class="s2">&quot;Switch&quot;</span><span class="p">:</span>
-                <span class="n">switches_on</span> <span class="o">=</span> <span class="mi">0</span>
-                <span class="k">for</span> <span class="n">ele_name</span><span class="p">,</span> <span class="n">ele_value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="n">ele_value</span> <span class="o">==</span> <span class="s2">&quot;On&quot;</span><span class="p">:</span>
-                        <span class="n">switches_on</span><span class="o">+=</span><span class="mi">1</span>
-                    <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;   &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">ele_name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            
-                <span class="n">rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;OneOfMany&quot;</span> <span class="ow">and</span> <span class="n">switches_on</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Error: Sólo se puede seleccionar un único elemento Switch</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">rule</span> <span class="o">==</span> <span class="s2">&quot;AtMostOne&quot;</span> <span class="ow">and</span>  <span class="n">switches_on</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Error: Sólo se puede seleccionar uno o ningún elemento Switch&quot;</span><span class="p">)</span>
-        
-            <span class="k">case</span> <span class="s2">&quot;Text&quot;</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s1">&#39;perm&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;ro&quot;</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">PermissionError</span><span class="p">(</span><span class="s2">&quot;Error: Este elemento sólo se puede leer, no se puede escribir&quot;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">ele_name</span><span class="p">,</span> <span class="n">ele_value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                        <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;   &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">ele_name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-            
-            <span class="k">case</span> <span class="s2">&quot;Number&quot;</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">ele_name</span><span class="p">,</span> <span class="n">ele_value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="n">ele_name</span><span class="p">)</span>
-                    
-                    <span class="k">if</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">ele_value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele_value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">))):</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error: El valor está fuera del rango permitido&quot;</span><span class="p">)</span>    
-                    <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;   &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">ele_name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">ele_value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;Number&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_element</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">val_min</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;min&quot;</span><span class="p">))</span>
+                <span class="n">val_max</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">get_from_attributes</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">))</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;  &lt;one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2"> name=&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39; target=&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&lt;/one</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">val_min</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">val_max</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\t\t</span><span class="s2">***** ERROR: Valor fuera de rango *****</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="n">send_message</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">server</span><span class="o">.</span><span class="n">download_image</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
         <span class="n">message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;&lt;/new</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">Vector&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
-        
-        <span class="n">server</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
+
+        <span class="k">if</span> <span class="n">send_message</span><span class="p">:</span>
+            <span class="n">server</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="n">message</span><span class="p">)</span></div>
 </div>
 
-    
     
 <div class="viewcode-block" id="INDIGODevice">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGODevice">[documentos]</a>
 <span class="k">class</span> <span class="nc">INDIGODevice</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clase que representa un dispositivo registrado en el servidor INDIGO.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Representa un dispositivo registrado en el servidor INDIGO.</span>
 <span class="sd">    </span>
 <span class="sd">    Un dispositivo INDIGO puede ser cualquier instrumento astronómico como</span>
 <span class="sd">    monturas, cámaras, ruedas de filtros, enfocadores, etc. Cada dispositivo</span>
@@ -464,6 +490,7 @@
 <span class="sd">        name (str): Nombre único del dispositivo</span>
 <span class="sd">        server (INDIGOServer): Referencia al servidor INDIGO donde está registrado</span>
 <span class="sd">        properties (dict): Diccionario de propiedades del dispositivo</span>
+<span class="sd">        is_initialized (bool): Indica si el dispositivo ha sido completamente inicializado.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
 <div class="viewcode-block" id="INDIGODevice.__init__">
@@ -477,7 +504,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">server</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">=</span><span class="p">{}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">=</span><span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_initialized</span> <span class="o">=</span> <span class="kc">False</span></div>
 
         
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -495,11 +523,12 @@
             <span class="sa">f</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción del dispositivo.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción actualizada del dispositivo.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Listado con los elementos del dispositivo.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">device_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
   
 <div class="viewcode-block" id="INDIGODevice.get_server">
@@ -519,23 +548,23 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene todas las propiedades del dispositivo.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            dict: Diccionario de propiedades -&gt; [nombre, INDIGOProperty]</span>
+<span class="sd">            dict: Diccionario de propiedades</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span></div>
 
     
 <div class="viewcode-block" id="INDIGODevice.get_property_by_name">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGODevice.get_property_by_name">[documentos]</a>
-    <span class="k">def</span> <span class="nf">get_property_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">INDIGOProperty</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">get_property_by_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;INDIGOProperty | None&quot;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene una propiedad específica por su nombre.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            property_name (str): Nombre de la propiedad</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            INDIGOProperty: Propiedad solicitada</span>
+<span class="sd">            INDIGOProperty or None: Propiedad solicitada o None si no existe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">property_name</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="INDIGODevice.get_name">
@@ -557,27 +586,38 @@
 <span class="sd">        Args:</span>
 <span class="sd">            prop (ElementTree): Elemento XML que representa la propiedad</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_initialized</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">name_prop</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
         
         <span class="k">if</span> <span class="n">name_prop</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">name_prop</span><span class="p">]</span> <span class="o">=</span> <span class="n">INDIGOProperty</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">name_prop</span><span class="p">]</span><span class="o">.</span><span class="n">parse_properties</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">name_prop</span><span class="p">]</span><span class="o">.</span><span class="n">parse_properties</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_initialized</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-        
+
 <div class="viewcode-block" id="INDIGODevice.delete_property">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGODevice.delete_property">[documentos]</a>
     <span class="k">def</span> <span class="nf">delete_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prop</span><span class="p">:</span> <span class="n">Element</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Elimina una propiedad específica o todas las propiedades.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Elimina unaa propiedad específica o todas las propiedades.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            prop (ElementTree): Elemento XML con información de la propiedad a eliminar</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prop_name</span> <span class="o">=</span> <span class="n">prop</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span>        
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="p">[</span><span class="n">prop_name</span><span class="p">]</span>
+            <span class="c1"># Elimina los listeners asociados a la propiedad</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">,</span> <span class="s1">&#39;property_listeners&#39;</span><span class="p">):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Si no se especifica la propiedad, se eliminan todas las propiedades del dispositivo</span>
+            <span class="c1"># Elimina todos los listeners de todas las propiedades</span>
+            <span class="k">for</span> <span class="n">prop_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">:</span>
+                    <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
 </div>
 
@@ -586,11 +626,12 @@
 <div class="viewcode-block" id="INDIGOServer">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer">[documentos]</a>
 <span class="k">class</span> <span class="nc">INDIGOServer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Clase que gestiona la conexión y comunicación con un servidor INDIGO.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;&quot;Gestiona la conexión y comunicación con un servidor INDIGO.</span>
 <span class="sd">    </span>
 <span class="sd">    Esta clase maneja la conexión (que es sobre TCP/IP) con el servidor INDIGO, </span>
 <span class="sd">    el intercambio de mensajes en formato XML, la gestión de dispositivos y </span>
 <span class="sd">    la implantación de listeners para eventos que afecten al servidor.</span>
+<span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        name (str): Nombre identificativo del servidor.</span>
@@ -602,9 +643,11 @@
 <span class="sd">        devices (dict): Diccionario de dispositivos conectados.</span>
 <span class="sd">        wait (int): Tiempo de espera para operaciones.</span>
 <span class="sd">        blobMode (str): Modo de manejo de datos BLOB (NEVER/URL).</span>
-<span class="sd">        devicePropertyListeners (dict): Listeners para propiedades de dispositivos.</span>
 <span class="sd">        serverListeners (dict): Listeners para eventos del servidor.</span>
+<span class="sd">        logger (MessageLogger): Logger para registrar mensajes y errores.</span>
+<span class="sd">        property_listeners (dict): Listeners para propiedades.</span>
 <span class="sd">    &quot;&quot;&quot;</span>        
+    
 <div class="viewcode-block" id="INDIGOServer.__init__">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.__init__">[documentos]</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
@@ -625,10 +668,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">devices</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wait</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span> <span class="o">=</span> <span class="s2">&quot;NEVER&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span> <span class="o">=</span> <span class="p">{}</span></div>
 
-    
+
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Listado de los datos del servidor.</span>
 <span class="sd">        </span>
@@ -636,23 +678,64 @@
 <span class="sd">            str: Descripción de los elementos del servidor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         
-        <span class="n">devices_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
-        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">nINDIGOServer(&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n  name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n  host=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n  port=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n  blobMode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span><span class="si">}</span><span class="s2">&quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">n  devices=[</span><span class="se">\\</span><span class="s2">n    </span><span class="si">{</span><span class="n">devices_str</span><span class="si">}</span><span class="se">\\</span><span class="s2">n  ]&quot;</span>
+        <span class="n">devices_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">    &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">device</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">INDIGOServer(&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  name=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  host=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  port=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  blobMode=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">  devices=[</span><span class="se">\n</span><span class="s2">    </span><span class="si">{</span><span class="n">devices_str</span><span class="si">}</span><span class="se">\n</span><span class="s2">  ]&quot;</span>
                 <span class="sa">f</span><span class="s2">&quot;)&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción del servidor.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Representación o descripción actualizada del servidor.</span>
 <span class="sd">        </span>
 <span class="sd">        Returns:</span>
 <span class="sd">            str: Listado con los elementos del servidor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
-                
+    
+<div class="viewcode-block" id="INDIGOServer.refresh">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.refresh">[documentos]</a>
+    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">property_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refresca el estado del servidor, un dispositivo o una propiedad.</span>
+<span class="sd">        Espera activamente hasta que cambie el timestamp/hash o se agote el timeout.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">device_name</span> <span class="ow">and</span> <span class="n">property_name</span><span class="p">:</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prop_of_device</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="p">:</span>
+                <span class="n">last_update</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">last_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;getProperties device=&#39;</span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">&#39; name=&#39;</span><span class="si">{</span><span class="n">property_name</span><span class="si">}</span><span class="s2">&#39; /&gt;&quot;</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="n">new_update</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">new_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+                    <span class="k">if</span> <span class="n">new_update</span> <span class="o">!=</span> <span class="n">last_update</span> <span class="ow">or</span> <span class="n">new_hash</span> <span class="o">!=</span> <span class="n">last_hash</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">device_name</span><span class="p">:</span>
+            <span class="n">dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dev</span><span class="p">:</span>
+                <span class="n">last_update</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;getProperties device=&#39;</span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">&#39; /&gt;&quot;</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
+                    <span class="n">new_update</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">new_update</span> <span class="o">!=</span> <span class="n">last_update</span><span class="p">:</span>
+                        <span class="k">break</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">last_update</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_get_properties</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">:</span>
+                <span class="n">new_update</span> <span class="o">=</span> <span class="nb">max</span><span class="p">((</span><span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">&quot;last_update&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">get_properties</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">new_update</span> <span class="o">!=</span> <span class="n">last_update</span><span class="p">:</span>
+                    <span class="k">break</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span></div>
+
+    
 <div class="viewcode-block" id="INDIGOServer.connect">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.connect">[documentos]</a>
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -670,9 +753,9 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">read_messages</span><span class="p">,</span> <span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
+            <span class="k">else</span><span class="p">:</span>            
                 <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Error: No se pudo establecer la conexión&quot;</span><span class="p">)</span>
-            
+            <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span> <span class="o">=</span> <span class="s2">&quot;URL&quot;</span> <span class="c1">#Para que se puedan recoger las propiedades BLOB</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">send_get_properties</span><span class="p">()</span>
         
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -693,25 +776,6 @@
             
         <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">listener_function</span><span class="p">)</span></div>
 
-    
-    
-<div class="viewcode-block" id="INDIGOServer.add_device_property_listener">
-<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener">[documentos]</a>
-    <span class="k">def</span> <span class="nf">add_device_property_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">property_name</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="n">listener_function</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Añade un listener para cambios en una propiedad específica.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            device_name (str): Nombre del dispositivo</span>
-<span class="sd">            property_name (str): Nombre de la propiedad</span>
-<span class="sd">            listener_function (callable): Función a ejecutar cuando cambie la propiedad</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="n">device_name</span> <span class="o">+</span> <span class="s1">&#39;@&#39;</span> <span class="o">+</span> <span class="n">property_name</span>
-         
-        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">=</span><span class="p">[]</span>
-            
-        <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">listener_function</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="INDIGOServer.switch_blob_mode">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.switch_blob_mode">[documentos]</a>
@@ -729,18 +793,12 @@
 <span class="sd">            device (str): Nombre del dispositivo donde se encuentra la propiedad </span>
 <span class="sd">            property (str): Nombre de la propiedad a cambiar el valor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">#Manda un mensaje al servidor para cambiar el BLOBMode de una propiedad en específico dentro de un dispositivo registrado.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span> <span class="o">==</span> <span class="s2">&quot;URL&quot;</span><span class="p">:</span>
-            <span class="n">prop_dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prop_of_device</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">prop_dev</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="n">prop</span><span class="p">:</span> <span class="n">INDIGOProperty</span> <span class="o">=</span> <span class="n">prop_dev</span>
-                <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;BLOB&quot;</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;enableBLOB device=&#39;</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&#39; name=&#39;</span><span class="si">{</span><span class="nb">property</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span><span class="si">}</span><span class="s2">&lt;/enableBLOB&gt;&quot;</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Error: Esta propiedad no es de tipo BLOB&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">send_values</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&lt;enableBLOB device=&#39;</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s2">&#39; name=&#39;</span><span class="si">{</span><span class="nb">property</span><span class="si">}</span><span class="s2">&#39;&gt;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">blob_mode</span><span class="si">}</span><span class="s2">&lt;/enableBLOB&gt;&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ConnectionError</span><span class="p">(</span><span class="s2">&quot;Error: Se está intentando enviar un mensaje BLOB con BLOB del servidor general en NEVER&quot;</span><span class="p">)</span></div>
 
-        
     
 <div class="viewcode-block" id="INDIGOServer.read_messages">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.read_messages">[documentos]</a>
@@ -751,67 +809,62 @@
 <span class="sd">        ejecuta los listeners correspondientes cuando se detectan cambios.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">parser</span> <span class="o">=</span> <span class="n">XMLPullParser</span><span class="p">([</span><span class="s1">&#39;end&#39;</span><span class="p">])</span>
-        <span class="c1"># Inicializar el parser con una raíz</span>
         <span class="n">parser</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="s2">&quot;&lt;xml&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_reading</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">():</span>
-            <span class="n">msg</span><span class="o">=</span> <span class="s2">&quot;&quot;</span>
-
+            <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="c1"># Verificar que el socket existe antes de usar recv</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">msg</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">500000</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">500000</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="k">pass</span>
 
             <span class="k">if</span> <span class="n">msg</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
                 <span class="n">parser</span><span class="o">.</span><span class="n">feed</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">event_data</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">read_events</span><span class="p">():</span>
-                <span class="c1"># event_data puede ser una tupla de diferentes tamaños</span>
-                <span class="c1"># Verificar que tenemos al menos 2 elementos</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">event_data</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="k">continue</span> 
+                        <span class="k">continue</span>
                     <span class="n">_</span><span class="p">,</span> <span class="n">elem</span> <span class="o">=</span> <span class="n">event_data</span>
-                
-                    <span class="c1"># Verificar que elem no es None y tiene el método get</span>
-                    <span class="c1"># Solo procesar si elem es un Element</span>
                     <span class="k">if</span> <span class="n">elem</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;tag&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="s2">&quot;get&quot;</span><span class="p">):</span>
                         <span class="k">continue</span>
-                        
-                    <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;defTextVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defNumberVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defSwitchVector&quot;</span><span class="p">,</span> 
-                            <span class="s2">&quot;defLightVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defBLOBVector&quot;</span><span class="p">,</span> 
-                            <span class="s2">&quot;setTextVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setNumberVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setSwitchVector&quot;</span><span class="p">,</span> 
-                            <span class="s2">&quot;setLightVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setBLOBVector&quot;</span><span class="p">]:</span>
-                            <span class="c1"># Verificar que elem.get(&#39;device&#39;) no es None</span>
-                            <span class="n">device_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;device&#39;</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="n">device_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                                <span class="n">dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
-                                <span class="n">dev</span><span class="o">.</span><span class="n">parse_property</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
-                                <span class="c1"># Verificar que elem.get(&#39;name&#39;) no es None</span>
-                                <span class="n">prop_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
-                                <span class="k">if</span> <span class="n">prop_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                                    <span class="n">prop</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
-                                    <span class="k">if</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
-                                        <span class="n">name</span> <span class="o">=</span> <span class="n">device_name</span> <span class="o">+</span> <span class="s2">&quot;@&quot;</span> <span class="o">+</span> <span class="n">prop_name</span>
 
-                                    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span><span class="p">:</span>
-                                        <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">device_property_listeners</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
-                                            <span class="n">listener</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span>
-                            
+                    <span class="c1"># Procesa vectores de propiedades</span>
+                    <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="ow">in</span> <span class="p">[</span>
+                        <span class="s2">&quot;defTextVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defNumberVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defSwitchVector&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;defLightVector&quot;</span><span class="p">,</span> <span class="s2">&quot;defBLOBVector&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;setTextVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setNumberVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setSwitchVector&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;setLightVector&quot;</span><span class="p">,</span> <span class="s2">&quot;setBLOBVector&quot;</span>
+                    <span class="p">]:</span>
+                        <span class="n">device_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;device&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">device_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">dev</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+                            <span class="n">dev</span><span class="o">.</span><span class="n">parse_property</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+                            <span class="n">prop_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">dev</span> <span class="ow">and</span> <span class="n">prop_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                <span class="n">prop</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">prop</span> <span class="ow">and</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">notify_property_listeners</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span>
+                        <span class="c1"># Descarga de la imagen al recibir setBLOBVector</span>
+                        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;setBLOBVector&quot;</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">one_blob</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;oneBLOB&quot;</span><span class="p">):</span>
+                                <span class="n">path</span> <span class="o">=</span> <span class="n">one_blob</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;path&quot;</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.fits&quot;</span><span class="p">):</span>
+                                    
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">download_image</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
                     <span class="k">elif</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;delProperty&quot;</span><span class="p">:</span>
                         <span class="n">device_name</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;device&#39;</span><span class="p">)</span>
                         <span class="k">if</span> <span class="n">device_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">continue</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span><span class="o">.</span><span class="n">delete_property</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
-                    
+
                     <span class="k">elif</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;message&quot;</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">parse_message</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
-                        
-        
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span><span class="p">:</span> 
-                <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
-                    <span class="n">listener</span><span class="p">()</span>                </div>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_connected</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">listener</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">server_listeners</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">]:</span>
+                <span class="n">listener</span><span class="p">()</span></div>
+
+                
                 
 <div class="viewcode-block" id="INDIGOServer.parse_message">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.parse_message">[documentos]</a>
@@ -843,9 +896,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         
         <span class="k">if</span> <span class="n">device_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">device_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">INDIGODevice</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span>
-            
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">device_name</span><span class="p">]</span></div>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">device_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">INDIGODevice</span><span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se ha podido crear el dispositivo </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No se ha podido obtener el dispositivo </span><span class="si">{</span><span class="n">device_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">device</span></div>
 
 
 <div class="viewcode-block" id="INDIGOServer.get_blob_mode">
@@ -865,7 +923,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Obtiene todos los dispositivos registrados en el servidor.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            dict: Diccionario de dispositivos -&gt; [nombre, INDIGODevice]</span>
+<span class="sd">            dict: Diccionario de dispositivos</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span></div>
 
@@ -920,12 +978,14 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            message (str): Mensaje XML a enviar al servidor</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">         &quot;&quot;&quot;</span>
         <span class="n">encoded_message</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ASCII&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">encoded_message</span><span class="p">)</span></div>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">encoded_message</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">BrokenPipeError</span><span class="p">,</span> <span class="ne">ConnectionResetError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>        </div>
 
-        
         
 <div class="viewcode-block" id="INDIGOServer.is_connected">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.is_connected">[documentos]</a>
@@ -935,16 +995,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: True si está conectado, False en caso contrario</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="c1"># Intenta recibir datos sin bloquear</span>
-            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">MSG_PEEK</span><span class="p">)</span>
-            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span>
-        <span class="k">except</span> <span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="ne">BlockingIOError</span><span class="p">):</span>
-            <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># No hay datos, pero el socket está abierto</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># El socket está cerrado o la conexión se perdió</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sock</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span></div>
 
         
         
@@ -958,11 +1009,13 @@
 <span class="sd">            property_name (str): Nombre de la propiedad</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            INDIGOProperty | None: Propiedad solicitada o None si no existe</span>
+<span class="sd">            INDIGOProperty or None: Propiedad solicitada o None si no existe</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span><span class="p">(</span><span class="n">device_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">):</span>
             <span class="n">dev</span> <span class="p">:</span> <span class="n">INDIGODevice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">devices</span><span class="p">[</span><span class="n">device_name</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+            <span class="n">prop</span> <span class="o">=</span> <span class="n">dev</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">prop</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">prop</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
         
@@ -979,6 +1032,37 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">2.0</span><span class="p">)</span></div>
 
 
+                            
+<div class="viewcode-block" id="INDIGOServer.add_device_property_listener">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.add_device_property_listener">[documentos]</a>
+    <span class="k">def</span> <span class="nf">add_device_property_listener</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">,</span> <span class="n">callback</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Registra un listener para una propiedad de un dispositivo.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;property_listeners&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">callback</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span></div>
+
+            
+<div class="viewcode-block" id="INDIGOServer.notify_property_listeners">
+<a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.notify_property_listeners">[documentos]</a>
+    <span class="k">def</span> <span class="nf">notify_property_listeners</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;property_listeners&#39;</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="n">listeners</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">property_listeners</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">device_name</span><span class="p">,</span> <span class="n">prop_name</span><span class="p">),</span> <span class="p">[])</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_device_by_name</span><span class="p">(</span><span class="n">device_name</span><span class="p">)</span>
+        <span class="n">prop</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_property_by_name</span><span class="p">(</span><span class="n">prop_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">prop</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;is_complete&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="n">current_hash</span> <span class="o">=</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">get_value</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">prop</span><span class="o">.</span><span class="n">get_elements</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;_last_hash&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">current_hash</span><span class="p">:</span>
+                <span class="k">return</span>  <span class="c1"># No hay cambio real asi que no hacesos nada más</span>
+            <span class="n">prop</span><span class="o">.</span><span class="n">_last_hash</span> <span class="o">=</span> <span class="n">current_hash</span>
+            <span class="k">for</span> <span class="n">callback</span> <span class="ow">in</span> <span class="n">listeners</span><span class="p">:</span>
+                <span class="n">callback</span><span class="p">(</span><span class="n">prop</span><span class="p">)</span></div>
+
+            
 <div class="viewcode-block" id="INDIGOServer.download_image">
 <a class="viewcode-back" href="../../myIndigoLibrary.html#myIndigoLibrary.Cliente_INDIGO.INDIGOServer.download_image">[documentos]</a>
     <span class="k">def</span> <span class="nf">download_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
@@ -990,28 +1074,47 @@
 <span class="sd">        Args:</span>
 <span class="sd">            path (str): Ruta relativa de la imagen en el servidor</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">path</span><span class="p">:</span>
-            <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_host</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_port</span><span class="p">())</span> <span class="o">+</span> <span class="n">path</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;La url construida es: &quot;</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
-            <span class="n">name_image</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>            
-            <span class="n">download_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/images&quot;</span>
-            
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">download_path</span><span class="p">)):</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span>
-            
-            <span class="c1">#Descargamos la imagen en la carpeta images</span>
-            <span class="n">download_path</span> <span class="o">+=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">name_image</span>
-            <span class="c1">#Descargamos la información que haya en la url</span>
-            <span class="n">request</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> 
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">download_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-            
-            <span class="c1">#Pintamos la imagen descargada</span>
-            <span class="n">img</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span>
-            <span class="n">img_data</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
-            <span class="c1"># Cambiamos los valores de img_data a tipos nativos de Python, para que no genere errores </span>
-            <span class="n">pyplot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img_data</span><span class="p">)),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">img_data</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>            
-            <span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[ERROR] Ruta de imagen vacía.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># Construir la URL</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;http://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_host</span><span class="p">()</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">get_port</span><span class="p">()</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] Intentando descargar imagen desde: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Carpeta de destino (que si no existe se crea)</span>
+        <span class="n">images_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="s2">&quot;images&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">images_dir</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">images_dir</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[INFO] Carpeta &#39;images&#39; creada en: </span><span class="si">{</span><span class="n">images_dir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Nombre del archivo</span>
+        <span class="n">name_image</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">download_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">images_dir</span><span class="p">,</span> <span class="n">name_image</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">download_path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[SUCCESS] Imagen descargada correctamente en: </span><span class="si">{</span><span class="n">download_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="c1"># Mostramos la imagen FITS descargada</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">fits</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span>
+                    <span class="n">img_data</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+                    <span class="n">pyplot</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_data</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">img_data</span><span class="p">)),</span> <span class="n">vmax</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">img_data</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span><span class="p">),</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;lower&quot;</span><span class="p">)</span>
+                    <span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">name_image</span><span class="p">)</span>
+                    <span class="n">pyplot</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+                    <span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ERROR] No se pudo mostrar la imagen FITS: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ERROR] Fallo al descargar la imagen. Código HTTP: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ERROR] Excepción al descargar la imagen: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 </div>
 
             
