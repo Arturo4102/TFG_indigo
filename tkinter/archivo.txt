@@ -1,0 +1,4 @@
+Hola, esto es una archivo txt
+El cual tiene más de una línea
+Este es un ejemplo para el archivo
+archivos.py del curso de Tkinter

@@ -6,9 +6,6 @@ matplotlib>=3.6.0
 # Librerías para comunicación HTTP y descarga de archivos
 requests>=2.31.0
 
-# Para mejor compatibilidad con archivos FITS
-astropy-iers-data>=0.2024.1.1.0.33.39
-
 # Librerías estándar de Python (no necesitan instalación)
 # tkinter - Incluido en Python estándar
 # threading - Incluido en Python estándar  
@@ -18,6 +15,10 @@ astropy-iers-data>=0.2024.1.1.0.33.39
 # os - Incluido en Python estándar
 # sys - Incluido en Python estándar
 # time - Incluido en Python estándar
+
+# Dependencias adicionales que pueden ser útiles
+# Para mejor compatibilidad con archivos FITS
+astropy-iers-data>=0.2024.1.1.0.33.39
 
 # Para documentación con Sphinx (opcional)
 sphinx>=7.2.0
@@ -32,12 +33,3 @@ pytest>=7.4.0
 
 # Instalar todas las dependencias
 # pip install -r requirements.txt
-
-# Para las dependencias opcionales:
-# pip install -r dev-requirements.txt
-
-# Nota: tkinter no se instala con pip. Asegúrate de que esté disponible en tu sistema.
-# En Ubuntu/Debian: sudo apt install python3-tk
-
-#Ejecuta el archivo Cliente_INDIGO_GUI.py:
-# python Cliente_INDIGO_Gui.py
